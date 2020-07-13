@@ -1,0 +1,14 @@
+{
+  "flutterDemoHomePage": "स्पंदन डेमो होम पेज",
+  "loginAppBar" : "लॉगिन वाला पन्ना",
+  "loginButton" : "प्रस्तुत",
+  "email" : "ईमेल आईडी",
+  "password" : "कुंजिका",
+  "confirmPassword" : "पासवर्ड की पुष्टि कीजिये",
+  "firstName" : "पहला नाम",
+  "lastName" : "अंतिम नाम",
+  "phone" : "फ़ोन",
+  "name" : "नाम",
+  "resetPassword" : "पासवर्ड रीसेट",
+  "otpPage" : "ओटीपी पेज"
+}
