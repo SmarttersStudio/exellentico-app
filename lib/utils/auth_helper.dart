@@ -1,4 +1,6 @@
 import 'package:ecommerceapp/api_services/authentication_api_services.dart';
+import 'package:ecommerceapp/data_models/user.dart';
+import 'package:ecommerceapp/utils/shared_preference_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_linkedin/linkedloginflutter.dart';
@@ -25,56 +27,56 @@ class AuthHelper {
             socialToken: socialToken,
             isTwitter: isTwitter,
             tokenSecret: tokenSecret).then((value) {
-            onAuthenticationSuccess(context);
+//            onAuthenticationSuccess(context);
         }).catchError((err) {
             print("helper error");
             print(err.toString());
         });
     }
 
-    /// Method to handle Sign In using Email Id
-    static void handleSignInEmail({
-        @required BuildContext context,
-        @required String email,
-        @required String password
-    }){
-        signInWithEmail(email: email, password: password).then((value){
-            onAuthenticationSuccess(context);
-        }).catchError((err){
-            print(err.toString());
-        });
-    }
+//    /// Method to handle Sign In using Email Id
+//    static void handleSignInEmail({
+//        @required BuildContext context,
+//        @required String email,
+//        @required String password
+//    }){
+//        signInWithEmail(email: email, password: password).then((value){
+//            onAuthenticationSuccess(context);
+//        }).catchError((err){
+//            print(err.toString());
+//        });
+//    }
 
-    /// Method to handle Sign Up using Email id
-    static void handleSignUpEmail({
-        @required BuildContext context,
-        @required String email,
-        @required String password,
-        @required String firstName,
-        @required String lastName,
-        @required String phone,
-        int role = 5,
-        List<double> coordinates = const [0,0],
-        bool phoneVerified = false,
-        bool emailVerified = false
-
-    }){
-        signUpWithEmail(
-            email: email,
-            password: password,
-            firstName: firstName,
-            lastName: lastName,
-            phone: phone,
-            emailVerified: emailVerified,
-            phoneVerified: phoneVerified,
-            coordinates: coordinates,
-            role: role
-        ).then((value){
-            onAuthenticationSuccess(context);
-        }).catchError((err){
-            print(err.toString());
-        });
-    }
+//    /// Method to handle Sign Up using Email id
+//    static void handleSignUpEmail({
+//        @required BuildContext context,
+//        @required String email,
+//        @required String password,
+//        @required String firstName,
+//        @required String lastName,
+//        @required String phone,
+//        int role = 5,
+//        List<double> coordinates = const [0,0],
+//        bool phoneVerified = false,
+//        bool emailVerified = false
+//
+//    }){
+//        signUpWithEmail(
+//            email: email,
+//            password: password,
+//            firstName: firstName,
+//            lastName: lastName,
+//            phone: phone,
+//            emailVerified: emailVerified,
+//            phoneVerified: phoneVerified,
+//            coordinates: coordinates,
+//            role: role
+//        ).then((value){
+//            onAuthenticationSuccess(context);
+//        }).catchError((err){
+//            print(err.toString());
+//        });
+//    }
 
     static Future<bool> handleGoogleSignIn(
         {GoogleSignIn googleSignInClient, BuildContext context}) {
@@ -122,60 +124,14 @@ class AuthHelper {
         }
         return Future.value(false);
     }
-
-    static Future<bool> handleTwitterSignIn(
-        TwitterLogin twitterLogin, BuildContext context) async {
-        final TwitterLoginResult result = await twitterLogin.authorize();
-        if (result.status == TwitterLoginStatus.loggedIn) {
-            print("Access token for Twitter : " + result.session.token);
-            await twitterLogin.logOut();
-            AuthHelper.handleSocialSignIn(context: context,
-                socialToken: result.session.token,
-                socialAuthType: 5,
-                isTwitter: true,
-                tokenSecret: result.session.secret);
-        } else if (result.status == TwitterLoginStatus.error) {
-            print('Error Twitter : ${result.errorMessage}');
-            throw result.errorMessage;
-        }
-        return Future.value(false);
-    }
-
-    static Future<bool> handleGithubSignIn(GitHubSignIn gitHubSignIn,
-        BuildContext context) async {
-        var value = await gitHubSignIn.signIn(context,);
-        if (value.status == GitHubSignInResultStatus.ok) {
-            print("Acccess token for Github :" + value.token);
-            AuthHelper.handleSocialSignIn(context: context,
-                socialToken: value.token,
-                socialAuthType: 2);
-            return true;
-        } else if (value.status == GitHubSignInResultStatus.failed) {
-            print("Error  :" + value.errorMessage);
-            throw value.errorMessage;
-        }
-        return Future.value(false);
-    }
-
-    static Future<bool> handleLinkedInSignIn(BuildContext context) async {
-        LinkedInLogin.loginForAccessToken(
-            destroySession: true,
-            appBar: AppBar(title: Text("Login with LinkedIn"),)
-        ).then((accessToken) {
-            print("Access token for LinkedIn : " + accessToken);
-            AuthHelper.handleSocialSignIn(
-                context: context, socialToken: accessToken, socialAuthType: 1);
-            return true;
-        }
-        ).catchError((err) {
-            print("Error LinkedIn :" + err.toString());
-            throw err;
-        });
-        return Future.value(false);
-    }
 }
 
-void onAuthenticationSuccess(BuildContext context){
+void onAuthenticationSuccess(UserResponse user){
+    SharedPreferenceHelper.storeUser(user: user);
     print("Authentication Successful");
+    print("token : "+SharedPreferenceHelper.accessToken);
+    print("first name : "+SharedPreferenceHelper.user.user.firstName);
+    print("user name : "+SharedPreferenceHelper.user.user.userName);
+
 }
 

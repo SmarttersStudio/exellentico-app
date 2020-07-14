@@ -1,7 +1,10 @@
+import 'package:ecommerceapp/api_services/authentication_api_services.dart';
 import 'package:ecommerceapp/config/decorations.dart';
 import 'package:ecommerceapp/generated/l10n.dart';
 import 'package:ecommerceapp/utils/auth_helper.dart';
 import 'package:ecommerceapp/utils/my_form_validators.dart';
+import 'package:ecommerceapp/widgets/my_button.dart';
+import 'package:ecommerceapp/widgets/my_snackbar.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -20,7 +23,15 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final _formKey = GlobalKey<FormState>();
   bool _isVisible = false;
-  String _password="", _confirmPassword="", firstName = "", lastName = "", email, phone;
+  String _password="", _confirmPassword="", firstName = "", lastName = "", email='', userName='';
+  final _buttonKey = GlobalKey<MyButtonState>();
+  bool _isUserNameLoading = false;
+  bool _isUserNameError = false;
+  bool _visibleUsernameMessage = false;
+  bool _isUserNameEmpty = false;
+  String _userNameErrorMsg = '';
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
         key: _formKey,
         child: ListView(
           children: [
-            SizedBox(height: height/7,),
+            SizedBox(height: height/10,),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width/16),
               child: TextFormField(
@@ -42,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   firstName = value;
                   return MyFormValidators.validateName(value);
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(hintText: S.of(context).firstName),
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(hintText: S.of(context).firstName),
               ),
             ),
             SizedBox(height: 10,),
@@ -55,7 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   lastName = value;
                   return MyFormValidators.validateName(value);
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(hintText: S.of(context).lastName),
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(hintText: S.of(context).lastName),
               ),
             ),
             SizedBox(height: 10,),
@@ -69,23 +80,100 @@ class _SignUpPageState extends State<SignUpPage> {
                   email = value;
                   return MyFormValidators.validateMail(value);
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(hintText: S.of(context).email),
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(hintText: S.of(context).email),
               ),
             ),
             SizedBox(height: 10,),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width/16),
-              child: TextFormField(
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_)=>FocusScope.of(context).nextFocus(),
-                keyboardType: TextInputType.phone,
-                validator: (value){
-                  phone = value;
-                  return MyFormValidators.validatePhone(value);
-                },
-                decoration: MyDecorations.textFieldDecoration().copyWith(hintText: S.of(context).phone),
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: width/16),
+                    child: TextFormField(
+                      textInputAction: TextInputAction.next,
+                      onFieldSubmitted: (_)=>FocusScope.of(context).nextFocus(),
+                      onChanged: (value)=>userName=value,
+                      keyboardType: TextInputType.text,
+                      validator: (value){
+                        userName = value;
+                        return MyFormValidators.validateName(value);
+                      },
+                      decoration: MyDecorations.authTextFieldDecoration().copyWith(hintText: "User name"),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: width/30),
+                  child: FlatButton(
+                    splashColor: Colors.transparent,
+                    onPressed: (){
+                      if(userName.trim().isEmpty){
+                        setState(() {
+                          _visibleUsernameMessage = true;
+                          _isUserNameEmpty = true;
+                        });
+                      }else{
+                        setState(() {
+                          _visibleUsernameMessage = false;
+                          _isUserNameEmpty = false;
+                          _isUserNameLoading = true;
+                        });
+                        verifyUserName(userName: userName.trim()).then((value){
+                          if(value.result){
+                            setState(() {
+                              _visibleUsernameMessage = true;
+                              _isUserNameEmpty = false;
+                              _isUserNameLoading = false;
+                              _isUserNameError = false;
+                            });
+                          }else{
+                            setState(() {
+                              _visibleUsernameMessage = true;
+                              _isUserNameEmpty = false;
+                              _isUserNameLoading = false;
+                              _isUserNameError = true;
+                              _userNameErrorMsg = value.message;
+                            });
+                          }
+                        });
+                      }
+                    },
+                    child: _isUserNameLoading ? SizedBox(height:20,width:20,child: CircularProgressIndicator())
+                        : Text("Check", style: TextStyle(
+                    ),),
+                  ),
+                )
+              ],
+            ),
+            Visibility(
+              visible: _visibleUsernameMessage,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: width / 12, vertical: 4),
+                child: Row(
+                  children: [
+                    _isUserNameError || _isUserNameEmpty ? Icon(
+                      Icons.clear,
+                      color: Colors.red,
+                    ) : Icon(
+                      Icons.check,
+                      color: Colors.green,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Text(_isUserNameError
+                          ? _userNameErrorMsg
+                          : _isUserNameEmpty ? 'Please enter username' : 'Username available', style: TextStyle(
+                        fontSize: 12,
+                          color: _isUserNameError || _isUserNameEmpty
+                              ? Colors.red
+                              : Colors.green
+                      ),),
+                    ),
+                  ],
+                ),
               ),
             ),
+
             SizedBox(height: 10,),
             Padding(
               padding : EdgeInsets.symmetric(horizontal: width/16),
@@ -97,10 +185,10 @@ class _SignUpPageState extends State<SignUpPage> {
                   _password = value;
                   return MyFormValidators.validatePassword(value);
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(
                   hintText: S.of(context).password,
                     suffixIcon: GestureDetector(
-                      child: Icon(_isVisible?Icons.visibility:Icons.visibility_off),
+                      child: Icon(_isVisible?Icons.visibility:Icons.visibility_off, color: Colors.black12,),
                       onTap: (){
                         setState(() {
                           _isVisible = !_isVisible;
@@ -127,10 +215,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     return errMsg;
                   }
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(
                   hintText: S.of(context).confirmPassword,
                     suffixIcon: GestureDetector(
-                      child: Icon(_isVisible?Icons.visibility:Icons.visibility_off),
+                      child: Icon(_isVisible?Icons.visibility:Icons.visibility_off, color: Colors.black12,),
                       onTap: (){
                         setState(() {
                           _isVisible = !_isVisible ;
@@ -140,14 +228,30 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 30,),
             Center(
-              child: RaisedButton(
-                  child: Text(S.of(context).loginButton),
+              child: MyButton(
+                key: _buttonKey,
+                  child: Text("Sign up"),
                   onPressed: (){
                     if (_formKey.currentState.validate()) {
                       print("Form is Validated");
-                      AuthHelper.handleSignUpEmail(context: context,email: email, password: _password, firstName: firstName, lastName: lastName, phone: phone);
+                      _buttonKey.currentState.showLoader();
+                      signUpWithEmail(
+                          email: email,
+                          password: _password,
+                          firstName: firstName,
+                          lastName: lastName,
+                          userName: userName,
+                          role: 1)
+                          .then((value) {
+                        _buttonKey.currentState.hideLoader();
+                        onAuthenticationSuccess(value);
+                      }).catchError((err) {
+                        _buttonKey.currentState.hideLoader();
+                        MySnackbar.show('Error', err.toString());
+                      });
+
                     }
                   }
               ),
