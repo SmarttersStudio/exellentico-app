@@ -12,5 +12,7 @@ mixin ApiRoutes {
   static const String signInWithSocialMedia = "social-login";
   static const String signUp = "user";
   static const String checkUserName = "check-user-name";
-
+  static const String forgetPassword = "forget-password";
+  static const String phoneVerify = "phone-verification";
+  static const String verifyOTP = "verify-phone-otp";
 }

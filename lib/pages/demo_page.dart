@@ -4,8 +4,11 @@ import 'package:ecommerceapp/pages/authentication/reset_password/otp_page.dart';
 import 'package:ecommerceapp/pages/authentication/reset_password/reset_password_page.dart';
 import 'package:ecommerceapp/pages/authentication/reset_password/update_password_page.dart';
 import 'package:ecommerceapp/pages/authentication/signup/signup_page.dart';
+import 'package:ecommerceapp/pages/authentication/social_sign_in/social_sign_in_page.dart';
+import 'package:ecommerceapp/pages/onboarding/verify_phone/verify_phone_page.dart';
 import 'package:ecommerceapp/utils/notification_services/in_app_notification.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 ///
 /// Created By Guru (guru@smarttersstudio.com) on 12/06/20 12:50 PM
@@ -39,10 +42,8 @@ class _MyHomePageState extends State<MyHomePage> {
 //              style: Theme.of(context).textTheme.headline4,
 //            ),
             RaisedButton(
-              child: Text("Login"),
-                onPressed: (){
-              Navigator.pushNamed(context, LoginPage.routeName);
-            }),
+              child: Text("Phone verify"),
+                onPressed: ()=>Get.to(VerifyPhonePage())),
             RaisedButton(
                 child: Text("Signup"),
                 onPressed: (){
@@ -64,19 +65,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       Navigator.pushNamed(context, UpdatePasswordPage.routeName);
                   }),
             RaisedButton(
-                child: Text("Notification"),
-                onPressed: () async {
-                  await InAppNotification.showNotification(
-                      title: 'NotifyX',
-                      description: "This is a new type of notification",
-                      iconUrl: "https://optinmonster.com/wp-content/uploads/2018/05/ecommerce-lead-generation-tips-1.jpg",
-                      data: {
-                          'notificationId':"gd6s6",
-                          'type': "login"
-                      }
-
-                  );
-                }
+                child: Text("social"),
+                onPressed: ()=>Get.to(SocialSignInPage())
                 ),
             RaisedButton(
                 child: Text("Image notification"),

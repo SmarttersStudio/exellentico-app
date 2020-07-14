@@ -2,11 +2,14 @@ import 'package:ecommerceapp/api_services/authentication_api_services.dart';
 import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/config/social_sign_in_config.dart';
 import 'package:ecommerceapp/generated/l10n.dart';
+import 'package:ecommerceapp/pages/authentication/reset_password/reset_password_page.dart';
+import 'package:ecommerceapp/pages/authentication/signup/signup_page.dart';
 import 'package:ecommerceapp/utils/my_form_validators.dart';
 import 'package:ecommerceapp/utils/auth_helper.dart';
 import 'package:ecommerceapp/widgets/my_button.dart';
 import 'package:ecommerceapp/widgets/my_snackbar.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:get/get.dart';
@@ -31,42 +34,14 @@ class _LoginPageState extends State<LoginPage> {
     bool _isVisible = false;
     String emailId = "",
         password = "";
-    bool _isSocialMediaButtonDisabled = false;
 
-
-    final facebookLogin = FacebookLogin();
-    static final GoogleSignIn googleSignIn = GoogleSignIn(
-        clientId: SignInWithGoogleConfig.clientId,
-        scopes: ['email'],
-    );
 
     @override
     void initState() {
         super.initState();
     }
 
-    void _signInFaceBook() {
-        setState(() => _isSocialMediaButtonDisabled = true);
-        AuthHelper.handleFacebookSignIn(context: context)
-            .then((value) =>
-            setState(() => _isSocialMediaButtonDisabled = false))
-            .catchError(
-                (err) => setState(() => _isSocialMediaButtonDisabled = false));
-    }
 
-    void _signInGoogle() {
-        try {
-            setState(() => _isSocialMediaButtonDisabled = true);
-            AuthHelper.handleGoogleSignIn(
-                googleSignInClient: googleSignIn, context: context)
-                .then((value) =>
-                setState(() => _isSocialMediaButtonDisabled = false))
-                .catchError(
-                    (err) => setState(() => _isSocialMediaButtonDisabled = false));
-        } catch (err) {
-            setState(() => _isSocialMediaButtonDisabled = true);
-        }
-    }
 
     @override
     Widget build(BuildContext context) {
@@ -150,6 +125,32 @@ class _LoginPageState extends State<LoginPage> {
                                     }
                                 }
                             ),
+                        ),
+                        SizedBox(height: height/12,),
+                        Center(child: InkWell(
+                            onTap: ()=>Get.to(ResetPasswordPage()),
+                          child: Text("Forgot your password ?", style: TextStyle(
+                              color: Colors.black.withOpacity(0.8)
+                          ),),
+                        )),
+                        SizedBox(height: height/12,),
+                        Center(
+                          child: RichText(
+                              text: TextSpan(
+                                  style: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.7)),
+                                  text: "Don't have an account ?",
+                                  children: [
+                                      TextSpan(
+                                          text: " Sign Up",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight
+                                                  .w500,
+                                              color: Colors.red),
+                                          recognizer: TapGestureRecognizer()..onTap = ()=>Get.to(SignUpPage())
+                                      )
+                                  ]
+                              ),),
                         ),
 
                     ],

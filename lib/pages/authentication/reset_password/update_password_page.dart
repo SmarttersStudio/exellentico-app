@@ -1,5 +1,6 @@
 import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/utils/my_form_validators.dart';
+import 'package:ecommerceapp/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -38,10 +39,10 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                   _password = value;
                   return MyFormValidators.validatePassword(value);
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(
                     hintText: "Password",
                     suffixIcon: GestureDetector(
-                        child: Icon(_isVisible?Icons.visibility:Icons.visibility_off),
+                        child: Icon(_isVisible?Icons.visibility:Icons.visibility_off, color: Colors.black12,),
                       onTap: (){
                         setState(() {
                           _isVisible = !_isVisible;
@@ -56,7 +57,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
               padding: EdgeInsets.symmetric(horizontal: width/16),
               child: TextFormField(
                 textInputAction: TextInputAction.done,
-                obscureText: _isVisible?false:true,
+                obscureText: _isVisible ? false : true,
                 validator: (value){
                   _confirmPassword = value;
                   String errMsg = MyFormValidators.validatePassword(value);
@@ -68,10 +69,10 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                     return errMsg;
                   }
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(
                     hintText: "Confirm Password",
                     suffixIcon: GestureDetector(
-                      child: Icon(_isVisible?Icons.visibility:Icons.visibility_off),
+                      child: Icon(_isVisible?Icons.visibility:Icons.visibility_off, color: Colors.black12),
                       onTap: (){
                         setState(() {
                           _isVisible = !_isVisible;
@@ -81,10 +82,10 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 30,),
             Center(
-              child: RaisedButton(
-                  child: Text("Submit"),
+              child: MyButton(
+                  child: Text("Update Password"),
                   onPressed: (){
                     if (_formKey.currentState.validate()) {
                       print("Form is Validated");
