@@ -1,3 +1,5 @@
+import 'package:ecommerceapp/utils/shared_preference_helper.dart';
+import 'package:ecommerceapp/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -7,7 +9,22 @@ import 'package:flutter/material.dart';
 class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Dashboard Page"),
+            MyButton(
+                child: Text("test"),
+              onPressed: (){
+                  print(SharedPreferenceHelper.user.user.phone);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

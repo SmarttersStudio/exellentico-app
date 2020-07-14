@@ -3,6 +3,7 @@ import 'package:ecommerceapp/bloc_models/blog_delagate.dart';
 import 'package:ecommerceapp/bloc_models/theme_bloc/index.dart';
 import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/config/page_routes.dart';
+import 'package:ecommerceapp/pages/authentication/social_sign_in/social_sign_in_page.dart';
 import 'package:ecommerceapp/pages/demo_page.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +63,7 @@ class _MyAppState extends State<MyApp> {
               darkTheme: MyThemes.appThemeData[(state as ThemeState).color]
                   [ThemeMode.dark],
               themeMode: (state as ThemeState).mode,
-              initialRoute: '/',
+              initialRoute: SocialSignInPage.routeName,
               routes: MyPageRoutes.routes,
             ));
   }

@@ -15,6 +15,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 ///
 
 class SocialSignInPage extends StatefulWidget {
+  static final routeName = '/socialSignInPage';
   @override
   _SocialSignInPageState createState() => _SocialSignInPageState();
 }

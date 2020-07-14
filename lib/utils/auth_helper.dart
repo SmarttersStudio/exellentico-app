@@ -1,8 +1,12 @@
 import 'package:ecommerceapp/api_services/authentication_api_services.dart';
 import 'package:ecommerceapp/data_models/user.dart';
+import 'package:ecommerceapp/pages/authentication/social_sign_in/social_sign_in_page.dart';
+import 'package:ecommerceapp/pages/dashboard/dashboard_page.dart';
+import 'package:ecommerceapp/pages/onboarding/verify_phone/verify_phone_page.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 ///
@@ -85,6 +89,16 @@ void onAuthenticationSuccess(UserResponse user){
     print("token : "+SharedPreferenceHelper.accessToken);
     print("first name : "+SharedPreferenceHelper.user.user.firstName);
     print("user name : "+SharedPreferenceHelper.user.user.userName);
-
+    checkLevel();
 }
 
+
+void checkLevel() {
+    UserResponse user = SharedPreferenceHelper.user;
+    if(user == null )
+        Get.offAll(SocialSignInPage());
+    else if (user.user.phone.isEmpty)
+        Get.offAll(VerifyPhonePage());
+    else
+        Get.offAll(DashboardPage());
+}
