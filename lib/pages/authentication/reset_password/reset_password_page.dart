@@ -1,12 +1,13 @@
 import 'package:ecommerceapp/config/index.dart';
+import 'package:ecommerceapp/pages/authentication/reset_password/otp_page.dart';
 import 'package:ecommerceapp/utils/my_form_validators.dart';
 import 'package:ecommerceapp/widgets/my_button.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 ///
 ///Created By Aurosmruti (aurosmruti@smarttersstudio.com) on 6/14/2020 8:14 AM
 ///
-
 
 
 
@@ -40,6 +41,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                         Padding(
                           padding:  EdgeInsets.symmetric(horizontal: width/16),
                           child: TextFormField(
+                            keyboardType: TextInputType.emailAddress,
                             onChanged: (value)=>_emailId = value,
                               validator: (value){
                                 _emailId = value;
@@ -56,6 +58,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               onPressed: (){
                                   if (_formKey.currentState.validate()) {
                                       print("Form is Validated");
+                                      Get.to(OTPPage());
 
                                   }else{
                                     setState(() => _autoValidate = true);

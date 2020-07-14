@@ -63,7 +63,7 @@ class _MyAppState extends State<MyApp> {
               darkTheme: MyThemes.appThemeData[(state as ThemeState).color]
                   [ThemeMode.dark],
               themeMode: (state as ThemeState).mode,
-              initialRoute: SocialSignInPage.routeName,
+              initialRoute: MyHomePage.routeName,
               routes: MyPageRoutes.routes,
             ));
   }
