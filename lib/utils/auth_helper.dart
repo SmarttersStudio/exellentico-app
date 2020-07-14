@@ -3,9 +3,6 @@ import 'package:ecommerceapp/data_models/user.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:flutter_linkedin/linkedloginflutter.dart';
-import 'package:flutter_twitter/flutter_twitter.dart';
-import 'package:github_sign_in/github_sign_in.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 ///
@@ -33,50 +30,6 @@ class AuthHelper {
             print(err.toString());
         });
     }
-
-//    /// Method to handle Sign In using Email Id
-//    static void handleSignInEmail({
-//        @required BuildContext context,
-//        @required String email,
-//        @required String password
-//    }){
-//        signInWithEmail(email: email, password: password).then((value){
-//            onAuthenticationSuccess(context);
-//        }).catchError((err){
-//            print(err.toString());
-//        });
-//    }
-
-//    /// Method to handle Sign Up using Email id
-//    static void handleSignUpEmail({
-//        @required BuildContext context,
-//        @required String email,
-//        @required String password,
-//        @required String firstName,
-//        @required String lastName,
-//        @required String phone,
-//        int role = 5,
-//        List<double> coordinates = const [0,0],
-//        bool phoneVerified = false,
-//        bool emailVerified = false
-//
-//    }){
-//        signUpWithEmail(
-//            email: email,
-//            password: password,
-//            firstName: firstName,
-//            lastName: lastName,
-//            phone: phone,
-//            emailVerified: emailVerified,
-//            phoneVerified: phoneVerified,
-//            coordinates: coordinates,
-//            role: role
-//        ).then((value){
-//            onAuthenticationSuccess(context);
-//        }).catchError((err){
-//            print(err.toString());
-//        });
-//    }
 
     static Future<bool> handleGoogleSignIn(
         {GoogleSignIn googleSignInClient, BuildContext context}) {

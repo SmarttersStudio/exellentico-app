@@ -23,6 +23,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final _formKey = GlobalKey<FormState>();
   bool _isVisible = false;
+  bool _autoValidate = false;
   String _password="", _confirmPassword="", firstName = "", lastName = "", email='', userName='';
   final _buttonKey = GlobalKey<MyButtonState>();
   bool _isUserNameLoading = false;
@@ -41,6 +42,7 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(title: Text(""),),
       body: Form(
         key: _formKey,
+        autovalidate: _autoValidate,
         child: ListView(
           children: [
             SizedBox(height: height/10,),
@@ -235,23 +237,32 @@ class _SignUpPageState extends State<SignUpPage> {
                   child: Text("Sign up"),
                   onPressed: (){
                     if (_formKey.currentState.validate()) {
+                      _autoValidate = false;
                       print("Form is Validated");
-                      _buttonKey.currentState.showLoader();
-                      signUpWithEmail(
-                          email: email,
-                          password: _password,
-                          firstName: firstName,
-                          lastName: lastName,
-                          userName: userName,
-                          role: 1)
-                          .then((value) {
-                        _buttonKey.currentState.hideLoader();
-                        onAuthenticationSuccess(value);
-                      }).catchError((err) {
-                        _buttonKey.currentState.hideLoader();
-                        MySnackbar.show('Error', err.toString());
+                      if(_isUserNameError){
+                        MySnackbar.show('Error', 'Verify your username first');
+                      }else{
+                        _buttonKey.currentState.showLoader();
+                        signUpWithEmail(
+                            email: email,
+                            password: _password,
+                            firstName: firstName,
+                            lastName: lastName,
+                            userName: userName,
+                            role: 1)
+                            .then((value) {
+                          _buttonKey.currentState.hideLoader();
+                          onAuthenticationSuccess(value);
+                        }).catchError((err) {
+                          _buttonKey.currentState.hideLoader();
+                          MySnackbar.show('Error', err.toString());
+                        });
+                      }
+                    }else{
+                      setState(() {
+                        _autoValidate = true;
+                        _visibleUsernameMessage = false;
                       });
-
                     }
                   }
               ),
