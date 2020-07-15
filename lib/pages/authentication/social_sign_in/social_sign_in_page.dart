@@ -1,5 +1,4 @@
 import 'dart:ffi';
-
 import 'package:ecommerceapp/api_services/authentication_api_services.dart';
 import 'package:ecommerceapp/config/social_sign_in_config.dart';
 import 'package:ecommerceapp/pages/authentication/login/login_page.dart';
@@ -42,6 +41,7 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
       _isFbLoading = true;
     });
     var facebookLogin = FacebookLogin();
+    await facebookLogin.logOut();
     final facebookLoginResult = await facebookLogin.logIn(['email']);
     switch (facebookLoginResult.status) {
       case FacebookLoginStatus.error:
@@ -75,6 +75,7 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
               authType: 2,
             ));
           } else {
+            facebookLogin.logOut();
             MySnackbar.show('Error', err?.toString());
           }
           setState(() {
@@ -182,8 +183,7 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
                     )
                   ]
               ),),
-            MyButton(child: Text("user test"), onPressed: ()=>Get.to(MyHomePage()))
-
+            MyButton(child: Text("test"), onPressed: ()=>Get.to(MyHomePage()),width: 200,)
           ],
         ),
       ),
