@@ -47,8 +47,11 @@ class _CoursesPageState extends State<CoursesPage> {
               separatorBuilder: (context, index)=>Divider(),
                 itemBuilder: (context, index)=>InkWell(
                   onTap: (){
-                    Get.to(ChaptersPage(courseId: CourseBloc().courses[index].id,));
-                  },
+                    Get.to(ChaptersPage(
+                        courseId: CourseBloc().courses[index].id,
+                        videoCode: CourseBloc().courses[index].promoVideo,
+                      ));
+                    },
                     child: CourseCard(CourseBloc().courses[index])
                 )
             );

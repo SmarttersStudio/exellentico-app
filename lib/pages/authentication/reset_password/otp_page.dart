@@ -122,7 +122,7 @@ class _OTPPageState extends State<OTPPage> {
                       isLoading = true;
                     });
                     sendPasswordResetEmail(email: widget.email).then((value) {
-                      MySnackbar.show('Check your phone', value.toString());
+                      MySnackbar.show('Check your email', value.toString());
                       startTimer();
                     }).catchError((err) {
                       setState(() {
