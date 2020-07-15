@@ -15,7 +15,6 @@ void onAuthenticationSuccess(UserResponse user){
     print("Authentication Successful");
     print("token : "+SharedPreferenceHelper.accessToken);
     print("first name : "+SharedPreferenceHelper.user.user.firstName);
-    print("user name : "+SharedPreferenceHelper.user.user.userName);
     checkLevel();
 }
 

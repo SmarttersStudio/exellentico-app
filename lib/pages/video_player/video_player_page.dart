@@ -23,7 +23,7 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
       initialVideoId: widget.videoCode,
       flags: YoutubePlayerFlags(
         autoPlay: true,
-        mute: true,
+        mute: false,
       ),
     );
   }

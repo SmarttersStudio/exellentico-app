@@ -91,7 +91,6 @@ class UserDatum {
         this.lastName,
         this.email,
         this.role,
-        this.userName,
         this.createdAt,
         this.updatedAt,
         this.v,
@@ -111,7 +110,6 @@ class UserDatum {
     String lastName;
     String email;
     int role;
-    String userName;
     DateTime createdAt;
     DateTime updatedAt;
     int v;
@@ -131,7 +129,6 @@ class UserDatum {
         lastName: json["lastName"]!=null?json["lastName"]:'',
         email: json["email"]!=null?json["email"]:'',
         role: json["role"]!=null?json["role"]:0,
-        userName: json["userName"]!=null?json["userName"]:'',
         createdAt: json.containsKey('createdAt')? DateTime.parse(json["createdAt"]) : null,
         updatedAt: json.containsKey('updatedAt')? DateTime.parse(json["updatedAt"]) : null,
         v: json["__v"]!=null ?json["__v"]:0,
@@ -152,7 +149,6 @@ class UserDatum {
         "lastName": lastName,
         "email": email,
         "role": role,
-        "userName": userName,
         "createdAt": createdAt.toIso8601String(),
         "updatedAt": updatedAt.toIso8601String(),
         "__v": v,

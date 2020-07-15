@@ -38,9 +38,7 @@ Future<UserResponse> signUpWithEmail({
     @required String password,
     @required String firstName,
     @required String lastName,
-    @required String userName,
     int role = 1,
-
 }) async {
 
     var body = {
@@ -48,7 +46,6 @@ Future<UserResponse> signUpWithEmail({
         'lastName' : lastName,
         'email' : email,
         'password' : password,
-        'userName' : userName,
         'role' : role
     };
     String path = ApiRoutes.signUp;
@@ -66,21 +63,13 @@ Future<UserResponse> signInWithSocialMedia({
     @required String socialToken,
     @required int socialAuthType,
     int role=1,
-    String userName='',
     String tokenSecret = ""
 }) async {
     print("Social Api Call");
-    var body = userName.isEmpty
-        ? {
+    var body = {
         'accessToken': socialToken,
         'type': socialAuthType,
         'role': role
-    }
-        : {
-        'accessToken': socialToken,
-        'type': socialAuthType,
-        'role': role,
-        'userName': userName
     };
 
     String path = ApiRoutes.signInWithSocialMedia;

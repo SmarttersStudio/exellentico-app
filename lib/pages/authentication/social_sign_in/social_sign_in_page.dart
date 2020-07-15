@@ -2,7 +2,6 @@ import 'dart:ffi';
 import 'package:ecommerceapp/api_services/authentication_api_services.dart';
 import 'package:ecommerceapp/config/social_sign_in_config.dart';
 import 'package:ecommerceapp/pages/authentication/login/login_page.dart';
-import 'package:ecommerceapp/pages/authentication/social_sign_in/select_user_name_page.dart';
 import 'package:ecommerceapp/pages/demo_page.dart';
 import 'package:ecommerceapp/utils/auth_helper.dart';
 import 'package:ecommerceapp/widgets/my_button.dart';
@@ -68,16 +67,8 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
             .then((value) {
           onAuthenticationSuccess(value);
         }).catchError((err) {
-          if (err.toString() ==
-              'BadRequest: Invalid UserName') {
-            Get.to(SocialSignInUserNamePage(
-              accessToken: token.trim(),
-              authType: 2,
-            ));
-          } else {
-            facebookLogin.logOut();
-            MySnackbar.show('Error', err?.toString());
-          }
+          facebookLogin.logOut();
+          MySnackbar.show('Error', err?.toString());
           setState(() {
             _isSocialMediaButtonDisabled = false;
             _isFbLoading = false;
@@ -109,15 +100,7 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
               socialToken: s.trim(), socialAuthType: 1).then((value){
             onAuthenticationSuccess(value);
           }).catchError((onError){
-            if(onError.toString() ==
-                'BadRequest: Invalid UserName') {
-              Get.to(SocialSignInUserNamePage(
-                accessToken: s.trim(),
-                authType: 1,
-              ));
-            } else {
-              MySnackbar.show('Error', onError?.toString());
-            }
+            MySnackbar.show('Error', onError?.toString());
             setState(() {
               _isSocialMediaButtonDisabled = false;
               _isGoogleLoading = false;
