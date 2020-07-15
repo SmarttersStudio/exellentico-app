@@ -30,6 +30,8 @@ class ChapterBloc extends Bloc<ChapterEvent, BaseState> {
   }
 
   List<ChapterDatum> chapters  = [];
+  bool chapterShouldLoadMore = true;
+  int chapterSkipData = 0;
 
   @override
   Stream<BaseState> mapEventToState(

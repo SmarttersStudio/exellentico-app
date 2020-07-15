@@ -31,6 +31,9 @@ class CourseBloc extends Bloc<CourseEvent, BaseState> {
   }
 
   List<CourseDatum> courses  = [];
+  bool courseShouldLoadMore = true;
+  int courseSkipData = 0;
+
 
   @override
   Stream<BaseState> mapEventToState(

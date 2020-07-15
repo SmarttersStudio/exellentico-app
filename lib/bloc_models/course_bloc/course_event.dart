@@ -16,13 +16,25 @@ abstract class CourseEvent {
 }
 
 class LoadMyCoursesEvent extends CourseEvent{
+  final int skip = 0;
+  final int limit = 10;
   @override
   Stream<BaseState> applyAsync({BaseState currentState, CourseBloc bloc}) async* {
     try{
       yield LoadingBaseState();
-      final  result = await getAllCourses();
-      bloc.courses = result.data;
-      yield CourseLoadedState();
+      final  result = await getAllCourses(skip, limit);
+
+      if (result.data.isEmpty) {
+        bloc.courseSkipData = 0;
+        bloc.courseShouldLoadMore = false;
+        yield EmptyBaseState();
+      } else {
+        if (result.data.length < limit && bloc.courseSkipData == 0) {
+          bloc.courseShouldLoadMore = false;
+        }
+        bloc.courses = result.data;
+        yield CourseLoadedState();
+      }
     }catch(_,s){
       print(s);
       yield ErrorBaseState(_?.toString());
@@ -30,3 +42,27 @@ class LoadMyCoursesEvent extends CourseEvent{
   }
 }
 
+
+class LoadMoreCoursesEvent extends CourseEvent{
+  final int limit = 10;
+  @override
+  Stream<BaseState> applyAsync({BaseState currentState, CourseBloc bloc}) async* {
+    try{
+      if(bloc.courseShouldLoadMore){
+        bloc.courseSkipData = bloc.courses.length;
+        final  result = await getAllCourses(bloc.courseSkipData, limit);
+        if(result.data.isEmpty){
+          bloc.courseShouldLoadMore = false;
+        }else{
+          bloc.courses += result.data;
+        }
+        yield CourseLoadedState();
+      }else{
+        yield currentState;
+      }
+    }catch(_,s){
+      print(s);
+      yield ErrorBaseState(_?.toString());
+    }
+  }
+}

@@ -11,25 +11,25 @@ import 'package:ecommerceapp/data_models/episode_data.dart';
 
 
 /// Api Call to get all courses
-Future<CourseData> getAllCourses() async {
-  String path = ApiRoutes.course;
+Future<CourseData> getAllCourses(int skip, int limit) async {
+  String path = ApiRoutes.course +'?\$skip='+skip.toString()+'&\$limit='+limit.toString();
   print("Api Call");
   var result = await ApiCall.generalApiCall(path, RequestMethod.get);
   return CourseData.fromJson(result.data);
 }
 
 /// Api Call to get all chapters of a course of given id
-Future<ChapterData> getAllChapters(String courseId) async {
+Future<ChapterData> getAllChapters(String courseId, int skip, int limit) async {
 
-  String path = ApiRoutes.chapter+'?courseId='+courseId;
+  String path = ApiRoutes.chapter+'?courseId='+courseId+'&\$skip='+skip.toString()+'&\$limit='+limit.toString();
   var result = await ApiCall.generalApiCall(path, RequestMethod.get);
   return ChapterData.fromJson(result.data);
 }
 
 /// Api Call to get all episodes of a chapter of given id
-Future<EpisodeData> getAllEpisodes(String episodeId) async {
+Future<EpisodeData> getAllEpisodes(String episodeId, int skip, int limit) async {
 
-  String path = ApiRoutes.episode+"?chapterId="+episodeId;
+  String path = ApiRoutes.episode+"?chapterId="+episodeId+'&\$skip='+skip.toString()+'&\$limit='+limit.toString();
   var result = await ApiCall.generalApiCall(path, RequestMethod.get);
   return EpisodeData.fromJson(result.data);
 }

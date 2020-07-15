@@ -19,12 +19,29 @@ class CoursesPage extends StatefulWidget {
 
 class _CoursesPageState extends State<CoursesPage> {
 
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     CourseBloc().add(LoadMyCoursesEvent());
+    _scrollController.addListener(() {
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.position.pixels;
+      if (maxScroll - currentScroll <= 200) {
+        CourseBloc().add(LoadMoreCoursesEvent());
+      }
+    });
+
   }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,18 +60,26 @@ class _CoursesPageState extends State<CoursesPage> {
           }
           if(state is CourseLoadedState){
             return ListView.separated(
-              itemCount: CourseBloc().courses.length,
-              separatorBuilder: (context, index)=>Divider(),
-                itemBuilder: (context, index)=>InkWell(
-                  onTap: (){
-                    Get.to(ChaptersPage(
-                        courseId: CourseBloc().courses[index].id,
-                        videoCode: CourseBloc().courses[index].promoVideo,
-                      ));
-                    },
-                    child: CourseCard(CourseBloc().courses[index])
-                )
-            );
+              controller: _scrollController,
+              itemCount:  CourseBloc().courseShouldLoadMore
+                  ? CourseBloc().courses.length + 1
+                  : CourseBloc().courses.length,
+                separatorBuilder: (context, index) => Divider(),
+                itemBuilder: (context, index) => index >=
+                        CourseBloc().courses.length
+                    ? CourseBloc().courseShouldLoadMore
+                        ? Center(
+                            child: CircularProgressIndicator(),
+                          )
+                        : Container()
+                    : InkWell(
+                        onTap: () {
+                          Get.to(ChaptersPage(
+                            courseId: CourseBloc().courses[index].id,
+                            videoCode: CourseBloc().courses[index].promoVideo,
+                          ));
+                        },
+                        child: CourseCard(CourseBloc().courses[index])));
           }
           return Center(child: Text("Some Error Occurred "),);
         },

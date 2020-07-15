@@ -18,11 +18,19 @@ class EpisodesPage extends StatefulWidget {
 
 class _EpisodesPageState extends State<EpisodesPage> {
 
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     EpisodeBloc().add(LoadMyEpisodesEvent(widget.chapterId));
+    _scrollController.addListener(() {
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.position.pixels;
+      if (maxScroll - currentScroll <= 200) {
+        EpisodeBloc().add(LoadMoreEpisodesEvent(widget.chapterId));
+      }
+    });
   }
 
 
@@ -44,13 +52,25 @@ class _EpisodesPageState extends State<EpisodesPage> {
           }
           if(state is EpisodeLoadedState){
             return ListView.separated(
-                itemCount: EpisodeBloc().episodes.length,
-                separatorBuilder: (context, index)=>Divider(),
-                itemBuilder: (context, index)=>InkWell(
-                    onTap: ()=>Get.to(VideoPlayerPage(videoCode:EpisodeBloc().episodes[index].youtubeCode)),
-                    child: EpisodesCard(data: EpisodeBloc().episodes[index],)
-                )
-            );
+              controller: _scrollController,
+                itemCount: EpisodeBloc().episodeShouldLoadMore
+                    ? EpisodeBloc().episodes.length + 1
+                    : EpisodeBloc().episodes.length,
+                separatorBuilder: (context, index) => Divider(),
+                itemBuilder: (context, index) =>
+                    index >= EpisodeBloc().episodes.length
+                        ? EpisodeBloc().episodeShouldLoadMore
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : Container()
+                        : InkWell(
+                            onTap: () => Get.to(VideoPlayerPage(
+                                videoCode:
+                                    EpisodeBloc().episodes[index].youtubeCode)),
+                            child: EpisodesCard(
+                              data: EpisodeBloc().episodes[index],
+                            )));
           }
           return Center(child: Text("Some Error Occurred "),);
         },

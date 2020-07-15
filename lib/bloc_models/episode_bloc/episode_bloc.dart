@@ -30,6 +30,8 @@ class EpisodeBloc extends Bloc<EpisodeEvent, BaseState> {
   }
 
   List<EpisodeDatum> episodes  = [];
+  bool episodeShouldLoadMore = true;
+  int episodeSkipData = 0;
 
   @override
   Stream<BaseState> mapEventToState(

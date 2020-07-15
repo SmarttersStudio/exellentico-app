@@ -22,6 +22,7 @@ class ChaptersPage extends StatefulWidget {
 class _ChaptersPageState extends State<ChaptersPage> {
 
   YoutubePlayerController _controller;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -34,12 +35,20 @@ class _ChaptersPageState extends State<ChaptersPage> {
       ),
     );
     ChapterBloc().add(LoadMyChaptersEvent(widget.courseId));
+    _scrollController.addListener(() {
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.position.pixels;
+      if (maxScroll - currentScroll <= 200) {
+        ChapterBloc().add(LoadMoreChaptersEvent(widget.courseId));
+      }
+    });
   }
 
   @override
   void dispose() {
     _controller.pause();
     _controller.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -68,15 +77,27 @@ class _ChaptersPageState extends State<ChaptersPage> {
               if(state is ChapterLoadedState){
                 return Expanded(
                   child: ListView.separated(
-                      itemCount: ChapterBloc().chapters.length,
-                      separatorBuilder: (context, index)=>Divider(),
-                      itemBuilder: (context, index)=>InkWell(
-                          onTap: (){
-                            Get.to(EpisodesPage(ChapterBloc().chapters[index].id,));
-                          },
-                          child: ChapterCard(data: ChapterBloc().chapters[index],)
-                      )
-                  ),
+                    controller: _scrollController,
+                      itemCount: ChapterBloc().chapterShouldLoadMore
+                          ? ChapterBloc().chapters.length + 1
+                          : ChapterBloc().chapters.length,
+                      separatorBuilder: (context, index) => Divider(),
+                      itemBuilder: (context, index) =>
+                          index >= ChapterBloc().chapters.length
+                              ? ChapterBloc().chapterShouldLoadMore
+                                  ? Center(
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Container()
+                              : InkWell(
+                                  onTap: () {
+                                    Get.to(EpisodesPage(
+                                      ChapterBloc().chapters[index].id,
+                                    ));
+                                  },
+                                  child: ChapterCard(
+                                    data: ChapterBloc().chapters[index],
+                                  ))),
                 );
               }
               return Center(child: Text("Some Error Occurred "),);
