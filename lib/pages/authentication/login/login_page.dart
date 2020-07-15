@@ -1,6 +1,5 @@
 import 'package:ecommerceapp/api_services/authentication_api_services.dart';
 import 'package:ecommerceapp/config/index.dart';
-import 'package:ecommerceapp/config/social_sign_in_config.dart';
 import 'package:ecommerceapp/generated/l10n.dart';
 import 'package:ecommerceapp/pages/authentication/reset_password/reset_password_page.dart';
 import 'package:ecommerceapp/pages/authentication/signup/signup_page.dart';
@@ -11,9 +10,7 @@ import 'package:ecommerceapp/widgets/my_snackbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 ///
 ///Created By Aurosmruti (aurosmruti@smarttersstudio.com) on 6/14/2020 3:42 AM
@@ -83,8 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                                 obscureText: _isVisible ? false : true,
                                 validator: (value) {
                                     password = value.trim();
-                                    return MyFormValidators.validatePassword(
-                                        value.trim());
+                                    return MyFormValidators.validatePassword(password: value.trim());
                                 },
                                 decoration: MyDecorations.authTextFieldDecoration()
                                     .copyWith(

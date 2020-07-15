@@ -73,17 +73,43 @@ class CourseDatum {
   int v;
 
   factory CourseDatum.fromJson(Map<String, dynamic> json) => CourseDatum(
-    id: json["_id"],
-    points: List<dynamic>.from(json["points"].map((x) => x)),
-    attachments: List<String>.from(json["attachments"].map((x) => x)),
-    chaptersCount: json["chaptersCount"],
-    episodesCount: json["episodesCount"],
-    onTrending: json["onTrending"],
-    deleted: json["deleted"],
-    title: json["title"],
-    description: json["description"],
-    avatar: json["avatar"],
-    promoVideo: json["promoVideo"],
+    id: json.containsKey('id')
+        ? json["id"] != null ? json["id"] : ''
+        : null,
+    points: json.containsKey('points')
+            ? json['points'] != null
+                ? List<dynamic>.from(json["points"].map((x) => x))
+                : []
+            : null,
+    attachments: json.containsKey('attachments')
+        ? json['attachments'] != null
+        ? List<dynamic>.from(json["attachments"].map((x) => x))
+        : []
+        : null,
+    chaptersCount: json.containsKey('chaptersCount')
+        ? json["chaptersCount"] != null ? json["chaptersCount"] : 0
+        : null,
+    episodesCount: json.containsKey('episodesCount')
+        ? json["episodesCount"] != null ? json["episodesCount"] : 0
+        : null,
+    onTrending: json.containsKey('onTrending')
+        ? json["onTrending"] != null ? json["onTrending"] : false
+        : null,
+    deleted: json.containsKey('deleted')
+        ? json["deleted"] != null ? json["deleted"] : false
+        : null,
+    title:  json.containsKey('title')
+        ? json["title"] != null ? json["title"] : ''
+        : null,
+    description: json.containsKey('description')
+        ? json["description"] != null ? json["description"] : ''
+        : null,
+    avatar: json.containsKey('avatar')
+        ? json["avatar"] != null ? json["avatar"] : ''
+        : null,
+    promoVideo: json.containsKey('promoVideo')
+        ? json["promoVideo"] != null ? json["promoVideo"] : ''
+        : null,
     createdBy: json["createdBy"],
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),

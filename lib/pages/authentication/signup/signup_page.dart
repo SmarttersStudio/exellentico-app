@@ -53,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 onFieldSubmitted: (_)=>FocusScope.of(context).nextFocus(),
                 validator: (value){
                   firstName = value;
-                  return MyFormValidators.validateName(value);
+                  return MyFormValidators.validateName(name: value,type: 1);
                 },
                 decoration: MyDecorations.authTextFieldDecoration().copyWith(hintText: S.of(context).firstName),
               ),
@@ -66,7 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 onFieldSubmitted: (_)=>FocusScope.of(context).nextFocus(),
                 validator: (value){
                   lastName = value;
-                  return MyFormValidators.validateName(value);
+                  return MyFormValidators.validateName(name: value, type: 2);
                 },
                 decoration: MyDecorations.authTextFieldDecoration().copyWith(hintText: S.of(context).lastName),
               ),
@@ -98,7 +98,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       keyboardType: TextInputType.text,
                       validator: (value){
                         userName = value;
-                        return MyFormValidators.validateName(value);
+                        return MyFormValidators.validateName(name: value,type: 3);
                       },
                       decoration: MyDecorations.authTextFieldDecoration().copyWith(hintText: "User name"),
                     ),
@@ -185,7 +185,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 obscureText: _isVisible?false:true,
                 validator: (value){
                   _password = value;
-                  return MyFormValidators.validatePassword(value);
+                  return MyFormValidators.validatePassword(password: _password, isConfirmPassword: false);
                 },
                 decoration: MyDecorations.authTextFieldDecoration().copyWith(
                   hintText: S.of(context).password,
@@ -208,7 +208,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 obscureText: _isVisible?false:true,
                 validator: (value){
                   _confirmPassword = value;
-                  String errMsg = MyFormValidators.validatePassword(value);
+                  String errMsg = MyFormValidators.validatePassword(password: _confirmPassword, isConfirmPassword: true);
                   if(errMsg!=null){
                     return errMsg;
                   }else if(_password != _confirmPassword){

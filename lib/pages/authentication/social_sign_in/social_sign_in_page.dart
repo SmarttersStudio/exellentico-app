@@ -1,9 +1,13 @@
 import 'dart:ffi';
 
+import 'package:ecommerceapp/api_services/authentication_api_services.dart';
 import 'package:ecommerceapp/config/social_sign_in_config.dart';
 import 'package:ecommerceapp/pages/authentication/login/login_page.dart';
+import 'package:ecommerceapp/pages/authentication/social_sign_in/select_user_name_page.dart';
+import 'package:ecommerceapp/pages/demo_page.dart';
 import 'package:ecommerceapp/utils/auth_helper.dart';
 import 'package:ecommerceapp/widgets/my_button.dart';
+import 'package:ecommerceapp/widgets/my_snackbar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -32,29 +36,112 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
   );
 
 
-
-  void _signInFaceBook() {
-    setState(() => _isSocialMediaButtonDisabled = true);
-    AuthHelper.handleFacebookSignIn(context: context)
-        .then((value) =>
-        setState(() => _isSocialMediaButtonDisabled = false))
-        .catchError(
-            (err) => setState(() => _isSocialMediaButtonDisabled = false));
+  Future<void> _signInFaceBook() async {
+    setState(() {
+      _isSocialMediaButtonDisabled = true;
+      _isFbLoading = true;
+    });
+    var facebookLogin = FacebookLogin();
+    final facebookLoginResult = await facebookLogin.logIn(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        setState(() {
+          _isSocialMediaButtonDisabled = false;
+          _isFbLoading = false;
+        });
+        MySnackbar.show(
+            'Error', FacebookLoginStatus.error.toString());
+        print(FacebookLoginStatus.error.toString());
+        throw FacebookLoginStatus.error.toString();
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        setState(() {
+          _isSocialMediaButtonDisabled = false;
+          _isFbLoading = false;
+        });
+        throw FacebookLoginStatus.error.toString();
+        break;
+      case FacebookLoginStatus.loggedIn:
+        final token = facebookLoginResult.accessToken.token;
+        print(token);
+        signInWithSocialMedia(socialToken: token, socialAuthType: 2)
+            .then((value) {
+          onAuthenticationSuccess(value);
+        }).catchError((err) {
+          if (err.toString() ==
+              'BadRequest: Invalid UserName') {
+            Get.to(SocialSignInUserNamePage(
+              accessToken: token.trim(),
+              authType: 2,
+            ));
+          } else {
+            MySnackbar.show('Error', err?.toString());
+          }
+          setState(() {
+            _isSocialMediaButtonDisabled = false;
+            _isFbLoading = false;
+          });
+          setState(() {
+            _isSocialMediaButtonDisabled = false;
+            _isFbLoading = false;
+          });
+        });
+        await facebookLogin.logOut();
+        return true;
+        break;
+    }
   }
 
   void _signInGoogle() {
-    try {
-      setState(() => _isSocialMediaButtonDisabled = true);
-      AuthHelper.handleGoogleSignIn(
-          googleSignInClient: googleSignIn, context: context)
-          .then((value) =>
-          setState(() => _isSocialMediaButtonDisabled = false))
-          .catchError(
-              (err) => setState(() => _isSocialMediaButtonDisabled = false));
-    } catch (err) {
-      setState(() => _isSocialMediaButtonDisabled = false);
-    }
+    googleSignIn.signIn().then((result) {
+      result.authHeaders.then((value) {
+        print(value['Authorization']);
+        String s = value['Authorization'];
+        s = s.replaceAll('Bearer', '');
+        print(s.trim());
+        googleSignIn.signOut().then((value){
+          setState(() {
+            _isSocialMediaButtonDisabled = true;
+            _isGoogleLoading = true;
+          });
+          signInWithSocialMedia(
+              socialToken: s.trim(), socialAuthType: 1).then((value){
+            onAuthenticationSuccess(value);
+          }).catchError((onError){
+            if(onError.toString() ==
+                'BadRequest: Invalid UserName') {
+              Get.to(SocialSignInUserNamePage(
+                accessToken: s.trim(),
+                authType: 1,
+              ));
+            } else {
+              MySnackbar.show('Error', onError?.toString());
+            }
+            setState(() {
+              _isSocialMediaButtonDisabled = false;
+              _isGoogleLoading = false;
+            });
+          });
+        });
+      }).catchError((err) {
+        setState(() {
+          _isSocialMediaButtonDisabled = false;
+          _isGoogleLoading = false;
+        });
+        googleSignIn.signOut();
+        MySnackbar.show('Error', err.toString());
+      });
+    }).catchError((err) {
+      print(err.toString());
+      MySnackbar.show("ERROR", "Please try again later");
+      setState(() {
+        _isSocialMediaButtonDisabled = false;
+        _isGoogleLoading = false;
+      });
+      googleSignIn.signOut();
+    });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +182,7 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
                     )
                   ]
               ),),
+            MyButton(child: Text("user test"), onPressed: ()=>Get.to(MyHomePage()))
 
           ],
         ),

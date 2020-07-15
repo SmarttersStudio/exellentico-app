@@ -34,7 +34,7 @@ class ChapterData {
     "total": total,
     "limit": limit,
     "skip": skip,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data":  List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
 
@@ -62,12 +62,12 @@ class ChapterDatum {
   int v;
 
   factory ChapterDatum.fromJson(Map<String, dynamic> json) => ChapterDatum(
-    id: json["_id"],
-    deleted: json["deleted"],
-    name: json["name"],
-    description: json["description"],
-    courseId: json["courseId"],
-    createdBy: json["createdBy"],
+    id: json["_id"]!=null ? json["_id"] : '',
+    deleted: json["deleted"]!=null ? json["deleted"] : false,
+    name: json["name"]!=null ? json["name"] : '',
+    description: json["description"]!=null ? json["description"] : '',
+    courseId: json["courseId"]!=null ? json["courseId"] : '',
+    createdBy: json["createdBy"]!=null ? json["createdBy"] : '',
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
     v: json["__v"],

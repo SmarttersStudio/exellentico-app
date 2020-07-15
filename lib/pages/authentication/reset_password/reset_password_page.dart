@@ -1,7 +1,9 @@
+import 'package:ecommerceapp/api_services/reset_password_api_services.dart';
 import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/pages/authentication/reset_password/otp_page.dart';
 import 'package:ecommerceapp/utils/my_form_validators.dart';
 import 'package:ecommerceapp/widgets/my_button.dart';
+import 'package:ecommerceapp/widgets/my_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -58,8 +60,15 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                               onPressed: (){
                                   if (_formKey.currentState.validate()) {
                                       print("Form is Validated");
-                                      Get.to(OTPPage());
-
+                                      _buttonKey.currentState.showLoader();
+                                      sendPasswordResetEmail(email: _emailId).then((value){
+                                        _buttonKey.currentState.hideLoader();
+                                        MySnackbar.show("Check your email", value);
+                                        Get.to(OTPPage(email: _emailId,));
+                                      }).catchError((err){
+                                        _buttonKey.currentState.hideLoader();
+                                        MySnackbar.show("ERROR", err.toString());
+                                      });
                                   }else{
                                     setState(() => _autoValidate = true);
                                   }

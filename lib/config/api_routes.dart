@@ -18,4 +18,6 @@ mixin ApiRoutes {
   static const String course = "course";
   static const String chapter = "chapter";
   static const String episode = "episode";
+  static const String verifyMailOTP = "verify-otp";
+  static const String resetPassword = "reset-password";
 }

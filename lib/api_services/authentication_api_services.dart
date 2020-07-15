@@ -65,22 +65,29 @@ Future<UserResponse> signUpWithEmail({
 Future<UserResponse> signInWithSocialMedia({
     @required String socialToken,
     @required int socialAuthType,
-    bool isTwitter = false,
+    int role=1,
+    String userName,
     String tokenSecret = ""
 }) async {
     print("Social Api Call");
-    var body = isTwitter ? {
+    var body = userName.isEmpty
+        ? {
         'accessToken': socialToken,
         'type': socialAuthType,
-        'accessTokenSecret': tokenSecret
-    } : {
+        'role': role
+    }
+        : {
         'accessToken': socialToken,
-        'type': socialAuthType
+        'type': socialAuthType,
+        'role': role,
+        'userName': userName
     };
+
     String path = ApiRoutes.signInWithSocialMedia;
 
     final resultMap = await ApiCall.generalApiCall(
         path, RequestMethod.create, body: body, isAuthNeeded: false);
+    SharedPreferenceHelper.storeAccessToken(resultMap.data['accessToken'].toString());
 
     return UserResponse.fromJson(resultMap.data['me']);
 }

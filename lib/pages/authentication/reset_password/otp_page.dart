@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:ecommerceapp/api_services/reset_password_api_services.dart';
 import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/pages/authentication/reset_password/update_password_page.dart';
 import 'package:ecommerceapp/widgets/my_button.dart';
+import 'package:ecommerceapp/widgets/my_snackbar.dart';
 import 'package:ecommerceapp/widgets/pin_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -14,6 +16,8 @@ import 'package:get/get.dart';
 
 class OTPPage extends StatefulWidget {
     static final routeName = '/OTPPage';
+    final String email ;
+    OTPPage({this.email});
   @override
   _OTPPageState createState() => _OTPPageState();
 }
@@ -83,11 +87,20 @@ class _OTPPageState extends State<OTPPage> {
                   ),
                   SizedBox(height: 12,),
                   MyButton(
+                    key: _key,
                     width: width/3,
                       child: Text("Verify"),
                       onPressed: pin.isNotEmpty ? (){
                         print(pin);
-                        Get.to(UpdatePasswordPage());
+                        _key.currentState.showLoader();
+                        verifyOtpForPasswordReset(email: widget.email, pin: int.parse(pin)).then((value){
+                          _key.currentState.hideLoader();
+                          Get.offAll(UpdatePasswordPage(token: value.accessToken,));
+                        }).catchError((err){
+                          _key.currentState.hideLoader();
+                          MySnackbar.show("ERROR", err.toString());
+                        });
+
                       } : null,
                   ),
 
@@ -108,19 +121,19 @@ class _OTPPageState extends State<OTPPage> {
                       timerCounter = 60;
                       isLoading = true;
                     });
-//                    sendOtpToPhoneNumber(widget.phone).then((value) {
-//                      MySnackbar.show('Check your phone', value.toString());
-//                      startTimer();
-//                    }).catchError((err) {
-//                      setState(() {
-//                        timerCounter = 0;
-//                      });
-//                      MySnackbar.show('Error', err.toString());
-//                    }).whenComplete(() {
-//                      setState(() {
-//                        isLoading = false;
-//                      });
-//                    });
+                    sendPasswordResetEmail(email: widget.email).then((value) {
+                      MySnackbar.show('Check your phone', value.toString());
+                      startTimer();
+                    }).catchError((err) {
+                      setState(() {
+                        timerCounter = 0;
+                      });
+                      MySnackbar.show('Error', err.toString());
+                    }).whenComplete(() {
+                      setState(() {
+                        isLoading = false;
+                      });
+                    });
                   }
                       : null,
                   child: isLoading
