@@ -5,13 +5,12 @@ import 'dart:convert';
 ///
 
 
+EpisodeData episodeDataFromJson(String str) => EpisodeData.fromJson(json.decode(str));
 
-ChapterData chapterDataFromJson(String str) => ChapterData.fromJson(json.decode(str));
+String episodeDataToJson(EpisodeData data) => json.encode(data.toJson());
 
-String chapterDataToJson(ChapterData data) => json.encode(data.toJson());
-
-class ChapterData {
-  ChapterData({
+class EpisodeData {
+  EpisodeData({
     this.total,
     this.limit,
     this.skip,
@@ -23,7 +22,7 @@ class ChapterData {
   int skip;
   List<EpisodeDatum> data;
 
-  factory ChapterData.fromJson(Map<String, dynamic> json) => ChapterData(
+  factory EpisodeData.fromJson(Map<String, dynamic> json) => EpisodeData(
     total: json["total"],
     limit: json["limit"],
     skip: json["skip"],

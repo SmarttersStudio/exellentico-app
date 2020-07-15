@@ -15,4 +15,7 @@ mixin ApiRoutes {
   static const String forgetPassword = "forget-password";
   static const String phoneVerify = "phone-verification";
   static const String verifyOTP = "verify-phone-otp";
+  static const String course = "course";
+  static const String chapter = "chapter";
+  static const String episode = "episode";
 }
