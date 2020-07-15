@@ -10,29 +10,27 @@ import 'package:ecommerceapp/data_models/episode_data.dart';
 ///
 
 
-
+/// Api Call to get all courses
 Future<CourseData> getAllCourses() async {
-
   String path = ApiRoutes.course;
   print("Api Call");
   var result = await ApiCall.generalApiCall(path, RequestMethod.get);
-  print(result.data.toString());
   return CourseData.fromJson(result.data);
 }
 
+/// Api Call to get all chapters of a course of given id
 Future<ChapterData> getAllChapters(String courseId) async {
 
   String path = ApiRoutes.chapter+'?courseId='+courseId;
   var result = await ApiCall.generalApiCall(path, RequestMethod.get);
-  print(result.data.toString());
   return ChapterData.fromJson(result.data);
 }
 
+/// Api Call to get all episodes of a chapter of given id
 Future<EpisodeData> getAllEpisodes(String episodeId) async {
 
   String path = ApiRoutes.episode+"?chapterId="+episodeId;
   var result = await ApiCall.generalApiCall(path, RequestMethod.get);
-  print(result.data.toString());
   return EpisodeData.fromJson(result.data);
 }
 

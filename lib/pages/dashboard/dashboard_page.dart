@@ -12,20 +12,14 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Dashboard"), centerTitle: true,),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Text("Dashboard Page", style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold
-              ),),
-            ),
             MyButton(
               width: 200,
-                child: Text("My Courses"),
+                child: Text("Go to Courses Page"),
               onPressed: (){
                   Get.to(CoursesPage());
               },

@@ -1,8 +1,10 @@
 import 'package:ecommerceapp/bloc_models/base_state.dart';
 import 'package:ecommerceapp/bloc_models/episode_bloc/index.dart';
 import 'package:ecommerceapp/pages/courses/episodes_page/components/episode_card.dart';
+import 'package:ecommerceapp/pages/video_player/video_player_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get/get.dart';
 
 ///
 /// Created By AURO (aurosmruti@smarttersstudio.com) on 7/15/2020 6:30 AM
@@ -45,8 +47,7 @@ class _EpisodesPageState extends State<EpisodesPage> {
                 itemCount: EpisodeBloc().episodes.length,
                 separatorBuilder: (context, index)=>Divider(),
                 itemBuilder: (context, index)=>InkWell(
-                    onTap: (){
-                    },
+                    onTap: ()=>Get.to(VideoPlayerPage(videoCode:EpisodeBloc().episodes[index].youtubeCode)),
                     child: EpisodesCard(data: EpisodeBloc().episodes[index],)
                 )
             );
