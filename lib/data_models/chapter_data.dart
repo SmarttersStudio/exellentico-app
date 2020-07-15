@@ -62,11 +62,21 @@ class ChapterDatum {
   int v;
 
   factory ChapterDatum.fromJson(Map<String, dynamic> json) => ChapterDatum(
-    id: json["_id"]!=null ? json["_id"] : '',
-    deleted: json["deleted"]!=null ? json["deleted"] : false,
-    name: json["name"]!=null ? json["name"] : '',
-    description: json["description"]!=null ? json["description"] : '',
-    courseId: json["courseId"]!=null ? json["courseId"] : '',
+    id:  json.containsKey('_id')
+        ? json["_id"] != null ? json["_id"] : ''
+        : null,
+    deleted: json.containsKey('deleted')
+        ? json["deleted"] != null ? json["deleted"] : false
+        : null,
+    name: json.containsKey('name')
+        ? json["name"] != null ? json["name"] : ''
+        : null,
+    description: json.containsKey('description')
+        ? json["description"] != null ? json["description"] : ''
+        : null,
+    courseId: json.containsKey('courseId')
+        ? json["courseId"] != null ? json["courseId"] : ''
+        : null,
     createdBy: json["createdBy"]!=null ? json["createdBy"] : '',
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),

@@ -4,7 +4,6 @@ import 'package:ecommerceapp/bloc_models/theme_bloc/index.dart';
 import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/config/page_routes.dart';
 import 'package:ecommerceapp/pages/authentication/social_sign_in/social_sign_in_page.dart';
-import 'package:ecommerceapp/pages/demo_page.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

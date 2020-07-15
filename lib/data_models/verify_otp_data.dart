@@ -18,7 +18,9 @@ class VerifyOtpData {
   String accessToken;
 
   factory VerifyOtpData.fromJson(Map<String, dynamic> json) => VerifyOtpData(
-    accessToken: json["accessToken"],
+    accessToken: json.containsKey('accessToken')
+        ? json["accessToken"] != null ? json["accessToken"] : ''
+        : null,
   );
 
   Map<String, dynamic> toJson() => {

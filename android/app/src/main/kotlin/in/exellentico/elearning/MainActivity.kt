@@ -1,4 +1,4 @@
-package com.smarttersstudio.ecommerceapp
+package `in`.exellentico.elearning
 
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity

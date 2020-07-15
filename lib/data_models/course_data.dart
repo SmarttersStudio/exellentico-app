@@ -57,7 +57,7 @@ class CourseDatum {
   });
 
   String id;
-  List<dynamic> points;
+  List<String> points;
   List<String> attachments;
   int chaptersCount;
   int episodesCount;
@@ -73,17 +73,17 @@ class CourseDatum {
   int v;
 
   factory CourseDatum.fromJson(Map<String, dynamic> json) => CourseDatum(
-    id: json.containsKey('id')
-        ? json["id"] != null ? json["id"] : ''
+    id: json.containsKey('_id')
+        ? json["_id"] != null ? json["_id"] : ''
         : null,
     points: json.containsKey('points')
             ? json['points'] != null
-                ? List<dynamic>.from(json["points"].map((x) => x))
+                ? List<String>.from(json["points"].map((x) => x))
                 : []
             : null,
     attachments: json.containsKey('attachments')
         ? json['attachments'] != null
-        ? List<dynamic>.from(json["attachments"].map((x) => x))
+        ? List<String>.from(json["attachments"].map((x) => x))
         : []
         : null,
     chaptersCount: json.containsKey('chaptersCount')
@@ -118,8 +118,8 @@ class CourseDatum {
 
   Map<String, dynamic> toJson() => {
     "_id": id,
-    "points": List<dynamic>.from(points.map((x) => x)),
-    "attachments": List<dynamic>.from(attachments.map((x) => x)),
+    "points": List<String>.from(points.map((x) => x)),
+    "attachments": List<String>.from(attachments.map((x) => x)),
     "chaptersCount": chaptersCount,
     "episodesCount": episodesCount,
     "onTrending": onTrending,

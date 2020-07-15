@@ -22,5 +22,5 @@ class SignInWithGithubConfig{
 }
 
 class SignInWithGoogleConfig{
-    static final String clientId = "952995268184-siq8964ick0ave5qs0h865h04lgcejbd.apps.googleusercontent.com";
+    static final String clientId = "1066919995674-5vi06mki8meiemma8cu0em5gtnrnskn7.apps.googleusercontent.com";
 }

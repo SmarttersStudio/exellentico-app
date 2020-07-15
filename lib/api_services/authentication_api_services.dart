@@ -66,7 +66,7 @@ Future<UserResponse> signInWithSocialMedia({
     @required String socialToken,
     @required int socialAuthType,
     int role=1,
-    String userName,
+    String userName='',
     String tokenSecret = ""
 }) async {
     print("Social Api Call");

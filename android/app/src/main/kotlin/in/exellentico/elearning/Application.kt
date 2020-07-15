@@ -1,4 +1,4 @@
-package com.smarttersstudio.ecommerceapp
+package `in`.exellentico.elearning
 
 import io.flutter.app.FlutterApplication
 

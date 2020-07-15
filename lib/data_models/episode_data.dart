@@ -53,7 +53,7 @@ class EpisodeDatum {
   });
 
   String id;
-  List<dynamic> attachments;
+  List<String> attachments;
   bool deleted;
   String title;
   String videoUrl;
@@ -65,13 +65,29 @@ class EpisodeDatum {
   int v;
 
   factory EpisodeDatum.fromJson(Map<String, dynamic> json) => EpisodeDatum(
-    id: json["_id"],
-    attachments: List<dynamic>.from(json["attachments"].map((x) => x)),
-    deleted: json["deleted"],
-    title: json["title"],
-    videoUrl: json["videoUrl"],
-    youtubeCode: json["youtubeCode"],
-    chapterId: json["chapterId"],
+    id: json.containsKey('_id')
+        ? json["_id"] != null ? json["_id"] : ''
+        : null,
+    attachments:  json.containsKey('attachments')
+        ? json['attachments'] != null
+        ? List<String>.from(json["attachments"].map((x) => x))
+        : []
+        : null,
+    deleted: json.containsKey('deleted')
+        ? json["deleted"] != null ? json["deleted"] : false
+        : null,
+    title: json.containsKey('title')
+        ? json["title"] != null ? json["title"] : ''
+        : null,
+    videoUrl: json.containsKey('videoUrl')
+        ? json["videoUrl"] != null ? json["videoUrl"] : ''
+        : null,
+    youtubeCode: json.containsKey('youtubeCode')
+        ? json["youtubeCode"] != null ? json["youtubeCode"] : ''
+        : null,
+    chapterId: json.containsKey('chapterId')
+        ? json["chapterId"] != null ? json["chapterId"] : ''
+        : null,
     createdBy: json["createdBy"],
     createdAt: DateTime.parse(json["createdAt"]),
     updatedAt: DateTime.parse(json["updatedAt"]),
@@ -80,7 +96,7 @@ class EpisodeDatum {
 
   Map<String, dynamic> toJson() => {
     "_id": id,
-    "attachments": List<dynamic>.from(attachments.map((x) => x)),
+    "attachments": List<String>.from(attachments.map((x) => x)),
     "deleted": deleted,
     "title": title,
     "videoUrl": videoUrl,
