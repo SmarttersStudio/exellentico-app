@@ -1,7 +1,10 @@
+import 'package:ecommerceapp/api_services/authentication_api_services.dart';
 import 'package:ecommerceapp/config/decorations.dart';
 import 'package:ecommerceapp/generated/l10n.dart';
 import 'package:ecommerceapp/utils/auth_helper.dart';
 import 'package:ecommerceapp/utils/my_form_validators.dart';
+import 'package:ecommerceapp/widgets/my_button.dart';
+import 'package:ecommerceapp/widgets/my_snackbar.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -20,7 +23,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final _formKey = GlobalKey<FormState>();
   bool _isVisible = false;
-  String _password="", _confirmPassword="", firstName = "", lastName = "", email, phone;
+  bool _autoValidate = false;
+  String _password="", _confirmPassword="", firstName = "", lastName = "", email='';
+  final _buttonKey = GlobalKey<MyButtonState>();
+
 
   @override
   Widget build(BuildContext context) {
@@ -30,19 +36,20 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(title: Text(""),),
       body: Form(
         key: _formKey,
+        autovalidate: _autoValidate,
         child: ListView(
           children: [
-            SizedBox(height: height/7,),
+            SizedBox(height: height/10,),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: width/16),
               child: TextFormField(
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_)=>FocusScope.of(context).nextFocus(),
                 validator: (value){
-                  firstName = value;
-                  return MyFormValidators.validateName(value);
+                  firstName = value.trim();
+                  return MyFormValidators.validateName(name: value.trim(),type: 1);
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(hintText: S.of(context).firstName),
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(hintText: S.of(context).firstName),
               ),
             ),
             SizedBox(height: 10,),
@@ -52,10 +59,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_)=>FocusScope.of(context).nextFocus(),
                 validator: (value){
-                  lastName = value;
-                  return MyFormValidators.validateName(value);
+                  lastName = value.trim();
+                  return MyFormValidators.validateName(name: value.trim(), type: 2);
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(hintText: S.of(context).lastName),
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(hintText: S.of(context).lastName),
               ),
             ),
             SizedBox(height: 10,),
@@ -66,24 +73,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 onFieldSubmitted: (_)=>FocusScope.of(context).nextFocus(),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value){
-                  email = value;
-                  return MyFormValidators.validateMail(value);
+                  email = value.trim();
+                  return MyFormValidators.validateMail(value.trim());
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(hintText: S.of(context).email),
-              ),
-            ),
-            SizedBox(height: 10,),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width/16),
-              child: TextFormField(
-                textInputAction: TextInputAction.next,
-                onFieldSubmitted: (_)=>FocusScope.of(context).nextFocus(),
-                keyboardType: TextInputType.phone,
-                validator: (value){
-                  phone = value;
-                  return MyFormValidators.validatePhone(value);
-                },
-                decoration: MyDecorations.textFieldDecoration().copyWith(hintText: S.of(context).phone),
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(hintText: S.of(context).email),
               ),
             ),
             SizedBox(height: 10,),
@@ -95,12 +88,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 obscureText: _isVisible?false:true,
                 validator: (value){
                   _password = value;
-                  return MyFormValidators.validatePassword(value);
+                  return MyFormValidators.validatePassword(password: _password, isConfirmPassword: false);
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(
                   hintText: S.of(context).password,
                     suffixIcon: GestureDetector(
-                      child: Icon(_isVisible?Icons.visibility:Icons.visibility_off),
+                      child: Icon(_isVisible?Icons.visibility:Icons.visibility_off, color: Colors.black12,),
                       onTap: (){
                         setState(() {
                           _isVisible = !_isVisible;
@@ -118,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 obscureText: _isVisible?false:true,
                 validator: (value){
                   _confirmPassword = value;
-                  String errMsg = MyFormValidators.validatePassword(value);
+                  String errMsg = MyFormValidators.validatePassword(password: _confirmPassword, isConfirmPassword: true);
                   if(errMsg!=null){
                     return errMsg;
                   }else if(_password != _confirmPassword){
@@ -127,10 +120,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     return errMsg;
                   }
                 },
-                decoration: MyDecorations.textFieldDecoration().copyWith(
+                decoration: MyDecorations.authTextFieldDecoration().copyWith(
                   hintText: S.of(context).confirmPassword,
                     suffixIcon: GestureDetector(
-                      child: Icon(_isVisible?Icons.visibility:Icons.visibility_off),
+                      child: Icon(_isVisible?Icons.visibility:Icons.visibility_off, color: Colors.black12,),
                       onTap: (){
                         setState(() {
                           _isVisible = !_isVisible ;
@@ -140,14 +133,33 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ),
             ),
-            SizedBox(height: 10,),
+            SizedBox(height: 30,),
             Center(
-              child: RaisedButton(
-                  child: Text(S.of(context).loginButton),
+              child: MyButton(
+                key: _buttonKey,
+                  child: Text("Sign up"),
                   onPressed: (){
                     if (_formKey.currentState.validate()) {
+                      _autoValidate = false;
                       print("Form is Validated");
-                      AuthHelper.handleSignUpEmail(context: context,email: email, password: _password, firstName: firstName, lastName: lastName, phone: phone);
+                      _buttonKey.currentState.showLoader();
+                      signUpWithEmail(
+                          email: email,
+                          password: _password,
+                          firstName: firstName,
+                          lastName: lastName,
+                          role: 1)
+                          .then((value) {
+                        _buttonKey.currentState.hideLoader();
+                        onAuthenticationSuccess(value);
+                      }).catchError((err) {
+                        _buttonKey.currentState.hideLoader();
+                        MySnackbar.show('Error', err.toString());
+                      });
+                    }else{
+                      setState(() {
+                        _autoValidate = true;
+                      });
                     }
                   }
               ),

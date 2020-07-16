@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:ecommerceapp/config/api_routes.dart';
@@ -10,13 +9,15 @@ import 'package:ecommerceapp/utils/shared_preference_helper.dart';
 import 'package:location/location.dart';
 
 class ApiCall {
-  static Future<Response> generalApiCall(String path , RequestMethod requestMethod , {
-    String id = '',
-    String basePath = ApiRoutes.baseUrl ,
-    Map <String, String> query = const {},
-    Map <String, dynamic> body = const {},
-    bool isAuthNeeded = true,
-  }) async {
+  static Future<Response> generalApiCall(
+      String path,
+      RequestMethod requestMethod, {
+        String id = '',
+        String basePath = ApiRoutes.baseUrl,
+        Map<String, String> query = const {},
+        Map<String, dynamic> body = const {},
+        bool isAuthNeeded = true,
+      }) async {
     final Dio dio = Dio();
     dio.options.contentType = 'application/json';
     if (isAuthNeeded)
@@ -25,24 +26,19 @@ class ApiCall {
       Response response;
       switch (requestMethod) {
         case RequestMethod.get:
-          response = await dio.get('$basePath}/$path/$id');
+          response = await dio.get('$basePath/$path');
           break;
         case RequestMethod.create:
           response = await dio.post('$basePath/$path/$id',
-            data: body,
-            queryParameters: query
-          );
+              data: body, queryParameters: query);
           break;
         case RequestMethod.patch:
           response = await dio.patch('$basePath/$path/$id',
-            data: body,
-            queryParameters: query
-          );
+              data: body, queryParameters: query);
           break;
         default:
-          response = await dio.delete('$basePath/$path/$id',
-            queryParameters: query
-          );
+          response =
+          await dio.delete('$basePath/$path/$id', queryParameters: query);
           break;
       }
       print(response.toString());
@@ -52,6 +48,7 @@ class ApiCall {
     } catch (error) {
       if (error is DioError) {
         if (error.response.statusCode == 502) {
+          print(error.response.statusMessage);
           throw 'Server unreachable';
         } else {
           final restError = RestError.fromJson(error.response.data);
@@ -63,7 +60,8 @@ class ApiCall {
       }
     }
   }
-  
+
+
   static Future<String> singleFileUpload(File file,{
     String path = ApiRoutes.upload,
     RequestMethod requestMethod = RequestMethod.create
@@ -169,7 +167,7 @@ class ApiCall {
       }
     );
     return ReverseGeoCoder.fromJson(response.data);
-    
-    
+
+
   }
 }

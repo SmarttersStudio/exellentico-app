@@ -3,11 +3,12 @@ import 'package:ecommerceapp/bloc_models/blog_delagate.dart';
 import 'package:ecommerceapp/bloc_models/theme_bloc/index.dart';
 import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/config/page_routes.dart';
-import 'package:ecommerceapp/pages/demo_page.dart';
+import 'package:ecommerceapp/pages/authentication/social_sign_in/social_sign_in_page.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ecommerceapp/utils/notification_services/in_app_notification.dart';
 
@@ -47,7 +48,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, BaseState>(
         bloc: ThemeBloc(),
-        builder: (context, state) => MaterialApp(
+        builder: (context, state) => GetMaterialApp(
             debugShowCheckedModeBanner: false,
               title: 'Flutter Demo',
               localizationsDelegates: [
@@ -61,9 +62,8 @@ class _MyAppState extends State<MyApp> {
               darkTheme: MyThemes.appThemeData[(state as ThemeState).color]
                   [ThemeMode.dark],
               themeMode: (state as ThemeState).mode,
-              initialRoute: '/',
+              initialRoute: SocialSignInPage.routeName,
               routes: MyPageRoutes.routes,
-//              home: MyHomePage(title: /*S.of(context).flutterDemoHomePage*/''),
             ));
   }
 }

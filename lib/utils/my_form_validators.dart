@@ -12,9 +12,13 @@ class MyFormValidators{
             return "Field can't be empty";
         }
     }
-    static validateName(String name){
-        if(name.isEmpty){
-            return "Name Can't be empty";
+    static validateName({String name, int type}){
+        if(name.isEmpty && type==1){
+            return "First Name Can't be empty";
+        }else if(name.isEmpty && type==2){
+            return "Last Name Can't be empty";
+        }else if(name.isEmpty && type==3){
+            return "User Name Can't be empty";
         }else if(!RegExp('[a-zA-Z]').hasMatch(name)){
             return "Invalid name";
         }else{
@@ -39,14 +43,17 @@ class MyFormValidators{
             return null;
         }
     }
-    static validatePassword(String password){
-        if(password.isEmpty){
+    static validatePassword({String password,bool isConfirmPassword=false}){
+        if(password.isEmpty && isConfirmPassword){
+            return "Confirm Password can't be empty";
+        }else if(password.isEmpty && !isConfirmPassword){
             return "Password can't be empty";
-        }else if(!RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$').hasMatch(password)){
-            return "Invalid password";
+        }else if(password.length < 8){
+            return "Password must be atleast 8 chars long";
         }else{
             return null;
         }
     }
+
 
 }

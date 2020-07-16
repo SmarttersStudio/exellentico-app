@@ -1,15 +1,16 @@
+import 'package:ecommerceapp/api_services/authentication_api_services.dart';
 import 'package:ecommerceapp/config/index.dart';
-import 'package:ecommerceapp/config/social_sign_in_config.dart';
 import 'package:ecommerceapp/generated/l10n.dart';
+import 'package:ecommerceapp/pages/authentication/reset_password/reset_password_page.dart';
+import 'package:ecommerceapp/pages/authentication/signup/signup_page.dart';
 import 'package:ecommerceapp/utils/my_form_validators.dart';
 import 'package:ecommerceapp/utils/auth_helper.dart';
+import 'package:ecommerceapp/widgets/my_button.dart';
+import 'package:ecommerceapp/widgets/my_snackbar.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_login/flutter_facebook_login.dart';
-import 'package:flutter_linkedin/linkedloginflutter.dart';
-import 'package:flutter_twitter/flutter_twitter.dart';
-import 'package:github_sign_in/github_sign_in.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:get/get.dart';
 
 ///
 ///Created By Aurosmruti (aurosmruti@smarttersstudio.com) on 6/14/2020 3:42 AM
@@ -24,100 +25,32 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
 
+    final _buttonKey = GlobalKey<MyButtonState>();
     final _formKey = GlobalKey<FormState>();
     FocusNode _mailIdFocusNode;
     bool _isVisible = false;
     String emailId = "",
         password = "";
-    bool _isSocialMediaButtonDisabled = false;
 
-    static final TwitterLogin twitterLogin = TwitterLogin(
-        consumerKey: SignInWithTwitterConfig.consumerKey,
-        consumerSecret: SignInWithTwitterConfig.consumerSecret,
-    );
-    static final GitHubSignIn gitHubSignIn = GitHubSignIn(
-        clientId: SignInWithGithubConfig.clientId,
-        clientSecret: SignInWithGithubConfig.clientSecret,
-        redirectUrl: SignInWithGithubConfig.redirectUrl
-    );
-
-    final facebookLogin = FacebookLogin();
-    static final GoogleSignIn googleSignIn = GoogleSignIn(
-        clientId: SignInWithGoogleConfig.clientId,
-        scopes: ['email'],
-    );
-
-    void _signInTwitter() {
-        setState(() => _isSocialMediaButtonDisabled = true);
-        AuthHelper.handleTwitterSignIn(twitterLogin, context)
-            .then((value) =>
-            setState(() => _isSocialMediaButtonDisabled = false))
-            .catchError(
-                (err) => setState(() => _isSocialMediaButtonDisabled = false));
-    }
-
-    void _signInGithub() {
-        setState(() => _isSocialMediaButtonDisabled = true);
-        AuthHelper.handleGithubSignIn(gitHubSignIn, context)
-            .then((value) =>
-            setState(() => _isSocialMediaButtonDisabled = false))
-            .catchError(
-                (err) => setState(() => _isSocialMediaButtonDisabled = false));
-    }
-
-    void _signInLinkedIn() {
-        setState(() => _isSocialMediaButtonDisabled = true);
-        AuthHelper.handleLinkedInSignIn(context)
-            .then((value) =>
-            setState(() => _isSocialMediaButtonDisabled = false))
-            .catchError(
-                (err) => setState(() => _isSocialMediaButtonDisabled = false));
-    }
 
     @override
     void initState() {
-        LinkedInLogin.initialize(context,
-            clientId: SignInWithLinkedInConfig.clientId,
-            clientSecret: SignInWithLinkedInConfig.clientSecret,
-            redirectUri: SignInWithLinkedInConfig.redirectUrl
-        );
         super.initState();
     }
 
-    void _signInFaceBook() {
-        setState(() => _isSocialMediaButtonDisabled = true);
-        AuthHelper.handleFacebookSignIn(context: context)
-            .then((value) =>
-            setState(() => _isSocialMediaButtonDisabled = false))
-            .catchError(
-                (err) => setState(() => _isSocialMediaButtonDisabled = false));
-    }
 
-    void _signInGoogle() {
-        try {
-            setState(() => _isSocialMediaButtonDisabled = true);
-            AuthHelper.handleGoogleSignIn(
-                googleSignInClient: googleSignIn, context: context)
-                .then((value) =>
-                setState(() => _isSocialMediaButtonDisabled = false))
-                .catchError(
-                    (err) => setState(() => _isSocialMediaButtonDisabled = false));
-        } catch (err) {
-            setState(() => _isSocialMediaButtonDisabled = true);
-        }
-    }
 
     @override
     Widget build(BuildContext context) {
         double height = MediaQuery.of(context).size.height;
         double width = MediaQuery.of(context).size.width;
         return Scaffold(
-            appBar: AppBar(title: Text(S.of(context).flutterDemoHomePage),),
+            appBar: AppBar(title: Text(S.of(context).loginAppBar),),
             body: Form(
                 key: _formKey,
                 child: ListView(
                     children: [
-                        SizedBox(height: 30,),
+                        SizedBox(height: height/3.9,),
                         Padding(
                             padding: EdgeInsets.symmetric(
                                 horizontal: width / 16),
@@ -132,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
                                     return MyFormValidators.validateMail(
                                         value.trim());
                                 },
-                                decoration: MyDecorations.textFieldDecoration()
+                                decoration: MyDecorations.authTextFieldDecoration()
                                     .copyWith(hintText: S
                                     .of(context)
                                     .email),
@@ -147,10 +80,9 @@ class _LoginPageState extends State<LoginPage> {
                                 obscureText: _isVisible ? false : true,
                                 validator: (value) {
                                     password = value.trim();
-                                    return MyFormValidators.validatePassword(
-                                        value.trim());
+                                    return MyFormValidators.validatePassword(password: value.trim());
                                 },
-                                decoration: MyDecorations.textFieldDecoration()
+                                decoration: MyDecorations.authTextFieldDecoration()
                                     .copyWith(
                                     hintText: S
                                         .of(context)
@@ -158,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                                     suffixIcon: IconButton(
                                         icon: Icon(_isVisible
                                             ? Icons.visibility
-                                            : Icons.visibility_off),
+                                            : Icons.visibility_off, color: Colors.black12,),
                                         onPressed: () {
                                             setState(() {
                                                 _isVisible = !_isVisible;
@@ -167,95 +99,56 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                             ),
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(height: 40,),
                         Center(
-                            child: RaisedButton(
+                            child: MyButton(
+                                key: _buttonKey,
                                 child: Text(S
                                     .of(context)
                                     .loginButton),
                                 onPressed: () {
                                     if (_formKey.currentState.validate()) {
                                         print("Form is Validated");
-                                        AuthHelper.handleSignInEmail(
-                                            context: context,
-                                            email: emailId,
-                                            password: password);
+                                        _buttonKey.currentState.showLoader();
+                                        signInWithEmail(email: emailId, password: password).then((value){
+                                            _buttonKey.currentState.hideLoader();
+                                            onAuthenticationSuccess(value);
+                                        }).catchError((err){
+                                            print(err.toString());
+                                            MySnackbar.show("ERROR", err.toString());
+                                            _buttonKey.currentState.hideLoader();
+                                        });
                                     }
                                 }
                             ),
                         ),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                                RaisedButton(
-                                    child: Text("English"),
-                                    onPressed: () {
-                                        setState(() {
-                                            S.load(Locale('en_IN'));
-                                        });
-                                    }),
-                                RaisedButton(
-                                    child: Text("हिन्दी"),
-                                    onPressed: () {
-                                        setState(() {
-                                            S.load(Locale('hi_IN'));
-                                        });
-                                    }),
-                                RaisedButton(
-                                    child: Text("ଓଡିଆ"),
-                                    onPressed: () {
-                                        setState(() {
-                                            S.load(Locale('or_IN'));
-                                        });
-                                    }),
+                        SizedBox(height: height/12,),
+                        Center(child: InkWell(
+                            onTap: ()=>Get.to(ResetPasswordPage()),
+                          child: Text("Forgot your password ?", style: TextStyle(
+                              color: Colors.black.withOpacity(0.8)
+                          ),),
+                        )),
+                        SizedBox(height: height/12,),
+                        Center(
+                          child: RichText(
+                              text: TextSpan(
+                                  style: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.7)),
+                                  text: "Don't have an account ?",
+                                  children: [
+                                      TextSpan(
+                                          text: " Sign Up",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight
+                                                  .w500,
+                                              color: Colors.red),
+                                          recognizer: TapGestureRecognizer()..onTap = ()=>Get.to(SignUpPage())
+                                      )
+                                  ]
+                              ),),
+                        ),
 
-                            ],
-                        ),
-                        SizedBox(height: 10,),
-                        Center(
-                            child: RaisedButton(
-                                child: Text("Google Login"),
-                                onPressed: _isSocialMediaButtonDisabled
-                                    ? null
-                                    : _signInGoogle,
-                            ),
-                        ),
-                        SizedBox(height: 10,),
-                        Center(
-                            child: RaisedButton(
-                                child: Text("Facebook Login"),
-                                onPressed: _isSocialMediaButtonDisabled
-                                    ? null
-                                    : _signInFaceBook,
-                            ),
-                        ),
-                        SizedBox(height: 10,),
-                        Center(
-                            child: RaisedButton(
-                                child: Text("Twitter login"),
-                                onPressed: _isSocialMediaButtonDisabled
-                                    ? null
-                                    : _signInTwitter
-                            ),
-                        ),
-                        SizedBox(height: 10,),
-                        Center(
-                            child: RaisedButton(
-                                child: Text("Github Login"),
-                                onPressed: _isSocialMediaButtonDisabled
-                                    ? null
-                                    : _signInGithub,
-                            ),
-                        ),
-                        SizedBox(height: 10,),
-                        Center(
-                            child: RaisedButton(
-                                child: Text("LinkedIn Login"),
-                                onPressed: _isSocialMediaButtonDisabled
-                                    ? null
-                                    : _signInLinkedIn,
-                            ),
-                        )
                     ],
                 ),
             ),

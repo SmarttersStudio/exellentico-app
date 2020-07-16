@@ -2,7 +2,9 @@
 import 'package:ecommerceapp/api_services/base_api.dart';
 import 'package:ecommerceapp/config/api_routes.dart';
 import 'package:ecommerceapp/config/enums.dart';
+import 'package:ecommerceapp/data_models/check_user_name_data.dart';
 import 'package:ecommerceapp/data_models/user.dart';
+import 'package:ecommerceapp/utils/shared_preference_helper.dart';
 import 'package:flutter/material.dart';
 
 ///
@@ -11,7 +13,7 @@ import 'package:flutter/material.dart';
 
 
 /// Api Call to sign in using email id
-Future<UserDatum> signInWithEmail({
+Future<UserResponse> signInWithEmail({
     @required String email,
     @required String password
 }) async {
@@ -22,24 +24,21 @@ Future<UserDatum> signInWithEmail({
         'password' : password
     };
     String path = ApiRoutes.signInWithEmail;
-
+    print("api call");
     var resultMap = await ApiCall.generalApiCall(path, RequestMethod.create, body: body, isAuthNeeded: false);
-
     print("Access Token : "+ resultMap.data['accessToken'].toString());
-    return UserDatum.fromJson(resultMap.data['user']);
+    SharedPreferenceHelper.storeAccessToken(resultMap.data['accessToken'].toString());
+
+    return UserResponse.fromJson(resultMap.data['me']);
 }
 
 /// Api Call to sign up using email id
-Future<UserDatum> signUpWithEmail({
+Future<UserResponse> signUpWithEmail({
     @required String email,
     @required String password,
     @required String firstName,
     @required String lastName,
-    @required String phone,
-    int role = 5,
-    List<double> coordinates = const [0,0],
-    bool phoneVerified = false,
-    bool emailVerified = false
+    int role = 1,
 }) async {
 
     var body = {
@@ -47,17 +46,15 @@ Future<UserDatum> signUpWithEmail({
         'lastName' : lastName,
         'email' : email,
         'password' : password,
-        'phone' : phone,
-        'coordinates' : coordinates,
-        'role' : role,
-        'phoneVerified' : phoneVerified,
-        'emailVerified' : emailVerified
+        'role' : role
     };
     String path = ApiRoutes.signUp;
 
     final resultMap = await ApiCall.generalApiCall(path, RequestMethod.create, body: body, isAuthNeeded: false);
+    print("Access Token : "+ resultMap.data['accessToken'].toString());
+    SharedPreferenceHelper.storeAccessToken(resultMap.data['accessToken'].toString());
 
-    return UserDatum.fromJson(resultMap.data);
+    return UserResponse.fromJson(resultMap.data['me']);
 
 }
 
@@ -65,22 +62,28 @@ Future<UserDatum> signUpWithEmail({
 Future<UserResponse> signInWithSocialMedia({
     @required String socialToken,
     @required int socialAuthType,
-    bool isTwitter = false,
+    int role=1,
     String tokenSecret = ""
 }) async {
     print("Social Api Call");
-    var body = isTwitter ? {
+    var body = {
         'accessToken': socialToken,
         'type': socialAuthType,
-        'accessTokenSecret': tokenSecret
-    } : {
-        'accessToken': socialToken,
-        'type': socialAuthType
+        'role': role
     };
+
     String path = ApiRoutes.signInWithSocialMedia;
 
     final resultMap = await ApiCall.generalApiCall(
         path, RequestMethod.create, body: body, isAuthNeeded: false);
+    SharedPreferenceHelper.storeAccessToken(resultMap.data['accessToken'].toString());
 
     return UserResponse.fromJson(resultMap.data['me']);
+}
+
+Future<CheckUserNameData> verifyUserName({@required String userName}) async {
+    print(userName);
+    final result = await ApiCall.generalApiCall(
+        '${ApiRoutes.checkUserName}?userName=$userName', RequestMethod.get);
+    return CheckUserNameData.fromJson(result.data);
 }

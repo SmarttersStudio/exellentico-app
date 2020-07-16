@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "1069638431181",
-    "firebase_url": "https://e-commerce-flutter-5bec8.firebaseio.com",
-    "project_id": "e-commerce-flutter-5bec8",
-    "storage_bucket": "e-commerce-flutter-5bec8.appspot.com"
+    "project_number": "1066919995674",
+    "firebase_url": "https://elearningexcellentico.firebaseio.com",
+    "project_id": "elearningexcellentico",
+    "storage_bucket": "elearningexcellentico.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1069638431181:android:afce46678c7bbce21a5484",
+        "mobilesdk_app_id": "1:1066919995674:android:4ddef461fe45226040a4a3",
         "android_client_info": {
-          "package_name": "com.smarttersstudio.ecommerceapp"
+          "package_name": "in.exellentico.elearning"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1069638431181-ss5hqtq8hk8dqob6qc56tstk5elnljde.apps.googleusercontent.com",
+          "client_id": "1066919995674-5vi06mki8meiemma8cu0em5gtnrnskn7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.smarttersstudio.ecommerceapp",
-            "certificate_hash": "b15df442e8528597d58b3ac0136b1852b8a7436a"
+            "package_name": "in.exellentico.elearning",
+            "certificate_hash": "b208d18dfb397febd01585ca4244a85da9254967"
           }
         },
         {
-          "client_id": "1069638431181-6fkt2nt050v33so339ecndfj6vvdh2vc.apps.googleusercontent.com",
+          "client_id": "1066919995674-daoe8u8s11qvnpr16134gbc1sg3lhrfs.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDEwy2oH85QnoIiJ7Mwax5x2pq4pkHfkG4"
+          "current_key": "AIzaSyBK0c4zHaHbeqrcD-HEi6s0GhsvIhLXJ6U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1069638431181-6fkt2nt050v33so339ecndfj6vvdh2vc.apps.googleusercontent.com",
+              "client_id": "1066919995674-daoe8u8s11qvnpr16134gbc1sg3lhrfs.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
