@@ -45,6 +45,9 @@ class ApiCall {
       throw 'No Internet Connection';
     } catch (error) {
       if (error is DioError) {
+        if (error.error is SocketException) {
+          throw 'No Internet Connection';
+        }
         if (error.response.statusCode == 502) {
           print(error.response.statusMessage);
           throw 'Server unreachable';
