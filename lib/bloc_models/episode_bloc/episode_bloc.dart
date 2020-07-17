@@ -10,18 +10,12 @@ import '../base_state.dart';
 /// Created By AURO (aurosmruti@smarttersstudio.com) on 7/14/2020 2:47 PM
 ///
 
-
-
 class EpisodeBloc extends Bloc<EpisodeEvent, BaseState> {
   static final EpisodeBloc _episodeBlocSingleton = EpisodeBloc._internal();
   factory EpisodeBloc() {
     return _episodeBlocSingleton;
   }
-  EpisodeBloc._internal();
-
-
-  @override
-  BaseState get initialState => EpisodeState();
+  EpisodeBloc._internal() : super(EpisodeState());
 
   @override
   Future<void> close() async {
@@ -29,21 +23,20 @@ class EpisodeBloc extends Bloc<EpisodeEvent, BaseState> {
     await super.close();
   }
 
-  List<EpisodeDatum> episodes  = [];
+  List<EpisodeDatum> episodes = [];
   bool episodeShouldLoadMore = true;
   int episodeSkipData = 0;
 
   @override
   Stream<BaseState> mapEventToState(
-      EpisodeEvent event,
-      ) async* {
+    EpisodeEvent event,
+  ) async* {
     try {
       yield* event.applyAsync(currentState: state, bloc: this);
     } catch (_, stackTrace) {
-      developer.log('$_', name: 'EpisodeBloc', error: _, stackTrace: stackTrace);
+      developer.log('$_',
+          name: 'EpisodeBloc', error: _, stackTrace: stackTrace);
       yield state;
     }
   }
 }
-
-

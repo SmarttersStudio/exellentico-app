@@ -6,18 +6,17 @@ import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/data_models/rest_error.dart';
 import 'package:ecommerceapp/data_models/reverse_geocoder.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
-import 'package:location/location.dart';
 
 class ApiCall {
   static Future<Response> generalApiCall(
-      String path,
-      RequestMethod requestMethod, {
-        String id = '',
-        String basePath = ApiRoutes.baseUrl,
-        Map<String, String> query = const {},
-        Map<String, dynamic> body = const {},
-        bool isAuthNeeded = true,
-      }) async {
+    String path,
+    RequestMethod requestMethod, {
+    String id = '',
+    String basePath = ApiRoutes.baseUrl,
+    Map<String, String> query = const {},
+    Map<String, dynamic> body = const {},
+    bool isAuthNeeded = true,
+  }) async {
     final Dio dio = Dio();
     dio.options.contentType = 'application/json';
     if (isAuthNeeded)
@@ -38,10 +37,9 @@ class ApiCall {
           break;
         default:
           response =
-          await dio.delete('$basePath/$path/$id', queryParameters: query);
+              await dio.delete('$basePath/$path/$id', queryParameters: query);
           break;
       }
-      print(response.toString());
       return response;
     } on SocketException {
       throw 'No Internet Connection';
@@ -61,30 +59,28 @@ class ApiCall {
     }
   }
 
-
-  static Future<String> singleFileUpload(File file,{
-    String path = ApiRoutes.upload,
-    RequestMethod requestMethod = RequestMethod.create
-  }) async {
+  static Future<String> singleFileUpload(File file,
+      {String path = ApiRoutes.upload,
+      RequestMethod requestMethod = RequestMethod.create}) async {
     try {
-        if (SharedPreferenceHelper.accessToken == null ||
-            SharedPreferenceHelper.accessToken.isEmpty) {
-          return null;
+      if (SharedPreferenceHelper.accessToken == null ||
+          SharedPreferenceHelper.accessToken.isEmpty) {
+        return null;
+      } else {
+        final Dio dio = Dio();
+        dio.options.headers['Authorization'] =
+            SharedPreferenceHelper.accessToken;
+        Response response = await dio.post('${ApiRoutes.baseUrl}/$path',
+            data: FormData.fromMap({
+              "photo":
+                  await MultipartFile.fromFile(file.path, filename: file.path)
+            }));
+        if (response.data['result'] ?? false) {
+          return response.data['file'];
         } else {
-          final Dio dio = Dio();
-          dio.options.headers['Authorization'] =
-              SharedPreferenceHelper.accessToken;
-          Response response = await dio.post('${ApiRoutes.baseUrl}/$path',
-              data: FormData.fromMap({
-                "photo":
-                    await MultipartFile.fromFile(file.path, filename: file.path)
-              }));
-          if (response.data['result'] ?? false) {
-            return response.data['file'];
-          } else {
-            throw response.data;
-          }
+          throw response.data;
         }
+      }
     } on SocketException {
       throw 'No Internet Connection';
     } catch (error) {
@@ -158,16 +154,16 @@ class ApiCall {
 //    }
 //  }
 
-  static Future<ReverseGeoCoder> decodeFromLatLang(LocationData latLng) async {
-    Response response = await generalApiCall('',RequestMethod.get,
-      basePath: ApiRoutes.geoCoderApi,
-      query: {
-        'key' : MyStrings.mapApiKey,
-        'latlng' : '${latLng.latitude}.${latLng.longitude}'
-      }
-    );
-    return ReverseGeoCoder.fromJson(response.data);
-
-
-  }
+//  static Future<ReverseGeoCoder> decodeFromLatLang(LocationData latLng) async {
+//    Response response = await generalApiCall('',RequestMethod.get,
+//      basePath: ApiRoutes.geoCoderApi,
+//      query: {
+//        'key' : MyStrings.mapApiKey,
+//        'latlng' : '${latLng.latitude}.${latLng.longitude}'
+//      }
+//    );
+//    return ReverseGeoCoder.fromJson(response.data);
+//
+//
+//  }
 }

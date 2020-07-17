@@ -3,7 +3,9 @@ import 'package:ecommerceapp/bloc_models/blog_delagate.dart';
 import 'package:ecommerceapp/bloc_models/theme_bloc/index.dart';
 import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/config/page_routes.dart';
+import 'package:ecommerceapp/pages/authentication/login/login_page.dart';
 import 'package:ecommerceapp/pages/authentication/social_sign_in/social_sign_in_page.dart';
+import 'package:ecommerceapp/pages/splash/splash_screen.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,8 +18,10 @@ import 'generated/l10n.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  BlocSupervisor.delegate = SimpleBlocDelegate();
+  Bloc.observer = SimpleBlocObserver();
+
   SharedPreferenceHelper.preferences = await SharedPreferences.getInstance();
+
   /// Setup for notification services
   InAppNotification.configureInAppNotification();
   runApp(MultiBlocProvider(providers: [
@@ -31,7 +35,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void initState() {
     super.initState();
@@ -47,10 +50,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ThemeBloc, BaseState>(
-        bloc: ThemeBloc(),
         builder: (context, state) => GetMaterialApp(
-            debugShowCheckedModeBanner: false,
-              title: 'Flutter Demo',
+              debugShowCheckedModeBanner: false,
+              title: 'Exellentico Learning',
               localizationsDelegates: [
                 S.delegate,
                 GlobalMaterialLocalizations.delegate,
@@ -62,7 +64,7 @@ class _MyAppState extends State<MyApp> {
               darkTheme: MyThemes.appThemeData[(state as ThemeState).color]
                   [ThemeMode.dark],
               themeMode: (state as ThemeState).mode,
-              initialRoute: SocialSignInPage.routeName,
+              initialRoute: SplashPage.routeName,
               routes: MyPageRoutes.routes,
             ));
   }

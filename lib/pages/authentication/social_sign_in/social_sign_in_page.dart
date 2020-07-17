@@ -2,10 +2,9 @@ import 'dart:ffi';
 import 'package:ecommerceapp/api_services/authentication_api_services.dart';
 import 'package:ecommerceapp/config/social_sign_in_config.dart';
 import 'package:ecommerceapp/pages/authentication/login/login_page.dart';
-import 'package:ecommerceapp/pages/demo_page.dart';
 import 'package:ecommerceapp/utils/auth_helper.dart';
-import 'package:ecommerceapp/widgets/my_button.dart';
-import 'package:ecommerceapp/widgets/my_snackbar.dart';
+import 'package:ecommerceapp/widgets/button.dart';
+import 'package:ecommerceapp/widgets/snackbar_helper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -23,7 +22,6 @@ class SocialSignInPage extends StatefulWidget {
 }
 
 class _SocialSignInPageState extends State<SocialSignInPage> {
-
   bool _isSocialMediaButtonDisabled = false;
   bool _isGoogleLoading = false;
   bool _isFbLoading = false;
@@ -32,7 +30,6 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
     clientId: SignInWithGoogleConfig.clientId,
     scopes: ['email'],
   );
-
 
   Future<void> _signInFaceBook() async {
     setState(() {
@@ -48,8 +45,7 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
           _isSocialMediaButtonDisabled = false;
           _isFbLoading = false;
         });
-        MySnackbar.show(
-            'Error', FacebookLoginStatus.error.toString());
+        ExellenticoSnackBar.show('Error', FacebookLoginStatus.error.toString());
         print(FacebookLoginStatus.error.toString());
         throw FacebookLoginStatus.error.toString();
         break;
@@ -68,7 +64,7 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
           onAuthenticationSuccess(value);
         }).catchError((err) {
           facebookLogin.logOut();
-          MySnackbar.show('Error', err?.toString());
+          ExellenticoSnackBar.show('Error', err?.toString());
           setState(() {
             _isSocialMediaButtonDisabled = false;
             _isFbLoading = false;
@@ -91,16 +87,16 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
         String s = value['Authorization'];
         s = s.replaceAll('Bearer', '');
         print(s.trim());
-        googleSignIn.signOut().then((value){
+        googleSignIn.signOut().then((value) {
           setState(() {
             _isSocialMediaButtonDisabled = true;
             _isGoogleLoading = true;
           });
-          signInWithSocialMedia(
-              socialToken: s.trim(), socialAuthType: 1).then((value){
+          signInWithSocialMedia(socialToken: s.trim(), socialAuthType: 1)
+              .then((value) {
             onAuthenticationSuccess(value);
-          }).catchError((onError){
-            MySnackbar.show('Error', onError?.toString());
+          }).catchError((onError) {
+            ExellenticoSnackBar.show('Error', onError?.toString());
             setState(() {
               _isSocialMediaButtonDisabled = false;
               _isGoogleLoading = false;
@@ -113,11 +109,11 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
           _isGoogleLoading = false;
         });
         googleSignIn.signOut();
-        MySnackbar.show('Error', err.toString());
+        ExellenticoSnackBar.show('Error', err.toString());
       });
     }).catchError((err) {
       print(err.toString());
-      MySnackbar.show("ERROR", "Please try again later");
+      ExellenticoSnackBar.show("ERROR", "Please try again later");
       setState(() {
         _isSocialMediaButtonDisabled = false;
         _isGoogleLoading = false;
@@ -125,7 +121,6 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
       googleSignIn.signOut();
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -137,36 +132,38 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: MyButton(
+              child: ExellenticoButton(
                 child: Text("Sign In with Google"),
-                onPressed: _isSocialMediaButtonDisabled? null : _signInGoogle,
+                onPressed: _isSocialMediaButtonDisabled ? null : _signInGoogle,
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: MyButton(
+              child: ExellenticoButton(
                 child: Text("Sign In with Facebook"),
-                onPressed: _isSocialMediaButtonDisabled? null : _signInFaceBook,
+                onPressed:
+                    _isSocialMediaButtonDisabled ? null : _signInFaceBook,
               ),
             ),
-            SizedBox(height: height/12,),
+            SizedBox(
+              height: height / 12,
+            ),
             RichText(
               text: TextSpan(
-                  style: TextStyle(fontSize: 14, color: Colors.black.withOpacity(0.7)),
+                  style: TextStyle(
+                      fontSize: 14, color: Colors.black.withOpacity(0.7)),
                   text: "Already have an account ?",
                   children: [
                     TextSpan(
                         text: " Sign In",
                         style: TextStyle(
                             fontSize: 14,
-                            fontWeight: FontWeight
-                                .w500,
+                            fontWeight: FontWeight.w500,
                             color: Colors.red),
-                        recognizer: TapGestureRecognizer()..onTap = ()=>Get.to(LoginPage())
-                    )
-                  ]
-              ),),
-            MyButton(child: Text("test"), onPressed: ()=>Get.to(MyHomePage()),width: 200,)
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Get.to(LoginPage()))
+                  ]),
+            ),
           ],
         ),
       ),
