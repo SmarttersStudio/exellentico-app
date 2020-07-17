@@ -2,25 +2,25 @@ import 'dart:async';
 import 'dart:developer' as developer;
 import 'package:bloc/bloc.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
+import 'package:get/get.dart';
 import 'index.dart';
 import '../base_state.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, BaseState> {
- static final ThemeBloc _ratingBlocSingleton = ThemeBloc._internal();
+  static final ThemeBloc _themeBlocSingleton = ThemeBloc._internal();
   factory ThemeBloc() {
-    return _ratingBlocSingleton;
+    return _themeBlocSingleton;
   }
-  ThemeBloc._internal();
-  
+  ThemeBloc._internal()
+      : super(ThemeState(SharedPreferenceHelper.themeColor,
+            SharedPreferenceHelper.themeMode));
+
   @override
-  Future<void> close() async{
-    _ratingBlocSingleton.close();
+  Future<void> close() async {
+    _themeBlocSingleton.close();
     await super.close();
   }
 
-  @override
-  BaseState get initialState => ThemeState(SharedPreferenceHelper.themeColor,SharedPreferenceHelper.themeMode);
-  List<String> cities=[];
   @override
   Stream<BaseState> mapEventToState(
     ThemeEvent event,

@@ -10,5 +10,11 @@
   "phone" : "Phone",
   "name" : "Name",
   "resetPassword" : "Reset Password",
-  "otpPage" : "OTP Page"
+  "otpPage" : "OTP Page",
+  "exellentico": "Exellentico",
+  "camera": "Camera",
+  "gallery": "Gallery",
+  "cropYourImage": "Crop Your Image",
+  "oops": "Oops!",
+  "pleaseAllowPermissionToUploadImage": "Please allow permission to upload image."
 }

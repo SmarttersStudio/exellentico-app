@@ -1,11 +1,14 @@
+import 'package:ecommerceapp/config/colors.dart';
+import 'package:ecommerceapp/widgets/progress_indicator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 ///
 /// Created By AURO (aurosmruti@smarttersstudio.com) on 7/13/2020 11:46 PM
 ///
 
-class MyButton extends StatefulWidget {
-  const MyButton(
+class ExellenticoButton extends StatefulWidget {
+  const ExellenticoButton(
       {@required this.child,
       Key key,
       this.gradient,
@@ -21,10 +24,10 @@ class MyButton extends StatefulWidget {
   final double height, width;
 
   @override
-  MyButtonState createState() => MyButtonState();
+  ExellenticoButtonState createState() => ExellenticoButtonState();
 }
 
-class MyButtonState extends State<MyButton> {
+class ExellenticoButtonState extends State<ExellenticoButton> {
   bool _isLoading = false;
 
   void showLoader() {
@@ -53,20 +56,10 @@ class MyButtonState extends State<MyButton> {
               : LinearGradient(
                   colors: <Color>[Colors.grey[600], Colors.grey[500]]));
     } else {
-      gradientCopy = widget.gradient ??
-          LinearGradient(
-              begin: Alignment(1, 0.5694444179534912),
-              end: Alignment(0.0882352963089943, 0.5),
-              colors: [const Color(0xfffe9654), const Color(0xfffd6c57)]);
+      gradientCopy = widget.gradient ?? getDynamicGradient(context);
     }
     return _isLoading
-        ? Container(
-            height: 50,
-            width: 50,
-            alignment: Alignment.center,
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(colorScheme.primary),
-            ))
+        ? ExellenticoProgress()
         : RaisedButton(
             onPressed: widget.onPressed,
             disabledTextColor: Colors.white,
@@ -82,7 +75,10 @@ class MyButtonState extends State<MyButton> {
                       width: widget.width ?? 350.0,
                       height: widget.height ?? 50.0),
                   alignment: Alignment.center,
-                  child: widget.child,
+                  child: DefaultTextStyle(
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                      child: widget.child),
                 )),
           );
   }

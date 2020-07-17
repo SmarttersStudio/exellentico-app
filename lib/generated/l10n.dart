@@ -152,6 +152,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Exellentico`
+  String get exellentico {
+    return Intl.message(
+      'Exellentico',
+      name: 'exellentico',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Camera`
+  String get camera {
+    return Intl.message(
+      'Camera',
+      name: 'camera',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Gallery`
+  String get gallery {
+    return Intl.message(
+      'Gallery',
+      name: 'gallery',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Crop Your Image`
+  String get cropYourImage {
+    return Intl.message(
+      'Crop Your Image',
+      name: 'cropYourImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Oops!`
+  String get oops {
+    return Intl.message(
+      'Oops!',
+      name: 'oops',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please allow permission to upload image.`
+  String get pleaseAllowPermissionToUploadImage {
+    return Intl.message(
+      'Please allow permission to upload image.',
+      name: 'pleaseAllowPermissionToUploadImage',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
@@ -160,9 +220,6 @@ class AppLocalizationDelegate extends LocalizationsDelegate<S> {
   List<Locale> get supportedLocales {
     return const <Locale>[
       Locale.fromSubtags(languageCode: 'en'),
-      Locale.fromSubtags(languageCode: 'en', countryCode: 'IN'),
-      Locale.fromSubtags(languageCode: 'hi', countryCode: 'IN'),
-      Locale.fromSubtags(languageCode: 'or', countryCode: 'IN'),
     ];
   }
 
