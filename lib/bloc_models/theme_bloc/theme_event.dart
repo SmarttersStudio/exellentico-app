@@ -11,11 +11,9 @@ abstract class ThemeEvent {
   Stream<BaseState> applyAsync({BaseState currentState, ThemeBloc bloc});
 }
 
-
 class ThemeChanged extends ThemeEvent {
   final ThemeMode theme;
-  
-  ThemeChanged(this.theme);
+  ThemeChanged({this.theme});
 
   @override
   String toString() {
@@ -23,8 +21,21 @@ class ThemeChanged extends ThemeEvent {
   }
 
   @override
-  Stream<BaseState> applyAsync({BaseState currentState, ThemeBloc bloc}) async* {
-    SharedPreferenceHelper.storeThemeMode(theme);
-    yield ThemeState(ColorThemes.red,theme);
+  Stream<BaseState> applyAsync(
+      {BaseState currentState, ThemeBloc bloc}) async* {
+    if (theme == null && currentState is ThemeState) {
+      SharedPreferenceHelper.storeThemeMode(currentState.mode == ThemeMode.light
+          ? ThemeMode.dark
+          : ThemeMode.light);
+
+      yield ThemeState(
+          ColorThemes.red,
+          currentState.mode == ThemeMode.light
+              ? ThemeMode.dark
+              : ThemeMode.light);
+    } else {
+      SharedPreferenceHelper.storeThemeMode(theme);
+      yield ThemeState(ColorThemes.red, theme);
+    }
   }
 }

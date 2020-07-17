@@ -1,6 +1,7 @@
+import 'package:ecommerceapp/pages/authentication/login/login_page.dart';
 import 'package:ecommerceapp/pages/courses/courses_page/courses_page.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
-import 'package:ecommerceapp/widgets/my_button.dart';
+import 'package:ecommerceapp/widgets/button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -12,16 +13,20 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Dashboard"), centerTitle: true,),
+      appBar: AppBar(
+        title: Text("Dashboard"),
+        centerTitle: true,
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            MyButton(
+            ExellenticoButton(
               width: 200,
-                child: Text("Go to Courses Page"),
-              onPressed: (){
-                  Get.to(CoursesPage());
+              child: Text("Logout"),
+              onPressed: () {
+                SharedPreferenceHelper.clear();
+                Get.offAll(LoginPage());
               },
             ),
           ],
@@ -30,4 +35,3 @@ class DashboardPage extends StatelessWidget {
     );
   }
 }
-

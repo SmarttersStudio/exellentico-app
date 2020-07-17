@@ -21,17 +21,23 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "camera" : MessageLookupByLibrary.simpleMessage("Camera"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("Confirm Password"),
+    "cropYourImage" : MessageLookupByLibrary.simpleMessage("Crop Your Image"),
     "email" : MessageLookupByLibrary.simpleMessage("Email Id"),
+    "exellentico" : MessageLookupByLibrary.simpleMessage("Exellentico"),
     "firstName" : MessageLookupByLibrary.simpleMessage("First Name"),
     "flutterDemoHomePage" : MessageLookupByLibrary.simpleMessage("Flutter Demo Home Page"),
+    "gallery" : MessageLookupByLibrary.simpleMessage("Gallery"),
     "lastName" : MessageLookupByLibrary.simpleMessage("Last Name"),
     "loginAppBar" : MessageLookupByLibrary.simpleMessage("LogIn Page"),
     "loginButton" : MessageLookupByLibrary.simpleMessage("Submit"),
     "name" : MessageLookupByLibrary.simpleMessage("Name"),
+    "oops" : MessageLookupByLibrary.simpleMessage("Oops!"),
     "otpPage" : MessageLookupByLibrary.simpleMessage("OTP Page"),
     "password" : MessageLookupByLibrary.simpleMessage("Password"),
     "phone" : MessageLookupByLibrary.simpleMessage("Phone"),
+    "pleaseAllowPermissionToUploadImage" : MessageLookupByLibrary.simpleMessage("Please allow permission to upload image."),
     "resetPassword" : MessageLookupByLibrary.simpleMessage("Reset Password")
   };
 }
