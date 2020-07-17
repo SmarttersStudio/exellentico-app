@@ -5,6 +5,7 @@ import 'package:ecommerceapp/pages/authentication/reset_password/reset_password_
 import 'package:ecommerceapp/pages/authentication/reset_password/update_password_page.dart';
 import 'package:ecommerceapp/pages/authentication/signup/signup_page.dart';
 import 'package:ecommerceapp/pages/authentication/social_sign_in/social_sign_in_page.dart';
+import 'package:ecommerceapp/pages/dashboard/dashboard_page.dart';
 import 'package:ecommerceapp/pages/demo_page.dart';
 ///
 ///Created By Aurosmruti (aurosmruti@smarttersstudio.com) on 6/16/2020 6:23 AM
@@ -21,6 +22,7 @@ mixin MyPageRoutes{
         '/resetPasswordPage' : (context) => ResetPasswordPage(),
         '/OTPPage' : (context) => OTPPage(),
         '/updatePasswordPage' : (context) => UpdatePasswordPage(),
-      '/socialSignInPage' : (context) => SocialSignInPage()
+      '/socialSignInPage' : (context) => SocialSignInPage(),
+      '/dashboard' : (context) => DashboardPage()
     };
 }

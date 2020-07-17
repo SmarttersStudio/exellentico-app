@@ -2,7 +2,7 @@
 /// Created By Guru (guru@smarttersstudio.com) on 12/06/20 2:33 PM
 ///
 mixin ApiRoutes {
-  static const baseUrl = 'http://192.168.137.1:3030';
+  static const baseUrl = 'http://192.168.0.100:3030';
   static const upload = 'upload';
   static const String geoCoderApi =
     'https://maps.googleapis.com/maps/api/geocode/json';
