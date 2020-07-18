@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 // Colors
 const kTextColor = Color(0xFF0D1333);
@@ -20,7 +21,6 @@ const kSubheadingextStyle = TextStyle(
 
 const kTitleTextStyle = TextStyle(
   fontSize: 20,
-  color: kTextColor,
   fontWeight: FontWeight.bold,
 );
 

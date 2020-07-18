@@ -69,7 +69,7 @@ class _ChaptersPageState extends State<ChaptersPage> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: Text(
                 widget.course.title,
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
@@ -93,8 +93,6 @@ class _ChaptersPageState extends State<ChaptersPage> {
                 if (state is ChapterLoadedState) {
                   return Expanded(
                     child: ListView.separated(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
                         itemCount: ChapterBloc().chapterShouldLoadMore
                             ? ChapterBloc().chapters.length + 1
                             : ChapterBloc().chapters.length,

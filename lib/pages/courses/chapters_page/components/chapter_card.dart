@@ -25,6 +25,9 @@ class ChapterCard extends StatelessWidget {
                 height: 120,
                 width: 180,
               ),
+              SizedBox(
+                width: 12,
+              ),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +42,7 @@ class ChapterCard extends StatelessWidget {
                     ),
                     Text(
                       data.description ?? '',
-                      style: TextStyle(fontSize: 14),
+                      style: TextStyle(fontSize: 12),
                     )
                   ],
                 ),

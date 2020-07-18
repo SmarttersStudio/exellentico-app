@@ -63,7 +63,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                             SizedBox(height: 8),
                             TextFormField(
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.text,
                               textCapitalization: TextCapitalization.words,
                               onSaved: (v) => _firstName = v.trim(),
                               textInputAction: TextInputAction.next,
@@ -81,7 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                             SizedBox(height: 8),
                             TextFormField(
-                              keyboardType: TextInputType.name,
+                              keyboardType: TextInputType.text,
                               textCapitalization: TextCapitalization.words,
                               onSaved: (v) => _lastName = v.trim(),
                               textInputAction: TextInputAction.next,
