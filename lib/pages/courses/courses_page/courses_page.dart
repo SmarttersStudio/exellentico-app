@@ -24,7 +24,6 @@ class _CoursesPageState extends State<CoursesPage> {
   @override
   void initState() {
     super.initState();
-    CourseBloc().add(LoadMyCoursesEvent());
     _scrollController.addListener(() {
       final maxScroll = _scrollController.position.maxScrollExtent;
       final currentScroll = _scrollController.position.pixels;
@@ -45,7 +44,12 @@ class _CoursesPageState extends State<CoursesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Courses"),),
+      appBar: AppBar(
+        title: Text("All Courses"),
+        actions: [
+          IconButton(icon: Icon(Icons.search), onPressed: (){})
+        ],
+      ),
       body: BlocBuilder<CourseBloc, BaseState>(
         bloc: CourseBloc(),
         builder: (context, BaseState state){
@@ -75,8 +79,7 @@ class _CoursesPageState extends State<CoursesPage> {
                     : InkWell(
                         onTap: () {
                           Get.to(ChaptersPage(
-                            courseId: CourseBloc().courses[index].id,
-                            videoCode: CourseBloc().courses[index].promoVideo,
+                           course: CourseBloc().courses[index] ,
                           ));
                         },
                         child: CourseCard(CourseBloc().courses[index])));

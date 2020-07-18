@@ -1,5 +1,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   path_provider_linux
+  shared_preferences_linux
+  url_launcher_linux
 )
 
 foreach(plugin ${FLUTTER_PLUGIN_LIST})

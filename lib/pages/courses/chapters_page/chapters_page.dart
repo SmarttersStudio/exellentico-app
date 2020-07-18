@@ -1,5 +1,6 @@
 import 'package:ecommerceapp/bloc_models/base_state.dart';
 import 'package:ecommerceapp/bloc_models/chapter_bloc/index.dart';
+import 'package:ecommerceapp/data_models/course_data.dart';
 import 'package:ecommerceapp/pages/courses/chapters_page/components/chapter_card.dart';
 import 'package:ecommerceapp/pages/courses/episodes_page/episodes_page.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +13,8 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 ///
 
 class ChaptersPage extends StatefulWidget {
-  final String courseId;
-  final String videoCode;
-  ChaptersPage({this.courseId, this.videoCode});
+  final CourseDatum course;
+  ChaptersPage({this.course});
   @override
   _ChaptersPageState createState() => _ChaptersPageState();
 }
@@ -28,18 +28,18 @@ class _ChaptersPageState extends State<ChaptersPage> {
   void initState() {
     super.initState();
     _controller = YoutubePlayerController(
-      initialVideoId: widget.videoCode,
+      initialVideoId: widget.course.promoVideo,
       flags: YoutubePlayerFlags(
         autoPlay: true,
         mute: false,
       ),
     );
-    ChapterBloc().add(LoadMyChaptersEvent(widget.courseId));
+    ChapterBloc().add(LoadMyChaptersEvent(widget.course.id));
     _scrollController.addListener(() {
       final maxScroll = _scrollController.position.maxScrollExtent;
       final currentScroll = _scrollController.position.pixels;
       if (maxScroll - currentScroll <= 200) {
-        ChapterBloc().add(LoadMoreChaptersEvent(widget.courseId));
+        ChapterBloc().add(LoadMoreChaptersEvent(widget.course.id));
       }
     });
   }
@@ -58,10 +58,16 @@ class _ChaptersPageState extends State<ChaptersPage> {
     return Scaffold(
       appBar: AppBar(title: Text("Chapters"),),
       body: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           YoutubePlayer(
               controller: _controller,
           ),
+          SizedBox(height: 4,),
+          Text(widget.course.title,style: TextStyle(
+            fontSize: 24
+          ),),
           BlocBuilder<ChapterBloc, BaseState>(
             bloc: ChapterBloc(),
             builder: (context, BaseState state){
@@ -77,7 +83,8 @@ class _ChaptersPageState extends State<ChaptersPage> {
               if(state is ChapterLoadedState){
                 return Expanded(
                   child: ListView.separated(
-                    controller: _scrollController,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
                       itemCount: ChapterBloc().chapterShouldLoadMore
                           ? ChapterBloc().chapters.length + 1
                           : ChapterBloc().chapters.length,

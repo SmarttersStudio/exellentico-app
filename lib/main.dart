@@ -5,6 +5,7 @@ import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/config/page_routes.dart';
 import 'package:ecommerceapp/pages/authentication/login/login_page.dart';
 import 'package:ecommerceapp/pages/authentication/social_sign_in/social_sign_in_page.dart';
+import 'package:ecommerceapp/pages/dashboard/dashboard_page.dart';
 import 'package:ecommerceapp/pages/splash/splash_screen.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
 import 'package:flutter/material.dart';
