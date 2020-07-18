@@ -1,10 +1,10 @@
 import 'package:ecommerceapp/bloc_models/base_state.dart';
 import 'package:ecommerceapp/bloc_models/blog_delagate.dart';
+import 'package:ecommerceapp/bloc_models/chapter_bloc/chapter_bloc.dart';
+import 'package:ecommerceapp/bloc_models/course_bloc/index.dart';
+import 'package:ecommerceapp/bloc_models/episode_bloc/episode_bloc.dart';
 import 'package:ecommerceapp/bloc_models/theme_bloc/index.dart';
 import 'package:ecommerceapp/config/index.dart';
-import 'package:ecommerceapp/config/page_routes.dart';
-import 'package:ecommerceapp/pages/authentication/login/login_page.dart';
-import 'package:ecommerceapp/pages/authentication/social_sign_in/social_sign_in_page.dart';
 import 'package:ecommerceapp/pages/dashboard/dashboard_page.dart';
 import 'package:ecommerceapp/pages/splash/splash_screen.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
@@ -27,6 +27,9 @@ Future<void> main() async {
   InAppNotification.configureInAppNotification();
   runApp(MultiBlocProvider(providers: [
     BlocProvider(create: (context) => ThemeBloc()),
+    BlocProvider(create: (context) => CourseBloc()),
+    BlocProvider(create: (context) => ChapterBloc()),
+    BlocProvider(create: (context) => EpisodeBloc()),
   ], child: MyApp()));
 }
 
@@ -45,6 +48,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     ThemeBloc().close();
+    CourseBloc().close();
+    ChapterBloc().close();
+    EpisodeBloc().close();
     super.dispose();
   }
 
@@ -65,8 +71,7 @@ class _MyAppState extends State<MyApp> {
               darkTheme: MyThemes.appThemeData[(state as ThemeState).color]
                   [ThemeMode.dark],
               themeMode: (state as ThemeState).mode,
-              initialRoute: SplashPage.routeName,
-              routes: MyPageRoutes.routes,
+              home: SplashPage(),
             ));
   }
 }

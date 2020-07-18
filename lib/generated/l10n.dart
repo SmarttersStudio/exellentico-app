@@ -212,6 +212,96 @@ class S {
       args: [],
     );
   }
+
+  /// `*required`
+  String get required {
+    return Intl.message(
+      '*required',
+      name: 'required',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your phone number`
+  String get enterYourPhoneNumber {
+    return Intl.message(
+      'Enter your phone number',
+      name: 'enterYourPhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Invalid phone number`
+  String get invalidPhoneNumber {
+    return Intl.message(
+      'Invalid phone number',
+      name: 'invalidPhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get buttonContinue {
+    return Intl.message(
+      'Continue',
+      name: 'buttonContinue',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Didn’t receive any code?`
+  String get didNtYouReceivedAnyCode {
+    return Intl.message(
+      'Didn’t receive any code?',
+      name: 'didNtYouReceivedAnyCode',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your OTP code here`
+  String get enterYourOtpCodeHere {
+    return Intl.message(
+      'Enter your OTP code here',
+      name: 'enterYourOtpCodeHere',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Verification`
+  String get phoneVerification {
+    return Intl.message(
+      'Phone Verification',
+      name: 'phoneVerification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resend`
+  String get resend {
+    return Intl.message(
+      'Resend',
+      name: 'resend',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify your Phone number`
+  String get verifyYourPhoneNumber {
+    return Intl.message(
+      'Verify your Phone number',
+      name: 'verifyYourPhoneNumber',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

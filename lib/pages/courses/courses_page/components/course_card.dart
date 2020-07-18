@@ -10,30 +10,19 @@ class CourseCard extends StatelessWidget {
   CourseCard(this.data);
   @override
   Widget build(BuildContext context) {
-    return data==null?Container():Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              radius: 25,
-              backgroundImage: NetworkImage(data!=null?data.avatar??'':''),
+    return data == null
+        ? Container()
+        : ListTile(
+            leading: Image(
+              image: NetworkImage(data != null ? data.avatar ?? '' : ''),
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(data.title??'', style: TextStyle(
-                fontSize: 15
-              ),),
-              Text(data.description??'', style: TextStyle(
-                fontSize: 12
-              ),)
-            ],
-          )
-        ],
-      ),
-    );
+            title: Text(
+              data.title ?? '',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+            subtitle: Text(
+              data.description ?? '',
+              style: TextStyle(fontSize: 14),
+            ));
   }
 }

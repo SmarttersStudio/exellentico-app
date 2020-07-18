@@ -23,9 +23,7 @@ class OTPPage extends StatefulWidget {
 }
 
 class _OTPPageState extends State<OTPPage> {
-  final _formKey = GlobalKey<FormState>();
-  String _otp, _error;
-  bool _autoValidate = false;
+  String _otp;
   Timer _timer;
   int timerCounter = 59;
   bool isLoading = false;
@@ -80,93 +78,90 @@ class _OTPPageState extends State<OTPPage> {
                   elevation: 24,
                   shadowColor:
                       Color.lerp(colorScheme.surface, Colors.black12, 0.1),
-                  child: Form(
-                    key: _formKey,
-                    autovalidate: _autoValidate,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(16, 18, 16, 22),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Enter OTP',
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 18, 16, 22),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Enter OTP',
+                          style: TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.w700),
+                        ),
+                        SizedBox(height: 16),
+                        Center(
+                          child: Text(
+                            'Enter OTP that we sent to ${widget.email}',
                             style: TextStyle(
-                                fontSize: 22, fontWeight: FontWeight.w700),
+                                fontSize: 14, fontWeight: FontWeight.w500),
                           ),
-                          SizedBox(height: 16),
-                          Center(
-                            child: Text(
-                              'Enter OTP that we sent to ${widget.email}',
-                              style: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
+                        ),
+                        SizedBox(height: 16),
+                        Center(
+                          child: PinCodeTextField(
+                            length: 4,
+                            textInputType: TextInputType.number,
+                            textStyle:
+                                TextStyle(color: Colors.white, fontSize: 22),
+                            enableEmptyColor:
+                                colorScheme.brightness == Brightness.light
+                                    ? Color(0xfff0f0f0)
+                                    : Colors.white54,
+                            autoFocus: true,
+                            onChanged: (val) {
+                              _otp = val.trim();
+                            },
+                            onCompleted: (val) {
+                              setState(() => isLoading = true);
+                              verifyOtpForPasswordReset(
+                                      pin: int.parse(val.trim()),
+                                      email: widget.email)
+                                  .then((value) {
+                                setState(() => isLoading = false);
+                                if (value.accessToken.isNotEmpty) {
+                                  Get.to(UpdatePasswordPage(
+                                      token: value.accessToken));
+                                } else {
+                                  ExellenticoSnackBar.show(
+                                      'Error', 'Invalid OTP');
+                                }
+                              }).catchError((err) {
+                                setState(() => isLoading = false);
+                                ExellenticoSnackBar.show('Error', '$err');
+                              });
+                            },
+                          ),
+                        ),
+                        Center(
+                          child: Text(
+                            '00:${timerCounter < 10 ? timerCounter.toString().padLeft(2, '0') : timerCounter}',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: colorScheme.primary),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Didn\'t you received any code?',
+                              style: TextStyle(color: colorScheme.onSurface),
                             ),
-                          ),
-                          SizedBox(height: 16),
-                          Center(
-                            child: PinCodeTextField(
-                              length: 4,
-                              textInputType: TextInputType.number,
-                              textStyle:
-                                  TextStyle(color: Colors.white, fontSize: 22),
-                              enableEmptyColor:
-                                  colorScheme.brightness == Brightness.light
-                                      ? Color(0xfff0f0f0)
-                                      : Colors.white54,
-                              autoFocus: true,
-                              onChanged: (val) {
-                                _otp = val.trim();
-                              },
-                              onCompleted: (val) {
-                                setState(() => isLoading = true);
-                                verifyOtpForPasswordReset(
-                                        pin: int.parse(val.trim()),
-                                        email: widget.email)
-                                    .then((value) {
-                                  setState(() => isLoading = false);
-                                  if (value.accessToken.isNotEmpty) {
-                                    Get.to(UpdatePasswordPage(
-                                        token: value.accessToken));
-                                  } else {
-                                    ExellenticoSnackBar.show(
-                                        'Error', 'Invalid OTP');
-                                  }
-                                }).catchError((err) {
-                                  setState(() => isLoading = false);
-                                  ExellenticoSnackBar.show('Error', '$err');
-                                });
-                              },
-                            ),
-                          ),
-                          Center(
-                            child: Text(
-                              '00:${timerCounter < 10 ? timerCounter.toString().padLeft(2, '0') : timerCounter}',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                  color: colorScheme.primary),
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Didn\'t you received any code?',
-                                style: TextStyle(color: colorScheme.onSurface),
-                              ),
-                              FlatButton(
-                                padding: const EdgeInsets.all(0),
-                                onPressed: timerCounter == 0
-                                    ? () {
-                                        setState(() {
-                                          timerCounter = 60;
+                            FlatButton(
+                              padding: const EdgeInsets.all(0),
+                              onPressed: timerCounter == 0
+                                  ? () {
+                                      setState(() {
+                                        timerCounter = 60;
 //                                            isLoading = true;
-                                        });
+                                      });
 //              sendPhoneVerification(
 //                  context, widget.phone.trim())
 //                  .then((String value) {
 //                Toast.show(value);
-                                        startTimer();
+                                      startTimer();
 //              }).catchError((error, s) {
 //                print(s);
 //                setState(() {
@@ -178,18 +173,17 @@ class _OTPPageState extends State<OTPPage> {
 //                  isLoading = false;
 //                });
 //              });
-                                      }
-                                    : null,
-                                child: Text(
-                                  'Resend',
-                                  style: TextStyle(fontWeight: FontWeight.w500),
-                                ),
-                                textColor: colorScheme.primary,
+                                    }
+                                  : null,
+                              child: Text(
+                                'Resend',
+                                style: TextStyle(fontWeight: FontWeight.w500),
                               ),
-                            ],
-                          )
-                        ],
-                      ),
+                              textColor: colorScheme.primary,
+                            ),
+                          ],
+                        )
+                      ],
                     ),
                   ),
                 ),

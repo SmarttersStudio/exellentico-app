@@ -3,6 +3,7 @@ import 'package:ecommerceapp/bloc_models/chapter_bloc/index.dart';
 import 'package:ecommerceapp/data_models/course_data.dart';
 import 'package:ecommerceapp/pages/courses/chapters_page/components/chapter_card.dart';
 import 'package:ecommerceapp/pages/courses/episodes_page/episodes_page.dart';
+import 'package:ecommerceapp/widgets/progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,6 @@ class ChaptersPage extends StatefulWidget {
 }
 
 class _ChaptersPageState extends State<ChaptersPage> {
-
   YoutubePlayerController _controller;
   final ScrollController _scrollController = ScrollController();
 
@@ -52,65 +52,80 @@ class _ChaptersPageState extends State<ChaptersPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Chapters"),),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          YoutubePlayer(
+      body: SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            YoutubePlayer(
               controller: _controller,
-          ),
-          SizedBox(height: 4,),
-          Text(widget.course.title,style: TextStyle(
-            fontSize: 24
-          ),),
-          BlocBuilder<ChapterBloc, BaseState>(
-            bloc: ChapterBloc(),
-            builder: (context, BaseState state){
-              if(state is LoadingBaseState){
-                return Center(child: Container(child: CircularProgressIndicator()));
-              }
-              if(state is ErrorBaseState){
-                return Center(child: Text(state.errorMessage.toString()),);
-              }
-              if(state is EmptyBaseState){
-                return Center(child: Text("No Chapters Available"),);
-              }
-              if(state is ChapterLoadedState){
-                return Expanded(
-                  child: ListView.separated(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                      itemCount: ChapterBloc().chapterShouldLoadMore
-                          ? ChapterBloc().chapters.length + 1
-                          : ChapterBloc().chapters.length,
-                      separatorBuilder: (context, index) => Divider(),
-                      itemBuilder: (context, index) =>
-                          index >= ChapterBloc().chapters.length
-                              ? ChapterBloc().chapterShouldLoadMore
-                                  ? Center(
-                                      child: CircularProgressIndicator(),
-                                    )
-                                  : Container()
-                              : InkWell(
-                                  onTap: () {
-                                    Get.to(EpisodesPage(
-                                      ChapterBloc().chapters[index].id,
-                                    ));
-                                  },
-                                  child: ChapterCard(
-                                    data: ChapterBloc().chapters[index],
-                                  ))),
+              topActions: [
+                BackButton(
+                  color: Colors.white,
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: Text(
+                widget.course.title,
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+              ),
+            ),
+            BlocBuilder<ChapterBloc, BaseState>(
+              builder: (context, BaseState state) {
+                if (state is LoadingBaseState) {
+                  return Center(child: ExellenticoProgress());
+                }
+                if (state is ErrorBaseState) {
+                  return Center(
+                    child: Text(state.errorMessage.toString()),
+                  );
+                }
+                if (state is EmptyBaseState) {
+                  return Center(
+                    child: Text("No Chapters Available"),
+                  );
+                }
+                if (state is ChapterLoadedState) {
+                  return Expanded(
+                    child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: ChapterBloc().chapterShouldLoadMore
+                            ? ChapterBloc().chapters.length + 1
+                            : ChapterBloc().chapters.length,
+                        separatorBuilder: (context, index) => Divider(
+                              height: 1,
+                            ),
+                        itemBuilder: (context, index) =>
+                            index >= ChapterBloc().chapters.length
+                                ? ChapterBloc().chapterShouldLoadMore
+                                    ? Center(
+                                        child: CircularProgressIndicator(),
+                                      )
+                                    : Container()
+                                : InkWell(
+                                    onTap: () {
+                                      Get.to(EpisodesPage(
+                                        ChapterBloc().chapters[index].id,
+                                      ));
+                                    },
+                                    child: ChapterCard(
+                                      data: ChapterBloc().chapters[index],
+                                    ))),
+                  );
+                }
+                return Center(
+                  child: Text("Some Error Occurred "),
                 );
-              }
-              return Center(child: Text("Some Error Occurred "),);
-            },
-          )
-        ],
+              },
+            )
+          ],
+        ),
       ),
     );
   }

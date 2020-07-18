@@ -17,6 +17,7 @@ Future<UserResponse> signInWithEmail(
   String path = ApiRoutes.signInWithEmail;
   var resultMap = await ApiCall.generalApiCall(path, RequestMethod.create,
       body: body, isAuthNeeded: false);
+  print(resultMap);
   SharedPreferenceHelper.storeAccessToken(resultMap.data['accessToken']);
   return UserResponse.fromJson(resultMap.data['me']);
 }

@@ -66,3 +66,27 @@ class LoaderOverlay extends ModalRoute<void> {
     );
   }
 }
+
+//class LoaderOverlay extends StatelessWidget {
+//  @override
+//  Widget build(BuildContext context) {
+//    return Scaffold(
+//      backgroundColor:
+//          Theme.of(context).scaffoldBackgroundColor.withOpacity(0.8),
+//      body: Column(
+//        mainAxisAlignment: MainAxisAlignment.center,
+//        crossAxisAlignment: CrossAxisAlignment.center,
+//        children: [
+//          ExellenticoProgress(),
+//          SizedBox(
+//            height: 8,
+//          ),
+//          Text(
+//            'Please wait...',
+//            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+//          )
+//        ],
+//      ),
+//    );
+//  }
+//}

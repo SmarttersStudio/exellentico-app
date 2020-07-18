@@ -10,30 +10,44 @@ class ChapterCard extends StatelessWidget {
   ChapterCard({this.data});
   @override
   Widget build(BuildContext context) {
-    return data==null?Container():Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              radius: 25,
-              backgroundImage: NetworkImage('https://th.thgim.com/opinion/lead/m77apn/article29986291.ece/alternates/FREE_435/Th16-Mattoo-Education-policy'),
-            ),
-          ),
-          Column(
+    return data == null
+        ? Container()
+        : Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(data.name??'', style: TextStyle(
-                  fontSize: 15
-              ),),
-              Text(data.description??'', style: TextStyle(
-                  fontSize: 12
-              ),)
+              SizedBox(
+                width: 16,
+              ),
+              Ink.image(
+                image: NetworkImage(
+                  'https://img.freepik.com/free-vector/business-people-looking-book_52683-28612.jpg?size=626&ext=jpg',
+                ),
+                height: 120,
+                width: 180,
+              ),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: 16,
+                    ),
+                    Text(
+                      data.name ?? '',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                    ),
+                    Text(
+                      data.description ?? '',
+                      style: TextStyle(fontSize: 14),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: 16,
+              )
             ],
-          )
-        ],
-      ),
-    );
+          );
   }
 }

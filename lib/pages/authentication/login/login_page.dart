@@ -148,7 +148,9 @@ class _LoginPageState extends State<LoginPage> {
                                 password: _password,
                               ).then((value) {
                                 onAuthenticationSuccess(value);
-                              }).catchError((err) {
+                              }).catchError((err, s) {
+                                print(s);
+
                                 ExellenticoSnackBar.show(
                                     "ERROR", err.toString());
                               }).then((value) {

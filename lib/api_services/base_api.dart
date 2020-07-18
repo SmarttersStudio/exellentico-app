@@ -5,7 +5,9 @@ import 'package:ecommerceapp/config/enums.dart';
 import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/data_models/rest_error.dart';
 import 'package:ecommerceapp/data_models/reverse_geocoder.dart';
+import 'package:ecommerceapp/pages/authentication/login/login_page.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
+import 'package:get/get.dart';
 
 class ApiCall {
   static Future<Response> generalApiCall(
@@ -52,8 +54,11 @@ class ApiCall {
           print(error.response.statusMessage);
           throw 'Server unreachable';
         } else {
+          print(error.response);
           final restError = RestError.fromJson(error.response.data);
-          if (restError.code == 401) {}
+          if (restError.code == 401) {
+            Get.offAll(LoginPage());
+          }
           throw restError;
         }
       } else {

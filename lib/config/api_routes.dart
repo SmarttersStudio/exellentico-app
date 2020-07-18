@@ -2,7 +2,7 @@
 /// Created By Guru (guru@smarttersstudio.com) on 12/06/20 2:33 PM
 ///
 mixin ApiRoutes {
-  static const baseUrl = 'http://192.168.43.138:3030';
+  static const baseUrl = 'https://ecom.doorvey.com';
   static const upload = 'upload';
   static const String geoCoderApi =
       'https://maps.googleapis.com/maps/api/geocode/json';

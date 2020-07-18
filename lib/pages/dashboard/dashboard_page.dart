@@ -2,14 +2,16 @@ import 'package:ecommerceapp/bloc_models/base_state.dart';
 import 'package:ecommerceapp/bloc_models/course_bloc/course_bloc.dart';
 import 'package:ecommerceapp/bloc_models/course_bloc/index.dart';
 import 'package:ecommerceapp/config/constants.dart';
+import 'package:ecommerceapp/pages/courses/chapters_page/chapters_page.dart';
 import 'package:ecommerceapp/pages/courses/courses_page/courses_page.dart';
+import 'package:ecommerceapp/pages/dashboard/components/bottom_app_bar.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
-import 'package:fancy_drawer/fancy_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 ///
 /// Created By (aurosmruti@smarttersstudio.com) on 7/13/2020 8:29 PM
@@ -20,197 +22,226 @@ class DashboardPage extends StatefulWidget {
   _DashboardPageState createState() => _DashboardPageState();
 }
 
-class _DashboardPageState extends State<DashboardPage> with SingleTickerProviderStateMixin{
-  
-  FancyDrawerController _controller ;
+class _DashboardPageState extends State<DashboardPage>
+    with SingleTickerProviderStateMixin {
+  //https://youtu.be/
+  final code = 'omFCXZyIo88';
+  YoutubePlayerController _controller;
+
   @override
   void initState() {
-    _controller = FancyDrawerController(
-      vsync: this, duration: Duration(milliseconds: 250))
-      ..addListener(() {
-        setState(() {}); // Must call setState
-      });
     super.initState();
     CourseBloc().add(LoadMyCoursesEvent());
+    _controller = YoutubePlayerController(
+      initialVideoId: code,
+      flags: YoutubePlayerFlags(
+        autoPlay: true,
+        mute: false,
+      ),
+    );
   }
+
   @override
   void dispose() {
+    _controller.pause();
     _controller.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    return FancyDrawerWrapper(
-      hideOnContentTap: true,
-      backgroundColor: Colors.white,
-      controller: _controller,
-      drawerItems: <Widget>[],
-    child: Scaffold(
-      body: Padding(
-        padding: EdgeInsets.only(left: 20, top: 50, right: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                GestureDetector(
-                  onTap: (){
-              if(_controller.state == DrawerState.closed){
-                _controller.open();
-              }else
-                _controller.close();
-                  },
-                  child: SvgPicture.asset("assets/icons/menu.svg")),
-                CircleAvatar(
-                  backgroundImage: NetworkImage(SharedPreferenceHelper.user.user.avatar),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Text("Hey ${SharedPreferenceHelper.user.user.firstName},", style: kHeadingextStyle),
-            Text("Find a course you want to learn", style: kSubheadingextStyle),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 10),
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              height: 50,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Color(0xFFF5F5F7),
-                borderRadius: BorderRadius.circular(40),
-              ),
-              child: Row(
-                children: <Widget>[
-                  SvgPicture.asset("assets/icons/search.svg"),
-                  SizedBox(width: 16),
-                  Text(
-                    "Search for anything",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Color(0xFFA0A5BD),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text("Popular Videos", style: kTitleTextStyle),
-              ],
-            ),
-            SizedBox(height: 10),
-            Container(
-              height: 120,
-              child: ListView.builder(
-                itemCount: 10,
-                itemBuilder: (context,index)=>Container(
-                padding: EdgeInsets.all(10),
-                margin: EdgeInsets.all(2),
-                height: 120,
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(16),
-                  image: DecorationImage(
-                    image: AssetImage(''),
-                    fit: BoxFit.fill,
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Scaffold(
+      body: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+                gradient: LinearGradient(colors: [
+              Color.lerp(colorScheme.primary, Colors.black, 0.4),
+              Color.lerp(colorScheme.primary, Colors.black, 0.6)
+            ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 300,
+                  child: Row(
+                    children: [
+                      SizedBox(width: 16),
+                      Flexible(
+                          flex: 2,
+                          child: RichText(
+                            text: TextSpan(
+                                style: TextStyle(
+                                    fontSize: 26,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                                children: [
+                                  TextSpan(text: 'Hey, ', style: TextStyle()),
+                                  TextSpan(
+                                      text:
+                                          '${SharedPreferenceHelper.user.user.firstName}',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w800)),
+                                  TextSpan(
+                                      text: '.\nWhat you like to learn today?',
+                                      style: TextStyle()),
+                                ]),
+                          )),
+                      Flexible(
+                          flex: 3,
+                          child: SvgPicture.asset('assets/icons/home_bg.svg'))
+                    ],
                   ),
                 ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'ABCD',
-                      style: kTitleTextStyle,
-                    ),
-                    Text(
-                      '10 Courses',
-                      style: TextStyle(
-                        color: kTextColor.withOpacity(.5),
-                      ),
-                    )
-                  ],
-                ),
-              ),scrollDirection: Axis.horizontal,),
-            ),
-            SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text("Courses", style: kTitleTextStyle),
-                GestureDetector(
-                  onTap: (){
-                    Get.to(CoursesPage());
-                  },
-                  child: Text(
-                    "See All",
-                    style: kSubtitleTextSyule.copyWith(color: kBlueColor),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 10),
-            Expanded(
-              child: BlocBuilder<CourseBloc, BaseState>(
-                bloc: CourseBloc(),
-                builder: (context, BaseState state){
-                  if(state is LoadingBaseState){
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if(state is ErrorBaseState){
-                    return Center(child: Text(state.errorMessage.toString()),);
-                  }
-                  if(state is EmptyBaseState){
-                    return Center(child: Text("No Courses Available"),);
-                  }
-                  if(state is CourseLoadedState){
-                    return StaggeredGridView.countBuilder(
-                      padding: EdgeInsets.all(0),
-                      crossAxisCount: 2,
-                      itemCount: 10,
-                      crossAxisSpacing: 20,
-                      mainAxisSpacing: 20,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          padding: EdgeInsets.all(20),
-                          height: index.isEven ? 200 : 240,
-                          decoration: BoxDecoration(
-                            color: Colors.blue,
-                            borderRadius: BorderRadius.circular(16),
-                            image: DecorationImage(
-                              image: AssetImage(''),
-                              fit: BoxFit.fill,
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
+                  child: Material(
+//                    color: Color(0xFFF5F5F7),
+                    shape: StadiumBorder(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "Search here",
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Color(0xFFA0A5BD),
                             ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                CourseBloc().courses[index].title,
-                                style: kTitleTextStyle,
-                              ),
-                              Text(
-                                '${CourseBloc().courses[index].chaptersCount} Chapters',
-                                style: TextStyle(
-                                  color: kTextColor.withOpacity(.5),
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                      staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-                    );
-                  }
-                  return Center(child: Text("Some Error Occurred "),);
-                },
+                          SvgPicture.asset("assets/icons/search.svg"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 4),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Material(
+              borderRadius: BorderRadius.circular(22),
+              elevation: 6,
+              clipBehavior: Clip.antiAlias,
+              child: YoutubePlayer(
+                controller: _controller,
               ),
             ),
-          ],
-        ),
+          ),
+          SizedBox(height: 10),
+          Row(
+            children: <Widget>[
+              SizedBox(
+                width: 16,
+              ),
+              Text("Courses", style: kTitleTextStyle),
+              Spacer(),
+              GestureDetector(
+                onTap: () {
+                  Get.to(CoursesPage());
+                },
+                child: Text(
+                  "See All",
+                  style: kSubtitleTextSyule.copyWith(color: kBlueColor),
+                ),
+              ),
+              SizedBox(
+                width: 16,
+              ),
+            ],
+          ),
+          SizedBox(height: 10),
+          BlocBuilder<CourseBloc, BaseState>(
+            builder: (context, BaseState state) {
+              if (state is LoadingBaseState) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (state is ErrorBaseState) {
+                return Center(
+                  child: Text(state.errorMessage.toString()),
+                );
+              }
+              if (state is EmptyBaseState) {
+                return Center(
+                  child: Text("No Courses Available"),
+                );
+              }
+              if (state is CourseLoadedState) {
+                return SizedBox(
+                  height: 120,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.fromLTRB(16, 0, 16, 16),
+//                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+//                      crossAxisCount: 2,
+//                      crossAxisSpacing: 16,
+//                      mainAxisSpacing: 16,
+//                      childAspectRatio: 1.5),
+                    itemCount: CourseBloc().courses.length < 5
+                        ? CourseBloc().courses.length
+                        : 5,
+                    separatorBuilder: (c, i) => SizedBox(
+                      width: 16,
+                    ),
+                    itemBuilder: (context, index) {
+                      return Material(
+                        clipBehavior: Clip.antiAlias,
+                        elevation: 4,
+                        borderRadius: BorderRadius.circular(16),
+                        shadowColor: Colors.grey[100],
+                        child: InkWell(
+                          onTap: () {
+                            Get.to(ChaptersPage(
+                              course: CourseBloc().courses[index],
+                            ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  CourseBloc().courses[index].title,
+                                  style: kTitleTextStyle,
+                                ),
+                                Text(
+                                  '${CourseBloc().courses[index].chaptersCount} Chapters',
+                                  style: TextStyle(
+                                    color: kTextColor.withOpacity(.5),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              }
+              return Center(
+                child: Text("Some Error Occurred "),
+              );
+            },
+          ),
+        ],
       ),
-    ),
+      bottomNavigationBar: DashboardBottomAppbar(
+        currentIndex: 0,
+        onPageChange: (i) {},
+      ),
     );
   }
 }
-

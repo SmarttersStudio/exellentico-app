@@ -21,14 +21,19 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
+    "buttonContinue" : MessageLookupByLibrary.simpleMessage("Continue"),
     "camera" : MessageLookupByLibrary.simpleMessage("Camera"),
     "confirmPassword" : MessageLookupByLibrary.simpleMessage("Confirm Password"),
     "cropYourImage" : MessageLookupByLibrary.simpleMessage("Crop Your Image"),
+    "didNtYouReceivedAnyCode" : MessageLookupByLibrary.simpleMessage("Didn’t receive any code?"),
     "email" : MessageLookupByLibrary.simpleMessage("Email Id"),
+    "enterYourOtpCodeHere" : MessageLookupByLibrary.simpleMessage("Enter your OTP code here"),
+    "enterYourPhoneNumber" : MessageLookupByLibrary.simpleMessage("Enter your phone number"),
     "exellentico" : MessageLookupByLibrary.simpleMessage("Exellentico"),
     "firstName" : MessageLookupByLibrary.simpleMessage("First Name"),
     "flutterDemoHomePage" : MessageLookupByLibrary.simpleMessage("Flutter Demo Home Page"),
     "gallery" : MessageLookupByLibrary.simpleMessage("Gallery"),
+    "invalidPhoneNumber" : MessageLookupByLibrary.simpleMessage("Invalid phone number"),
     "lastName" : MessageLookupByLibrary.simpleMessage("Last Name"),
     "loginAppBar" : MessageLookupByLibrary.simpleMessage("LogIn Page"),
     "loginButton" : MessageLookupByLibrary.simpleMessage("Submit"),
@@ -37,7 +42,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "otpPage" : MessageLookupByLibrary.simpleMessage("OTP Page"),
     "password" : MessageLookupByLibrary.simpleMessage("Password"),
     "phone" : MessageLookupByLibrary.simpleMessage("Phone"),
+    "phoneVerification" : MessageLookupByLibrary.simpleMessage("Phone Verification"),
     "pleaseAllowPermissionToUploadImage" : MessageLookupByLibrary.simpleMessage("Please allow permission to upload image."),
-    "resetPassword" : MessageLookupByLibrary.simpleMessage("Reset Password")
+    "required" : MessageLookupByLibrary.simpleMessage("*required"),
+    "resend" : MessageLookupByLibrary.simpleMessage("Resend"),
+    "resetPassword" : MessageLookupByLibrary.simpleMessage("Reset Password"),
+    "verifyYourPhoneNumber" : MessageLookupByLibrary.simpleMessage("Verify your Phone number")
   };
 }

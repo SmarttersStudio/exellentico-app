@@ -16,5 +16,14 @@
   "gallery": "Gallery",
   "cropYourImage": "Crop Your Image",
   "oops": "Oops!",
-  "pleaseAllowPermissionToUploadImage": "Please allow permission to upload image."
+  "pleaseAllowPermissionToUploadImage": "Please allow permission to upload image.",
+  "required": "*required",
+  "enterYourPhoneNumber": "Enter your phone number",
+  "invalidPhoneNumber": "Invalid phone number",
+  "buttonContinue": "Continue",
+  "didNtYouReceivedAnyCode": "Didn’t receive any code?",
+  "enterYourOtpCodeHere": "Enter your OTP code here",
+  "phoneVerification": "Phone Verification",
+  "resend": "Resend",
+  "verifyYourPhoneNumber": "Verify your Phone number"
 }
