@@ -27,19 +27,21 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Center(child: SvgPicture.asset('assets/icons/logo.svg')),
-          SizedBox(
-            height: 4,
-          ),
-          Text(
-            S.of(context).exellentico,
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700),
-          ),
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Color(0xffc55ff3),
+              Color(0xff2db2db)
+            ],begin: Alignment.topCenter,
+          end: Alignment.bottomCenter)
+        ),
+        child: Stack(
+          children: [
+            Image.asset('assets/images/logo.png'),
+            Image.asset('assets/images/name ex.png')
+          ],
+        ),
       ),
     );
   }

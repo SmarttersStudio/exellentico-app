@@ -32,7 +32,6 @@ class AuthScaffold extends StatelessWidget {
               child: SafeArea(
                 child: Row(
                   children: [
-                    SvgPicture.asset('assets/icons/logo.svg'),
                     SizedBox(
                       width: 4,
                     ),
