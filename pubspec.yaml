@@ -18,46 +18,46 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  dio: ^3.0.9
-  shared_preferences: ^0.5.8
-  flutter_bloc: ^5.0.1
+  dio:
+  shared_preferences:
+  flutter_bloc:
 #  firebase_core: ^0.4.5
 #  firebase_analytics: ^5.0.15
 #  location: ^3.0.2
 #  firebase_messaging: ^6.0.16
 #  image_picker: ^0.6.7+4
 #  image_cropper: ^1.2.3
-  intl: ^0.16.1
-  timeago: ^2.0.26
-  cached_network_image: ^2.2.0+1
+  intl:
+  timeago:
+  cached_network_image:
 #  file_picker: ^1.12.0
-  url_launcher: ^5.4.10
-  shimmer: ^1.1.1
-  razorpay_flutter: ^1.2.1
-  permission_handler: ^5.0.1+1
-  google_sign_in: ^4.5.1
+  url_launcher:
+  shimmer:
+  razorpay_flutter:
+  permission_handler:
+  google_sign_in:
 #  location: ^3.0.2
-  flutter_local_notifications: ^1.4.4+2
-  path_provider: ^1.6.11
+  flutter_local_notifications:
+  path_provider:
 #  flutter_twitter: 1.1.3
 #  github_sign_in: 0.0.3
 #  flutter_linkedin: 1.0.2
-  flutter_facebook_login: ^3.0.0
-  get: ^3.3.0
-  youtube_player_flutter: 7.0.0+7
-  flutter_svg: ^0.18.0
-  flutter_staggered_grid_view: ^0.3.0
+  flutter_facebook_login:
+  get:
+  youtube_player_flutter:
+  flutter_svg:
+  flutter_staggered_grid_view:
 
 
 dev_dependencies:
-  flutter_launcher_icons: ^0.7.5
+  flutter_launcher_icons: ^0.9.2
   flutter_test:
     sdk: flutter
 

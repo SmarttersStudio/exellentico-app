@@ -22,7 +22,7 @@ class VerifyPhonePage extends StatefulWidget {
 
 class _VerifyPhonePageState extends State<VerifyPhonePage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  String _phone;
+  String? _phone;
   bool _autoValidate = false;
   final _buttonKey = GlobalKey<ExellenticoButtonState>();
 
@@ -33,7 +33,6 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
 
     return AuthScaffold(
       body: Scaffold(
-          resizeToAvoidBottomPadding: false,
           backgroundColor: Colors.transparent,
           body: Center(
             child: Stack(
@@ -61,7 +60,7 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
                           SizedBox(height: 8),
                           TextFormField(
                             onSaved: (v) {
-                              _phone = v.trim();
+                              _phone = v!.trim();
                             },
                             onFieldSubmitted: (v) {
                               FocusScope.of(context).unfocus();
@@ -100,9 +99,9 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
                                 hintText: S.of(context).enterYourPhoneNumber,
                                 contentPadding: const EdgeInsets.all(0)),
                             validator: (str) {
-                              if (str.trim().isEmpty)
+                              if (str!.trim().isEmpty)
                                 return S.of(context).required;
-                              else if (str.trim().length != 10)
+                              else if (str!.trim().length != 10)
                                 return S.of(context).invalidPhoneNumber;
                               return null;
                             },
@@ -124,14 +123,14 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
                           onPressed: () {
                             FocusScope.of(context).unfocus();
                             final state = _formKey.currentState;
-                            if (!state.validate()) {
+                            if (!state!.validate()) {
                               setState(() {
                                 _autoValidate = true;
                               });
                             } else {
                               state.save();
-                              _buttonKey.currentState.showLoader();
-                              sendOtpToPhoneNumber(_phone).then((value) {
+                              _buttonKey.currentState?.showLoader();
+                              sendOtpToPhoneNumber(_phone!).then((value) {
                                 ExellenticoSnackBar.show(
                                     'Check your phone', value.toString());
                                 Get.to(PhoneOtpPage(phone: _phone));
@@ -139,7 +138,7 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
                                 ExellenticoSnackBar.show(
                                     'Error', err.toString());
                               }).whenComplete(() {
-                                _buttonKey.currentState.hideLoader();
+                                _buttonKey.currentState?.hideLoader();
                               });
                             }
                           })),

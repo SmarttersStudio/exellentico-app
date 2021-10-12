@@ -11,38 +11,37 @@ import 'package:flutter/services.dart';
 class PinCodeTextField extends StatefulWidget {
   final int length;
   final double fieldHeight, fieldWidth;
-  final BorderRadius borderRadius;
-  final Border border;
-  final Color disableColor, enableFillColor, enableEmptyColor;
+  final BorderRadius? borderRadius;
+  final Border? border;
+  final Color? disableColor, enableFillColor, enableEmptyColor;
   final bool obsecureText;
-  final ValueChanged<String> onChanged;
-  final ValueChanged<String> onCompleted;
-  final ValueChanged<String> onSubmitted;
+  final ValueChanged<String>? onChanged;
+  final ValueChanged<String>? onCompleted;
+  final ValueChanged<String>? onSubmitted;
   final TextStyle textStyle;
   final Color backgroundColor;
   final MainAxisAlignment mainAxisAlignment;
   final TextInputType textInputType;
   final bool autoFocus;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final List<TextInputFormatter> inputFormatters;
   final bool enabled;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final bool enableActiveFill;
   final bool autoDismissKeyboard;
   final bool autoDisposeControllers;
   final TextCapitalization textCapitalization;
   final TextInputAction textInputAction;
-  final bool Function(String text) beforeTextPaste;
   final Brightness keyboardAppearance;
-  final FormFieldValidator<String> validator;
+  final FormFieldValidator<String>? validator;
   final bool autoValidate;
 
   PinCodeTextField({
-    Key key,
-    @required this.length,
+    Key? key,
+    required this.length,
     this.controller,
     this.obsecureText = false,
-    @required this.onChanged,
+    required this.onChanged,
     this.onCompleted,
     this.backgroundColor = Colors.white,
     this.mainAxisAlignment = MainAxisAlignment.center,
@@ -62,7 +61,6 @@ class PinCodeTextField extends StatefulWidget {
     this.autoDismissKeyboard = true,
     this.autoDisposeControllers = true,
     this.onSubmitted,
-    this.beforeTextPaste,
     this.keyboardAppearance = Brightness.light,
     this.validator,
     this.autoValidate = false,
@@ -80,9 +78,9 @@ class PinCodeTextField extends StatefulWidget {
 }
 
 class _PinCodeTextFieldState extends State<PinCodeTextField> {
-  TextEditingController _textEditingController;
-  FocusNode _focusNode;
-  List<String> _inputList;
+  late TextEditingController _textEditingController;
+  late FocusNode _focusNode;
+  late List<String> _inputList;
   int _selectedIndex = 0;
 
   @override
@@ -93,7 +91,7 @@ class _PinCodeTextFieldState extends State<PinCodeTextField> {
     _focusNode.addListener(() {
       setState(() {});
     });
-    _inputList = List<String>(widget.length);
+    _inputList = List.empty();
     _initializeValues();
     super.initState();
   }
@@ -117,7 +115,7 @@ class _PinCodeTextFieldState extends State<PinCodeTextField> {
     if (widget.controller == null) {
       _textEditingController = TextEditingController();
     } else {
-      _textEditingController = widget.controller;
+      _textEditingController = widget.controller!;
     }
     _textEditingController.addListener(() {
       var currentText = _textEditingController.text;
@@ -131,13 +129,13 @@ class _PinCodeTextFieldState extends State<PinCodeTextField> {
             }
             //  delay the onComplete event handler to give the onChange event handler enough time to complete
             Future.delayed(Duration(milliseconds: 300),
-                () => widget.onCompleted(currentText));
+                () => widget.onCompleted?.call(currentText));
           }
 
           if (widget.autoDismissKeyboard) _focusNode.unfocus();
         }
         if (widget.onChanged != null) {
-          widget.onChanged(currentText);
+          widget.onChanged?.call(currentText);
         }
       }
 
@@ -289,7 +287,7 @@ class _PinCodeTextFieldState extends State<PinCodeTextField> {
   }
 
   void _setTextToInput(String data) async {
-    var replaceInputList = List<String>(widget.length);
+    List<String> replaceInputList = [];
 
     for (int i = 0; i < widget.length; i++) {
       replaceInputList[i] = data.length > i ? data[i] : "";

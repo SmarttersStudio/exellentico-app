@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-RestError fitWalletResponseFromJson(String str) => RestError.fromJson(json.decode(str));
+RestError fitWalletResponseFromJson(String str) =>
+    RestError.fromJson(json.decode(str));
 
 String fitWalletResponseToJson(RestError data) => json.encode(data.toJson());
 
@@ -12,15 +13,18 @@ class RestError {
   bool result;
 
   RestError(
-      {this.name, this.message, this.code, this.className, this.result});
+      {required this.name,
+      required this.message,
+      required this.code,
+      required this.className,
+      required this.result});
 
-  factory RestError.fromJson(Map<String, dynamic> json) =>
-    RestError(
-          name: json["name"] ?? '',
-          message: json["message"] ?? '',
-          code: json["code"] ?? 0,
-          className: json["className"] ?? '',
-          result: json['result'] ?? false);
+  factory RestError.fromJson(Map<String, dynamic> json) => RestError(
+      name: json["name"] ?? '',
+      message: json["message"] ?? '',
+      code: json["code"] ?? 0,
+      className: json["className"] ?? '',
+      result: json['result'] ?? false);
   @override
   String toString() => message;
 

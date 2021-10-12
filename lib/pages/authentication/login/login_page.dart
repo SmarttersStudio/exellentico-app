@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   final _buttonKey = GlobalKey<ExellenticoButtonState>();
   final _formKey = GlobalKey<FormState>();
   bool _isObscure = true, _autoValidate = false;
-  String _email, _password;
+  String? _email, _password;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,6 @@ class _LoginPageState extends State<LoginPage> {
 
     return AuthScaffold(
       body: Scaffold(
-        resizeToAvoidBottomPadding: false,
         backgroundColor: Colors.transparent,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -67,12 +66,12 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(height: 8),
                           TextFormField(
                             keyboardType: TextInputType.emailAddress,
-                            onSaved: (v) => _email = v.trim(),
+                            onSaved: (v) => _email = v!.trim(),
                             textInputAction: TextInputAction.next,
                             onFieldSubmitted: (v) =>
                                 FocusScope.of(context).nextFocus(),
                             validator: (v) {
-                              if (v.trim().isEmpty) {
+                              if (v!.trim().isEmpty) {
                                 return '*required';
                               }
                               return null;
@@ -84,11 +83,11 @@ class _LoginPageState extends State<LoginPage> {
                           SizedBox(height: 8),
                           TextFormField(
                             keyboardType: TextInputType.text,
-                            onSaved: (v) => _password = v.trim(),
+                            onSaved: (v) => _password = v!.trim(),
                             onFieldSubmitted: (v) =>
                                 FocusScope.of(context).unfocus(),
                             validator: (v) {
-                              if (v.trim().isEmpty) {
+                              if (v!.trim().isEmpty) {
                                 return '*required';
                               }
                               return null;
@@ -136,16 +135,16 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(S.of(context).loginButton),
                           onPressed: () {
                             final state = _formKey.currentState;
-                            if (!state.validate()) {
+                            if (!state!.validate()) {
                               setState(() {
                                 _autoValidate = true;
                               });
                             } else {
                               state.save();
-                              _buttonKey.currentState.showLoader();
+                              _buttonKey.currentState?.showLoader();
                               signInWithEmail(
-                                email: _email,
-                                password: _password,
+                                email: _email!,
+                                password: _password!,
                               ).then((value) {
                                 onAuthenticationSuccess(value);
                               }).catchError((err, s) {
@@ -154,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                                 ExellenticoSnackBar.show(
                                     "ERROR", err.toString());
                               }).then((value) {
-                                _buttonKey.currentState.hideLoader();
+                                _buttonKey.currentState?.hideLoader();
                               });
                             }
                           })),

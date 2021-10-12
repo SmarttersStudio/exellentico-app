@@ -17,7 +17,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     super.initState();
-    SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       Future.delayed(Duration(seconds: 3)).then((value) {
         checkLevel();
       });
@@ -29,13 +29,10 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Color(0xffc55ff3),
-              Color(0xff2db2db)
-            ],begin: Alignment.topCenter,
-          end: Alignment.bottomCenter)
-        ),
+            gradient: LinearGradient(
+                colors: [Color(0xffc55ff3), Color(0xff2db2db)],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter)),
         child: Stack(
           children: [
             Image.asset('assets/images/logo.png'),

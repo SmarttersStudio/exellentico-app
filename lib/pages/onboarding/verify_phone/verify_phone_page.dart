@@ -44,7 +44,7 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
                 keyboardType: TextInputType.number,
                 onChanged: (value) => _phone = value,
                 validator: (value) {
-                  _phone = value;
+                  _phone = value!;
                   return MyFormValidators.validatePhone(value);
                 },
                 decoration: Decorations.authTextFieldDecoration()
@@ -59,9 +59,9 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
                   key: _buttonKey,
                   child: Text("Proceed"),
                   onPressed: () {
-                    if (_formKey.currentState.validate()) {
+                    if (_formKey.currentState!.validate()) {
                       print("Form is Validated");
-                      _buttonKey.currentState.showLoader();
+                      _buttonKey.currentState?.showLoader();
                       sendOtpToPhoneNumber(_phone).then((value) {
                         ExellenticoSnackBar.show("Check your phone", "");
                         Get.to(VerifyPhoneOTPPage(
@@ -70,7 +70,7 @@ class _VerifyPhonePageState extends State<VerifyPhonePage> {
                       }).catchError((err) {
                         ExellenticoSnackBar.show("ERROR", err.toString());
                       }).whenComplete(
-                          () => _buttonKey.currentState.hideLoader());
+                          () => _buttonKey.currentState?.hideLoader());
                     } else {
                       setState(() => _autoValidate = true);
                     }

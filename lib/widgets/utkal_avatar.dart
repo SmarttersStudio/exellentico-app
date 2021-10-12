@@ -5,10 +5,10 @@ import 'package:flutter/material.dart';
 /// Created by Sunil Kumar on 07-07-2020 06:14 PM.
 ///
 class ExellenticoCircleAvatar extends StatelessWidget {
-  final String userId;
-  final String name;
+  final String? userId;
+  final String? name;
   final String imageUrl;
-  final double radius;
+  final double? radius;
   const ExellenticoCircleAvatar(this.imageUrl,
       {this.userId, this.name, this.radius});
 
@@ -45,8 +45,8 @@ class ExellenticoCircleAvatar extends StatelessWidget {
 
 class AvatarPlaceholder extends StatelessWidget {
   final String firstLetter;
-  final double radius;
-  final Color backgroundColor, textColor;
+  final double? radius;
+  final Color? backgroundColor, textColor;
   AvatarPlaceholder(this.firstLetter,
       {this.radius, this.backgroundColor, this.textColor})
       : assert(firstLetter != null, firstLetter.isNotEmpty);

@@ -7,63 +7,65 @@ import 'package:flutter/material.dart';
 /// Created By AURO (aurosmruti@smarttersstudio.com) on 7/14/2020 2:48 PM
 ///
 
-
-
 @immutable
 abstract class ChapterEvent {
   Stream<BaseState> applyAsync({BaseState currentState, ChapterBloc bloc});
 }
 
-class LoadMyChaptersEvent extends ChapterEvent{
+class LoadMyChaptersEvent extends ChapterEvent {
   final String courseId;
   final int limit = 10;
   final int skip = 0;
   LoadMyChaptersEvent(this.courseId);
   @override
-  Stream<BaseState> applyAsync({BaseState currentState, ChapterBloc bloc}) async* {
-    try{
+  Stream<BaseState> applyAsync(
+      {BaseState? currentState, ChapterBloc? bloc}) async* {
+    try {
       yield LoadingBaseState();
-      final  result = await getAllChapters(courseId, skip, limit);
+      final result = await getAllChapters(courseId, skip, limit);
       if (result.data.isEmpty) {
-        bloc.chapterSkipData = 0;
-        bloc.chapterShouldLoadMore = false;
+        bloc?.chapterSkipData = 0;
+        bloc?.chapterShouldLoadMore = false;
         yield EmptyBaseState();
       } else {
-        if (result.data.length < limit && bloc.chapterSkipData == 0) {
-          bloc.chapterShouldLoadMore = false;
+        if (result.data.length < limit && bloc?.chapterSkipData == 0) {
+          bloc?.chapterShouldLoadMore = false;
         }
-        bloc.chapters = result.data;
+        bloc?.chapters = result.data;
         yield ChapterLoadedState();
       }
-    }catch(_,s){
+    } catch (_, s) {
       print(s);
-      yield ErrorBaseState(_?.toString());
+      yield ErrorBaseState(_.toString());
     }
   }
 }
 
-class LoadMoreChaptersEvent extends ChapterEvent{
+class LoadMoreChaptersEvent extends ChapterEvent {
   final String courseId;
   final int limit = 10;
   LoadMoreChaptersEvent(this.courseId);
   @override
-  Stream<BaseState> applyAsync({BaseState currentState, ChapterBloc bloc}) async* {
-    try{
-      if(bloc.chapterShouldLoadMore){
+  Stream<BaseState> applyAsync(
+      {BaseState? currentState, ChapterBloc? bloc}) async* {
+    if (bloc == null) return;
+    try {
+      if (bloc.chapterShouldLoadMore) {
         bloc.chapterSkipData = bloc.chapters.length;
-        final  result = await getAllChapters(courseId, bloc.chapterSkipData, limit);
-        if(result.data.isEmpty){
+        final result =
+            await getAllChapters(courseId, bloc.chapterSkipData, limit);
+        if (result.data.isEmpty) {
           bloc.chapterShouldLoadMore = false;
-        }else{
+        } else {
           bloc.chapters += result.data;
         }
         yield ChapterLoadedState();
-      }else{
-        yield currentState;
+      } else {
+        yield currentState!;
       }
-    }catch(_,s){
+    } catch (_, s) {
       print(s);
-      yield ErrorBaseState(_?.toString());
+      yield ErrorBaseState(_.toString());
     }
   }
 }

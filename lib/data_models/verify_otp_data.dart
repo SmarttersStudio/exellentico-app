@@ -11,7 +11,7 @@ String verifyOtpDataToJson(VerifyOtpData data) => json.encode(data.toJson());
 
 class VerifyOtpData {
   VerifyOtpData({
-    this.accessToken,
+    required   this.accessToken,
   });
 
   String accessToken;

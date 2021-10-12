@@ -16,15 +16,15 @@ import 'package:get/get.dart';
 
 class OTPPage extends StatefulWidget {
   static final routeName = '/OTPPage';
-  final String email;
+  final String? email;
   OTPPage({this.email});
   @override
   _OTPPageState createState() => _OTPPageState();
 }
 
 class _OTPPageState extends State<OTPPage> {
-  String _otp;
-  Timer _timer;
+  String? _otp;
+  late Timer _timer;
   int timerCounter = 59;
   bool isLoading = false;
 
@@ -116,7 +116,7 @@ class _OTPPageState extends State<OTPPage> {
                               setState(() => isLoading = true);
                               verifyOtpForPasswordReset(
                                       pin: int.parse(val.trim()),
-                                      email: widget.email)
+                                      email: widget.email!)
                                   .then((value) {
                                 setState(() => isLoading = false);
                                 if (value.accessToken.isNotEmpty) {

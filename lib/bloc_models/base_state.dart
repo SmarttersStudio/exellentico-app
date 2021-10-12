@@ -1,6 +1,6 @@
 abstract class BaseState {
   final List properties;
-  BaseState([this.properties]);
+  BaseState([this.properties = const []]);
   BaseState getStateCopy();
   List<Object> get props => ([...properties ?? []]);
 }
@@ -52,4 +52,3 @@ class LoadingBaseState extends BaseState {
     return LoadingBaseState();
   }
 }
-

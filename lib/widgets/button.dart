@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 
 class ExellenticoButton extends StatefulWidget {
   const ExellenticoButton(
-      {@required this.child,
-      Key key,
+      {required this.child,
+      Key? key,
       this.gradient,
       this.onPressed,
       this.height,
@@ -19,9 +19,9 @@ class ExellenticoButton extends StatefulWidget {
       : super(key: key);
 
   final Widget child;
-  final Gradient gradient, disableGradient;
-  final VoidCallback onPressed;
-  final double height, width;
+  final Gradient? gradient, disableGradient;
+  final VoidCallback? onPressed;
+  final double? height, width;
 
   @override
   ExellenticoButtonState createState() => ExellenticoButtonState();
@@ -52,9 +52,9 @@ class ExellenticoButtonState extends State<ExellenticoButton> {
       gradientCopy = widget.disableGradient ??
           (colorScheme.brightness == Brightness.light
               ? LinearGradient(
-                  colors: <Color>[Colors.grey[500], Colors.grey[400]])
+                  colors: <Color>[Colors.grey[500]!, Colors.grey[400]!])
               : LinearGradient(
-                  colors: <Color>[Colors.grey[600], Colors.grey[500]]));
+                  colors: <Color>[Colors.grey[600]!, Colors.grey[500]!]));
     } else {
       gradientCopy = widget.gradient ?? getDynamicGradient(context);
     }

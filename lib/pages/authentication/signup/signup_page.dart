@@ -24,7 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _formKey = GlobalKey<FormState>();
   bool _obSecure = true;
   bool _autoValidate = false;
-  String _password, _confirmPassword, _firstName, _lastName, _email;
+  late String _password, _confirmPassword, _firstName, _lastName, _email;
   final _buttonKey = GlobalKey<ExellenticoButtonState>();
 
   @override
@@ -65,12 +65,12 @@ class _SignUpPageState extends State<SignUpPage> {
                             TextFormField(
                               keyboardType: TextInputType.text,
                               textCapitalization: TextCapitalization.words,
-                              onSaved: (v) => _firstName = v.trim(),
+                              onSaved: (v) => _firstName = v!.trim(),
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (v) =>
                                   FocusScope.of(context).nextFocus(),
                               validator: (v) {
-                                if (v.trim().isEmpty) {
+                                if (v!.trim().isEmpty) {
                                   return '*required';
                                 }
                                 return null;
@@ -83,12 +83,12 @@ class _SignUpPageState extends State<SignUpPage> {
                             TextFormField(
                               keyboardType: TextInputType.text,
                               textCapitalization: TextCapitalization.words,
-                              onSaved: (v) => _lastName = v.trim(),
+                              onSaved: (v) => _lastName = v!.trim(),
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (v) =>
                                   FocusScope.of(context).nextFocus(),
                               validator: (v) {
-                                if (v.trim().isEmpty) {
+                                if (v!.trim().isEmpty) {
                                   return '*required';
                                 }
                                 return null;
@@ -100,12 +100,12 @@ class _SignUpPageState extends State<SignUpPage> {
                             SizedBox(height: 8),
                             TextFormField(
                               keyboardType: TextInputType.emailAddress,
-                              onSaved: (v) => _email = v.trim(),
+                              onSaved: (v) => _email = v!.trim(),
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (v) =>
                                   FocusScope.of(context).nextFocus(),
                               validator: (v) {
-                                if (v.trim().isEmpty) {
+                                if (v!.trim().isEmpty) {
                                   return '*required';
                                 }
                                 if (!v.trim().isEmail) {
@@ -119,12 +119,12 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                             SizedBox(height: 8),
                             TextFormField(
-                              onSaved: (v) => _password = v.trim(),
+                              onSaved: (v) => _password = v!.trim(),
                               textInputAction: TextInputAction.next,
                               onFieldSubmitted: (v) =>
                                   FocusScope.of(context).nextFocus(),
                               validator: (v) {
-                                if (v.trim().isEmpty) {
+                                if (v!.trim().isEmpty) {
                                   return '*required';
                                 }
                                 if (v.trim().length < 8) {
@@ -154,12 +154,12 @@ class _SignUpPageState extends State<SignUpPage> {
                             ),
                             SizedBox(height: 8),
                             TextFormField(
-                              onSaved: (v) => _confirmPassword = v.trim(),
+                              onSaved: (v) => _confirmPassword = v!.trim(),
                               textInputAction: TextInputAction.done,
                               onFieldSubmitted: (v) =>
                                   FocusScope.of(context).unfocus(),
                               validator: (v) {
-                                if (v.trim() != _password.trim()) {
+                                if (v!.trim() != _password.trim()) {
                                   return 'Passwords didn\'t match.';
                                 }
                                 return null;
@@ -197,13 +197,13 @@ class _SignUpPageState extends State<SignUpPage> {
                             FocusScope.of(context).unfocus();
 
                             final state = _formKey.currentState;
-                            if (!state.validate()) {
+                            if (!state!.validate()) {
                               setState(() {
                                 _autoValidate = true;
                               });
                             } else {
-                              state.save();
-                              _buttonKey.currentState.showLoader();
+                              state!.save();
+                              _buttonKey.currentState?.showLoader();
                               signUpWithEmail(
                                       email: _email,
                                       password: _confirmPassword,
@@ -216,7 +216,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ExellenticoSnackBar.show(
                                     "ERROR", err.toString());
                               }).then((value) {
-                                _buttonKey.currentState.hideLoader();
+                                _buttonKey.currentState?.hideLoader();
                               });
                             }
                           }),

@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class ChapterCard extends StatelessWidget {
   final ChapterDatum data;
-  ChapterCard({this.data});
+  ChapterCard({required this.data});
   @override
   Widget build(BuildContext context) {
     return data == null

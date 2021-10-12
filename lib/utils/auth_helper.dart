@@ -16,11 +16,11 @@ void onAuthenticationSuccess(UserResponse user) {
 
 void checkLevel() {
   String token = SharedPreferenceHelper.accessToken;
-  UserResponse user = SharedPreferenceHelper.user;
+  UserResponse? user = SharedPreferenceHelper.user;
 
   if (token == null)
     Get.offAll(LoginPage());
-  else if (user.user.phone.isEmpty)
+  else if (user!.user!.phone.isEmpty)
     Get.offAll(VerifyPhonePage());
   else
     Get.offAll(DashboardPage());

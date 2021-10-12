@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 /// Created By AURO (aurosmruti@smarttersstudio.com) on 7/14/2020 8:21 AM
 ///
 
-Future<String> sendPasswordResetEmail({@required String email}) async {
+Future<String> sendPasswordResetEmail({required String email}) async {
   final result = await ApiCall.generalApiCall(
       ApiRoutes.forgetPassword, RequestMethod.create,
       body: {"email": email, "target": "email"});
@@ -16,7 +16,7 @@ Future<String> sendPasswordResetEmail({@required String email}) async {
 }
 
 Future<VerifyOtpData> verifyOtpForPasswordReset(
-    {@required int pin, @required String email}) async {
+    {required int pin, required String email}) async {
   final result = await ApiCall.generalApiCall(
       ApiRoutes.verifyMailOTP, RequestMethod.create,
       body: {"otp": pin, "email": email});
@@ -24,9 +24,9 @@ Future<VerifyOtpData> verifyOtpForPasswordReset(
 }
 
 Future<String> updatePassword(
-    {@required String password,
-    @required String confirmPassword,
-    @required String verifyToken}) async {
+    {required String password,
+    required String confirmPassword,
+    required String verifyToken}) async {
   final result = await ApiCall.generalApiCall(
       ApiRoutes.resetPassword, RequestMethod.create, body: {
     "password": password,

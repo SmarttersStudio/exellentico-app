@@ -64,7 +64,7 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
           onAuthenticationSuccess(value);
         }).catchError((err) {
           facebookLogin.logOut();
-          ExellenticoSnackBar.show('Error', err?.toString());
+          ExellenticoSnackBar.show('Error', err.toString());
           setState(() {
             _isSocialMediaButtonDisabled = false;
             _isFbLoading = false;
@@ -75,16 +75,16 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
           });
         });
         await facebookLogin.logOut();
-        return true;
+        return;
         break;
     }
   }
 
   void _signInGoogle() {
     googleSignIn.signIn().then((result) {
-      result.authHeaders.then((value) {
+      result!.authHeaders.then((value) {
         print(value['Authorization']);
-        String s = value['Authorization'];
+        String s = value['Authorization']!;
         s = s.replaceAll('Bearer', '');
         print(s.trim());
         googleSignIn.signOut().then((value) {
@@ -96,7 +96,7 @@ class _SocialSignInPageState extends State<SocialSignInPage> {
               .then((value) {
             onAuthenticationSuccess(value);
           }).catchError((onError) {
-            ExellenticoSnackBar.show('Error', onError?.toString());
+            ExellenticoSnackBar.show('Error', onError.toString());
             setState(() {
               _isSocialMediaButtonDisabled = false;
               _isGoogleLoading = false;

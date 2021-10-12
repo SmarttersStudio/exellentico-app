@@ -10,7 +10,7 @@ import 'package:ecommerceapp/utils/shared_preference_helper.dart';
 ///Api Call to send the otp to given phone number
 Future<String> sendOtpToPhoneNumber(String phone) async {
   final String path = ApiRoutes.phoneVerify;
-  final String userId = SharedPreferenceHelper.user.user.id;
+  final String? userId = SharedPreferenceHelper.user?.user?.id;
   final body = {"user": userId, "phone": phone};
   final result =
       await ApiCall.generalApiCall(path, RequestMethod.create, body: body);
@@ -20,12 +20,12 @@ Future<String> sendOtpToPhoneNumber(String phone) async {
 ///Api call to verify the OTP provided by the user
 Future<String> verifyOTP(String phone, String otp) async {
   String path = ApiRoutes.verifyOTP;
-  String userId = SharedPreferenceHelper.user.user.id;
+  String? userId = SharedPreferenceHelper.user?.user?.id;
   final body = {"user": userId, "phone": phone, "otp": otp};
   final result =
       await ApiCall.generalApiCall(path, RequestMethod.create, body: body);
   final user = SharedPreferenceHelper.user;
-  user.user.phone = phone;
+  user?.user?.phone = phone;
   SharedPreferenceHelper.storeUser(user: user);
   return result.data['message'];
 }
