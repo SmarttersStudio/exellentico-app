@@ -7,33 +7,38 @@ import 'package:flutter/material.dart';
 
 class EpisodesCard extends StatelessWidget {
   final EpisodeDatum data;
-  EpisodesCard({this.data});
+  EpisodesCard({required this.data});
   @override
   Widget build(BuildContext context) {
-    return data==null?Container():Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          Padding(
+    return data == null
+        ? Container()
+        : Padding(
             padding: const EdgeInsets.all(8.0),
-            child: CircleAvatar(
-              radius: 25,
-              backgroundImage: NetworkImage('https://www.newsfolo.com/wp-content/uploads/2017/08/youtube.jpg'),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    radius: 25,
+                    backgroundImage: NetworkImage(
+                        'https://www.newsfolo.com/wp-content/uploads/2017/08/youtube.jpg'),
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      data.title ?? '',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    Text(
+                      "video code : " + data.youtubeCode ?? '',
+                      style: TextStyle(fontSize: 12),
+                    )
+                  ],
+                )
+              ],
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(data.title??'', style: TextStyle(
-                  fontSize: 15
-              ),),
-              Text("video code : "+data.youtubeCode??'', style: TextStyle(
-                  fontSize: 12
-              ),)
-            ],
-          )
-        ],
-      ),
-    );
+          );
   }
 }

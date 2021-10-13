@@ -12,10 +12,10 @@ String chapterDataToJson(ChapterData data) => json.encode(data.toJson());
 
 class ChapterData {
   ChapterData({
-    this.total,
-    this.limit,
-    this.skip,
-    this.data,
+    required this.total,
+    required    this.limit,
+    required   this.skip,
+    required   this.data,
   });
 
   int total;
@@ -40,15 +40,15 @@ class ChapterData {
 
 class ChapterDatum {
   ChapterDatum({
-    this.id,
-    this.deleted,
-    this.name,
-    this.description,
-    this.courseId,
-    this.createdBy,
-    this.createdAt,
-    this.updatedAt,
-    this.v,
+    required  this.id,
+    required   this.deleted,
+    required  this.name,
+    required     this.description,
+    required  this.courseId,
+    required     this.createdBy,
+    required  this.createdAt,
+    required  this.updatedAt,
+    required  this.v,
   });
 
   String id;

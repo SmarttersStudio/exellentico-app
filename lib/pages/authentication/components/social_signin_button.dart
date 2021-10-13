@@ -43,7 +43,7 @@ class GoogleSignInButton extends StatelessWidget {
       final result = await googleSignIn.signIn();
       if (result != null) {
         await result.authHeaders.then((value) async {
-          String s = value['Authorization'];
+          String s = value['Authorization']!;
           s = s.replaceAll('Bearer', '');
           await googleSignIn.signOut().then((value) async {
             await signInWithSocialMedia(
@@ -110,7 +110,7 @@ class FacebookSignInButton extends StatelessWidget {
           onAuthenticationSuccess(value);
         }).catchError((err) {
           Get.back();
-          ExellenticoSnackBar.show('Error', err?.toString());
+          ExellenticoSnackBar.show('Error', err.toString());
         });
         await facebookLogin.logOut();
         return true;

@@ -21,7 +21,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   final _formKey = GlobalKey<FormState>();
   final _buttonKey = GlobalKey<ExellenticoButtonState>();
   bool _autoValidate = false;
-  String _emailId;
+  String? _emailId;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,6 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
 
     return AuthScaffold(
       body: Scaffold(
-        resizeToAvoidBottomPadding: false,
         backgroundColor: Colors.transparent,
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -61,12 +60,12 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           TextFormField(
                             autofocus: true,
                             keyboardType: TextInputType.emailAddress,
-                            onSaved: (v) => _emailId = v.trim(),
+                            onSaved: (v) => _emailId = v!.trim(),
                             textInputAction: TextInputAction.done,
                             onFieldSubmitted: (v) =>
                                 FocusScope.of(context).unfocus(),
                             validator: (v) {
-                              if (v.trim().isEmpty) {
+                              if (v!.trim().isEmpty) {
                                 return '*required';
                               }
                               return null;
@@ -91,14 +90,14 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                           child: Text('Send OTP'),
                           onPressed: () {
                             final state = _formKey.currentState;
-                            if (!state.validate()) {
+                            if (!state!.validate()) {
                               setState(() {
                                 _autoValidate = true;
                               });
                             } else {
                               state.save();
-                              _buttonKey.currentState.showLoader();
-                              sendPasswordResetEmail(email: _emailId)
+                              _buttonKey.currentState?.showLoader();
+                              sendPasswordResetEmail(email: _emailId!)
                                   .then((value) {
                                 Get.to(OTPPage(
                                   email: _emailId,
@@ -107,7 +106,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                                 ExellenticoSnackBar.show(
                                     "ERROR", err.toString());
                               }).whenComplete(() {
-                                _buttonKey.currentState.hideLoader();
+                                _buttonKey.currentState?.hideLoader();
                               });
                             }
                           })),

@@ -12,15 +12,15 @@ import 'package:get/get.dart';
 /// Created by Sunil Kumar on 07-07-2020 07:32 AM.
 ///
 class PhoneOtpPage extends StatefulWidget {
-  final String phone;
+  final String? phone;
   PhoneOtpPage({this.phone});
   @override
   _PhoneOtpPageState createState() => _PhoneOtpPageState();
 }
 
 class _PhoneOtpPageState extends State<PhoneOtpPage> {
-  String _otp;
-  Timer _timer;
+  String? _otp;
+  late Timer _timer;
   int timerCounter = 59;
   bool isLoading = false;
 
@@ -61,7 +61,6 @@ class _PhoneOtpPageState extends State<PhoneOtpPage> {
 
     return AuthScaffold(
         body: Scaffold(
-            resizeToAvoidBottomPadding: false,
             backgroundColor: Colors.transparent,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +109,7 @@ class _PhoneOtpPageState extends State<PhoneOtpPage> {
                                 },
                                 onCompleted: (val) {
                                   setState(() => isLoading = true);
-                                  verifyOTP(widget.phone, _otp).then((value) {
+                                  verifyOTP(widget.phone!, _otp!).then((value) {
                                     setState(() => isLoading = false);
                                     ExellenticoSnackBar.show(
                                         'OTP Verification Successful',
@@ -150,7 +149,7 @@ class _PhoneOtpPageState extends State<PhoneOtpPage> {
                                             isLoading = true;
                                           });
                                           sendOtpToPhoneNumber(
-                                                  widget.phone.trim())
+                                                  widget.phone!.trim())
                                               .then((String value) {
                                             ExellenticoSnackBar.show(
                                                 'Check your phone',

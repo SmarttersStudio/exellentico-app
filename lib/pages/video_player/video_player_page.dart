@@ -5,16 +5,15 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 /// Created By AURO (aurosmruti@smarttersstudio.com) on 7/15/2020 8:32 AM
 ///
 
-
 class VideoPlayerPage extends StatefulWidget {
   final String videoCode;
-  VideoPlayerPage({this.videoCode});
+  VideoPlayerPage({required this.videoCode});
   @override
   _VideoPlayerPageState createState() => _VideoPlayerPageState();
 }
 
 class _VideoPlayerPageState extends State<VideoPlayerPage> {
-  YoutubePlayerController _controller;
+  late YoutubePlayerController _controller;
 
   @override
   void initState() {
@@ -35,7 +34,6 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -45,7 +43,9 @@ class _VideoPlayerPageState extends State<VideoPlayerPage> {
             YoutubePlayer(
               controller: _controller,
             ),
-            SizedBox(height: 50,),
+            SizedBox(
+              height: 50,
+            ),
             Text("Video Player is Under Construction")
           ],
         ),

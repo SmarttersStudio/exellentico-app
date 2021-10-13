@@ -15,7 +15,7 @@ import 'package:get/get.dart';
 
 class UpdatePasswordPage extends StatefulWidget {
   static final routeName = '/updatePasswordPage';
-  final String token;
+  final String? token;
   UpdatePasswordPage({this.token});
 
   @override
@@ -25,7 +25,7 @@ class UpdatePasswordPage extends StatefulWidget {
 class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
   final _formKey = GlobalKey<FormState>();
   bool _isVisible = false, _autoValidate = false;
-  String _password, _confirmPassword;
+  String? _password, _confirmPassword;
   final GlobalKey<ExellenticoButtonState> _buttonKey = GlobalKey();
 
   @override
@@ -35,7 +35,6 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
 
     return AuthScaffold(
       body: Scaffold(
-          resizeToAvoidBottomPadding: false,
           backgroundColor: Colors.transparent,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +63,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                             ),
                             SizedBox(height: 8),
                             TextFormField(
-                              onSaved: (v) => _password = v.trim(),
+                              onSaved: (v) => _password = v!.trim(),
                               onChanged: (v) {
                                 setState(() {
                                   _password = v.trim();
@@ -74,10 +73,10 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                               onFieldSubmitted: (v) =>
                                   FocusScope.of(context).unfocus(),
                               validator: (v) {
-                                if (v.trim().isEmpty) {
+                                if (v!.trim().isEmpty) {
                                   return 'Password can\'t be empty.';
                                 }
-                                if (v.trim().length < 8) {
+                                if (v!.trim().length < 8) {
                                   return 'Password must be 8 or more characters long.';
                                 }
                                 return null;
@@ -88,13 +87,13 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                             ),
                             SizedBox(height: 8),
                             TextFormField(
-                              onSaved: (v) => _confirmPassword = v.trim(),
+                              onSaved: (v) => _confirmPassword = v!.trim(),
                               textInputAction: TextInputAction.done,
                               onFieldSubmitted: (v) =>
                                   FocusScope.of(context).unfocus(),
                               validator: (v) {
                                 if (_password != null &&
-                                    v.trim() != _password) {
+                                    v!.trim() != _password) {
                                   return 'Passwords didn\'t match.';
                                 }
                                 return null;
@@ -119,17 +118,17 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                             child: Text('Change password'),
                             onPressed: () {
                               final state = _formKey.currentState;
-                              if (!state.validate()) {
+                              if (!state!.validate()) {
                                 setState(() {
                                   _autoValidate = true;
                                 });
                               } else {
                                 state.save();
-                                _buttonKey.currentState.showLoader();
+                                _buttonKey.currentState!.showLoader();
                                 updatePassword(
-                                        password: _password,
-                                        confirmPassword: _confirmPassword,
-                                        verifyToken: widget.token)
+                                        password: _password!,
+                                        confirmPassword: _confirmPassword!,
+                                        verifyToken: widget.token!)
                                     .then((value) {
                                   ExellenticoSnackBar.show(
                                       "Success", value.toString());
@@ -139,7 +138,7 @@ class _UpdatePasswordPageState extends State<UpdatePasswordPage> {
                                   ExellenticoSnackBar.show(
                                       "ERROR", err.toString());
                                 }).then((value) {
-                                  _buttonKey.currentState.hideLoader();
+                                  _buttonKey.currentState?.hideLoader();
                                 });
                               }
                             })),

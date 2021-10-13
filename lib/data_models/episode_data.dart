@@ -11,10 +11,10 @@ String episodeDataToJson(EpisodeData data) => json.encode(data.toJson());
 
 class EpisodeData {
   EpisodeData({
-    this.total,
-    this.limit,
-    this.skip,
-    this.data,
+    required  this.total,
+    required  this.limit,
+    required  this.skip,
+    required  this.data,
   });
 
   int total;
@@ -39,17 +39,17 @@ class EpisodeData {
 
 class EpisodeDatum {
   EpisodeDatum({
-    this.id,
-    this.attachments,
-    this.deleted,
-    this.title,
-    this.videoUrl,
-    this.youtubeCode,
-    this.chapterId,
-    this.createdBy,
-    this.createdAt,
-    this.updatedAt,
-    this.v,
+    required    this.id,
+    required    this.attachments,
+    required   this.deleted,
+    required   this.title,
+    required   this.videoUrl,
+    required   this.youtubeCode,
+    required   this.chapterId,
+    required   this.createdBy,
+    required   this.createdAt,
+    required   this.updatedAt,
+    required   this.v,
   });
 
   String id;
@@ -72,7 +72,7 @@ class EpisodeDatum {
         ? json['attachments'] != null
         ? List<String>.from(json["attachments"].map((x) => x))
         : []
-        : null,
+        : [],
     deleted: json.containsKey('deleted')
         ? json["deleted"] != null ? json["deleted"] : false
         : null,

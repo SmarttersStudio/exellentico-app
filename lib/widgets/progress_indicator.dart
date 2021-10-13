@@ -6,7 +6,7 @@ import 'dart:math' as math show sin, pi;
 ///
 class ExellenticoProgress extends StatefulWidget {
   final double size;
-  final Color color;
+  final Color? color;
   final itemCount;
   ExellenticoProgress({this.size = 46.0, this.color, this.itemCount = 5});
 
@@ -16,7 +16,7 @@ class ExellenticoProgress extends StatefulWidget {
 
 class _ExellenticoProgressState extends State<ExellenticoProgress>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
+  late AnimationController _controller;
 
   @override
   void initState() {
@@ -43,7 +43,7 @@ class _ExellenticoProgressState extends State<ExellenticoProgress>
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: List.generate(_bars.length, (i) {
             return ScaleYWidget(
-              scaleY: DelayTween(begin: .4, end: 1.0, delay: _bars[i])
+              scale: DelayTween(begin: .4, end: 1.0, delay: _bars[i])
                   .animate(_controller),
               child: SizedBox.fromSize(
                   size:
@@ -73,14 +73,14 @@ class _ExellenticoProgressState extends State<ExellenticoProgress>
 }
 
 class DelayTween extends Tween<double> {
-  DelayTween({double begin, double end, this.delay})
+  DelayTween({double? begin, double? end, this.delay})
       : super(begin: begin, end: end);
 
-  final double delay;
+  final double? delay;
 
   @override
   double lerp(double t) =>
-      super.lerp((math.sin((t - delay) * 2 * math.pi) + 1) / 2);
+      super.lerp((math.sin((t - (delay ?? 0)) * 2 * math.pi) + 1) / 2);
 
   @override
   double evaluate(Animation<double> animation) => lerp(animation.value);
@@ -88,16 +88,16 @@ class DelayTween extends Tween<double> {
 
 class ScaleYWidget extends AnimatedWidget {
   const ScaleYWidget({
-    Key key,
-    @required Animation<double> scaleY,
-    @required this.child,
+    Key? key,
+    required this.scale,
+    required this.child,
     this.alignment = Alignment.center,
-  }) : super(key: key, listenable: scaleY);
+  }) : super(key: key, listenable: scale);
 
   final Widget child;
   final Alignment alignment;
 
-  Animation<double> get scale => listenable;
+  final Animation<double> scale;
 
   @override
   Widget build(BuildContext context) {

@@ -4,10 +4,9 @@ import 'package:ecommerceapp/config/api_routes.dart';
 import 'package:ecommerceapp/config/enums.dart';
 import 'package:ecommerceapp/config/index.dart';
 import 'package:ecommerceapp/data_models/rest_error.dart';
-import 'package:ecommerceapp/data_models/reverse_geocoder.dart';
 import 'package:ecommerceapp/pages/authentication/login/login_page.dart';
 import 'package:ecommerceapp/utils/shared_preference_helper.dart';
-import 'package:get/get.dart';
+import 'package:get/get.dart' as g;
 
 class ApiCall {
   static Future<Response> generalApiCall(
@@ -50,14 +49,14 @@ class ApiCall {
         if (error.error is SocketException) {
           throw 'No Internet Connection';
         }
-        if (error.response.statusCode == 502) {
-          print(error.response.statusMessage);
+        if (error.response!.statusCode == 502) {
+          print(error.response!.statusMessage);
           throw 'Server unreachable';
         } else {
           print(error.response);
-          final restError = RestError.fromJson(error.response.data);
+          final restError = RestError.fromJson(error.response!.data);
           if (restError.code == 401) {
-            Get.offAll(LoginPage());
+            g.Get.offAll(LoginPage());
           }
           throw restError;
         }
@@ -67,7 +66,7 @@ class ApiCall {
     }
   }
 
-  static Future<String> singleFileUpload(File file,
+  static Future<String?> singleFileUpload(File file,
       {String path = ApiRoutes.upload,
       RequestMethod requestMethod = RequestMethod.create}) async {
     try {
@@ -93,10 +92,10 @@ class ApiCall {
       throw 'No Internet Connection';
     } catch (error) {
       if (error is DioError) {
-        if (error.response.statusCode == 502) {
+        if (error.response!.statusCode == 502) {
           throw 'Server unreachable';
         } else {
-          final restError = RestError.fromJson(error.response.data);
+          final restError = RestError.fromJson(error.response!.data);
           if (restError.code == 401) {}
           throw restError;
         }

@@ -12,8 +12,8 @@ String checkUserNameDataToJson(CheckUserNameData data) =>
 
 class CheckUserNameData {
   CheckUserNameData({
-    this.result,
-    this.message,
+    required this.result,
+    required this.message,
   });
 
   bool result;
@@ -22,10 +22,14 @@ class CheckUserNameData {
   factory CheckUserNameData.fromJson(Map<String, dynamic> json) =>
       CheckUserNameData(
         result: json.containsKey('result')
-            ? json["result"] != null ? json["result"] : false
+            ? json["result"] != null
+                ? json["result"]
+                : false
             : null,
         message: json.containsKey('message')
-            ? json["message"] != null ? json["message"] : ''
+            ? json["message"] != null
+                ? json["message"]
+                : ''
             : null,
       );
 

@@ -6,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 ///
 class AppBarAction extends StatelessWidget {
   final String path;
-  final VoidCallback onTap;
+  final VoidCallback? onTap;
   const AppBarAction(this.path, {this.onTap});
 
   @override

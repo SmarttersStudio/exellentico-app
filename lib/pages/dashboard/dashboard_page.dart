@@ -1,7 +1,6 @@
 import 'package:ecommerceapp/bloc_models/base_state.dart';
 import 'package:ecommerceapp/bloc_models/course_bloc/course_bloc.dart';
 import 'package:ecommerceapp/bloc_models/course_bloc/index.dart';
-import 'package:ecommerceapp/bloc_models/theme_bloc/index.dart';
 import 'package:ecommerceapp/config/constants.dart';
 import 'package:ecommerceapp/pages/authentication/login/login_page.dart';
 import 'package:ecommerceapp/pages/courses/chapters_page/chapters_page.dart';
@@ -27,7 +26,7 @@ class _DashboardPageState extends State<DashboardPage>
     with SingleTickerProviderStateMixin {
   //https://youtu.be/
   final code = 'omFCXZyIo88';
-  YoutubePlayerController _controller;
+  late YoutubePlayerController _controller;
 
   @override
   void initState() {
@@ -64,8 +63,8 @@ class _DashboardPageState extends State<DashboardPage>
                 width: double.infinity,
                 decoration: BoxDecoration(
                     gradient: LinearGradient(colors: [
-                  Color.lerp(colorScheme.primary, Colors.black, 0.4),
-                  Color.lerp(colorScheme.primary, Colors.black, 0.6)
+                  Color.lerp(colorScheme.primary, Colors.black, 0.4)!,
+                  Color.lerp(colorScheme.primary, Colors.black, 0.6)!
                 ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -84,20 +83,23 @@ class _DashboardPageState extends State<DashboardPage>
                                         color: Colors.white,
                                         fontWeight: FontWeight.w600),
                                     children: [
-                                      TextSpan(text: 'Hey, ', style: TextStyle()),
+                                      TextSpan(
+                                          text: 'Hey, ', style: TextStyle()),
                                       TextSpan(
                                           text:
-                                              '${SharedPreferenceHelper.user.user.firstName}',
+                                              '${SharedPreferenceHelper.user?.user?.firstName}',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w800)),
                                       TextSpan(
-                                          text: '.\nWhat you like to learn today?',
+                                          text:
+                                              '.\nWhat you like to learn today?',
                                           style: TextStyle()),
                                     ]),
                               )),
                           Flexible(
                               flex: 3,
-                              child: SvgPicture.asset('assets/icons/home_bg.svg'))
+                              child:
+                                  SvgPicture.asset('assets/icons/home_bg.svg'))
                         ],
                       ),
                     ),
@@ -221,9 +223,7 @@ class _DashboardPageState extends State<DashboardPage>
                                     ),
                                     Text(
                                       '${CourseBloc().courses[index].chaptersCount} Chapters',
-                                      style: TextStyle(
-                                      
-                                      ),
+                                      style: TextStyle(),
                                     )
                                   ],
                                 ),
@@ -241,18 +241,20 @@ class _DashboardPageState extends State<DashboardPage>
               ),
             ],
           ),
-          SafeArea(child: Row(
+          SafeArea(
+              child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               IconButton(
-                onPressed: () => ThemeBloc().add(ThemeChanged()),
-                icon: Icon(Icons.brightness_high),
-              ),
-              IconButton(icon: Icon(Icons.power_settings_new,color: Colors.white,), onPressed: (){
-                Get.off(widget);
-                Get.to(LoginPage());
-                SharedPreferenceHelper.preferences.clear();
-              }),
+                  icon: Icon(
+                    Icons.power_settings_new,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {
+                    Get.off(widget);
+                    Get.to(LoginPage());
+                    SharedPreferenceHelper.preferences.clear();
+                  }),
             ],
           ))
         ],

@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 ///
 
 class VerifyPhoneOTPPage extends StatefulWidget {
-  final String phone;
+  final String? phone;
   VerifyPhoneOTPPage({this.phone});
 
   @override
@@ -22,7 +22,7 @@ class _VerifyPhoneOTPPageState extends State<VerifyPhoneOTPPage> {
   final GlobalKey<ExellenticoButtonState> _key = GlobalKey();
   String _otp = '', _error = '';
   bool _autoValidate = false;
-  Timer _timer;
+  late Timer _timer;
   int timerCounter = 59;
   bool isLoading = false;
 
@@ -72,15 +72,13 @@ class _VerifyPhoneOTPPageState extends State<VerifyPhoneOTPPage> {
               length: 4,
               textInputType: TextInputType.number,
               textStyle: TextStyle(color: Colors.white, fontSize: 22),
-              enableEmptyColor: colorScheme.brightness == Brightness.light
-                  ? Color(0xfff0f0f0)
-                  : null,
+              enableEmptyColor: const Color(0xfff0f0f0),
               autoFocus: true,
               onChanged: (val) {
                 _otp = val.trim();
               },
               onCompleted: (val) {
-                verifyOTP(widget.phone, _otp).then((value) {
+                verifyOTP(widget.phone!, _otp).then((value) {
                   ExellenticoSnackBar.show(
                       'OTP Verification Successful', value.toString());
 //                  Get.to(SelectBoardPage());
@@ -111,7 +109,7 @@ class _VerifyPhoneOTPPageState extends State<VerifyPhoneOTPPage> {
                         timerCounter = 60;
                         isLoading = true;
                       });
-                      sendOtpToPhoneNumber(widget.phone).then((value) {
+                      sendOtpToPhoneNumber(widget.phone!).then((value) {
                         ExellenticoSnackBar.show(
                             'Check your phone', value.toString());
                         startTimer();

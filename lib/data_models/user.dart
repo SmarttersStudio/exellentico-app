@@ -12,12 +12,12 @@ String userResponseToJson(UserResponse data) => json.encode(data.toJson());
 
 class UserResponse {
     UserResponse({
-        this.user,
-        this.profile,
+          this.user,
+           this.profile,
     });
 
-    UserDatum user;
-    Profile profile;
+    UserDatum? user;
+    Profile? profile;
 
     factory UserResponse.fromJson(Map<String, dynamic> json) => UserResponse(
         user: json["user"]!=null?  UserDatum.fromJson(json["user"]):null,
@@ -27,30 +27,30 @@ class UserResponse {
       );
 
     Map<String, dynamic> toJson() => {
-        "user": user!=null ? user.toJson() : null,
-        "profile":profile!=null? profile.toJson() : null,
+        "user": user!=null ? user?.toJson() : null,
+        "profile":profile!=null? profile?.toJson() : null,
     };
 }
 
 class Profile {
     Profile({
-        this.id,
-        this.gender,
-        this.dob,
-        this.city,
-        this.user,
-        this.createdAt,
-        this.updatedAt,
-        this.v,
+        required     this.id,
+        required     this.gender,
+        required     this.dob,
+        required     this.city,
+        required     this.user,
+        required     this.createdAt,
+        required     this.updatedAt,
+        required     this.v,
     });
 
     String id;
     int gender;
-    DateTime dob;
+    DateTime? dob;
     String city;
     String user;
-    DateTime createdAt;
-    DateTime updatedAt;
+    DateTime? createdAt;
+    DateTime? updatedAt;
     int v;
 
     factory Profile.fromJson(Map<String, dynamic> json) => Profile(
@@ -70,31 +70,31 @@ class Profile {
         "dob": dob,
         "city": city,
         "user": user,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
     };
 }
 
 class UserDatum {
     UserDatum({
-        this.id,
-        this.phone,
-        this.emailVerified,
-        this.avatar,
-        this.hasSubscription,
-        this.googleId,
-        this.facebookId,
-        this.fcmId,
-        this.passwordResetTokenExpiry,
-        this.firstName,
-        this.lastName,
-        this.email,
-        this.role,
-        this.createdAt,
-        this.updatedAt,
-        this.v,
-        this.passwordResetToken,
+        required     this.id,
+        required     this.phone,
+        required     this.emailVerified,
+        required     this.avatar,
+        required     this.hasSubscription,
+        required    this.googleId,
+        required    this.facebookId,
+        required    this.fcmId,
+        required    this.passwordResetTokenExpiry,
+        required    this.firstName,
+        required   this.lastName,
+        required   this.email,
+        required    this.role,
+        required    this.createdAt,
+        required    this.updatedAt,
+        required    this.v,
+        required    this.passwordResetToken,
     });
 
     String id;
@@ -110,8 +110,8 @@ class UserDatum {
     String lastName;
     String email;
     int role;
-    DateTime createdAt;
-    DateTime updatedAt;
+    DateTime? createdAt;
+    DateTime? updatedAt;
     int v;
     String passwordResetToken;
 
@@ -149,8 +149,8 @@ class UserDatum {
         "lastName": lastName,
         "email": email,
         "role": role,
-        "createdAt": createdAt.toIso8601String(),
-        "updatedAt": updatedAt.toIso8601String(),
+        "createdAt": createdAt?.toIso8601String(),
+        "updatedAt": updatedAt?.toIso8601String(),
         "__v": v,
         "passwordResetToken": passwordResetToken,
     };

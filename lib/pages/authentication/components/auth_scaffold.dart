@@ -1,4 +1,3 @@
-import 'package:ecommerceapp/bloc_models/theme_bloc/index.dart';
 import 'package:ecommerceapp/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -7,7 +6,7 @@ import 'package:flutter_svg/svg.dart';
 /// Created by Sunil Kumar on 17-07-2020 11:13 AM.
 ///
 class AuthScaffold extends StatelessWidget {
-  final Widget body;
+  final Widget? body;
   const AuthScaffold({this.body});
 
   @override
@@ -43,15 +42,7 @@ class AuthScaffold extends StatelessWidget {
                   ],
                 ),
               )),
-          if (body != null) body,
-          Positioned(
-              right: 0,
-              child: SafeArea(
-                child: IconButton(
-                  onPressed: () => ThemeBloc().add(ThemeChanged()),
-                  icon: Icon(Icons.brightness_high),
-                ),
-              )),
+          if (body != null) body!,
           if (Navigator.canPop(context))
             Positioned(child: SafeArea(child: BackButton())),
         ],

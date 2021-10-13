@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 ///
 class DashboardBottomAppbar extends StatelessWidget {
   final int currentIndex;
-  final Function(int) onPageChange;
+  final Function(int)? onPageChange;
 
   const DashboardBottomAppbar({this.currentIndex = 1, this.onPageChange});
 

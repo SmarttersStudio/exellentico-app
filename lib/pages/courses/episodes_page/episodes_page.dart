@@ -20,18 +20,17 @@ class EpisodesPage extends StatefulWidget {
 }
 
 class _EpisodesPageState extends State<EpisodesPage> {
-
   final ScrollController _scrollController = ScrollController();
-  Razorpay _razorPay;
+  late Razorpay _razorPay;
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     ExellenticoSnackBar.show('Success', 'Payment Successful');
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    ExellenticoSnackBar.show('Failure', response.message);
+    ExellenticoSnackBar.show('Failure', response.message ?? "");
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -48,26 +47,31 @@ class _EpisodesPageState extends State<EpisodesPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Episodes"),),
+      appBar: AppBar(
+        title: Text("Episodes"),
+      ),
       body: BlocBuilder<EpisodeBloc, BaseState>(
         bloc: EpisodeBloc(),
-        builder: (context, BaseState state){
-          if(state is LoadingBaseState){
+        builder: (context, BaseState state) {
+          if (state is LoadingBaseState) {
             return Center(child: CircularProgressIndicator());
           }
-          if(state is ErrorBaseState){
-            return Center(child: Text(state.errorMessage.toString()),);
+          if (state is ErrorBaseState) {
+            return Center(
+              child: Text(state.errorMessage.toString()),
+            );
           }
-          if(state is EmptyBaseState){
-            return Center(child: Text("No Episodes Available"),);
+          if (state is EmptyBaseState) {
+            return Center(
+              child: Text("No Episodes Available"),
+            );
           }
-          if(state is EpisodeLoadedState){
+          if (state is EpisodeLoadedState) {
             return ListView.separated(
-              controller: _scrollController,
+                controller: _scrollController,
                 itemCount: EpisodeBloc().episodeShouldLoadMore
                     ? EpisodeBloc().episodes.length + 1
                     : EpisodeBloc().episodes.length,
@@ -81,25 +85,27 @@ class _EpisodesPageState extends State<EpisodesPage> {
                             : Container()
                         : InkWell(
                             onTap: () {
-  
                               var options = {
                                 'key': 'rzp_test_UMVDA6qJJFQECa',
                                 'amount': '10000',
                                 'name': 'Exellentico',
                                 'prefill': {
-                                  'contact': SharedPreferenceHelper.user.user.phone,
-                                  'email':  SharedPreferenceHelper.user.user.email,
+                                  'contact':
+                                      SharedPreferenceHelper.user?.user?.phone,
+                                  'email':
+                                      SharedPreferenceHelper.user?.user?.email,
                                 },
                               };
-                              
+
                               _razorPay.open(options);
-                              
                             },
                             child: EpisodesCard(
                               data: EpisodeBloc().episodes[index],
                             )));
           }
-          return Center(child: Text("Some Error Occurred "),);
+          return Center(
+            child: Text("Some Error Occurred "),
+          );
         },
       ),
     );

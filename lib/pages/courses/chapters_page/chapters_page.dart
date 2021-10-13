@@ -15,13 +15,13 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class ChaptersPage extends StatefulWidget {
   final CourseDatum course;
-  ChaptersPage({this.course});
+  ChaptersPage({required this.course});
   @override
   _ChaptersPageState createState() => _ChaptersPageState();
 }
 
 class _ChaptersPageState extends State<ChaptersPage> {
-  YoutubePlayerController _controller;
+  late YoutubePlayerController _controller;
   final ScrollController _scrollController = ScrollController();
 
   @override

@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 
 /// Api Call to sign in using email id
 Future<UserResponse> signInWithEmail(
-    {@required String email, @required String password}) async {
+    {required String email, required String password}) async {
   var body = {'strategy': 'local', 'email': email, 'password': password};
   String path = ApiRoutes.signInWithEmail;
   var resultMap = await ApiCall.generalApiCall(path, RequestMethod.create,
@@ -24,10 +24,10 @@ Future<UserResponse> signInWithEmail(
 
 /// Api Call to sign up using email id
 Future<UserResponse> signUpWithEmail({
-  @required String email,
-  @required String password,
-  @required String firstName,
-  @required String lastName,
+  required String email,
+  required String password,
+  required String firstName,
+  required String lastName,
   int role = 1,
 }) async {
   var body = {
@@ -50,8 +50,8 @@ Future<UserResponse> signUpWithEmail({
 
 /// Api call to sign up using social media
 Future<UserResponse> signInWithSocialMedia(
-    {@required String socialToken,
-    @required int socialAuthType,
+    {required String socialToken,
+    required int socialAuthType,
     int role = 1,
     String tokenSecret = ""}) async {
   print("Social Api Call");
@@ -67,7 +67,7 @@ Future<UserResponse> signInWithSocialMedia(
   return UserResponse.fromJson(resultMap.data['me']);
 }
 
-Future<CheckUserNameData> verifyUserName({@required String userName}) async {
+Future<CheckUserNameData> verifyUserName({required String userName}) async {
   print(userName);
   final result = await ApiCall.generalApiCall(
       '${ApiRoutes.checkUserName}?userName=$userName', RequestMethod.get);
